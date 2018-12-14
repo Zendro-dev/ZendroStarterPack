@@ -1,0 +1,64 @@
+
+module.exports = `
+  type <%- name -%>
+  {
+    id: ID
+  <%for(var key in attributes){-%>
+  <%= key %>: <%= attributes[key]%>
+  <%}-%>
+  <%for(var key in associations.schema_attributes.one){-%>
+<%=key %>: <%= associations.schema_attributes.one[key]%>
+  <%}-%>
+  <%for(var key in associations.schema_attributes.many){-%>
+<%=key%>Filter(search: search<%= associations.schema_attributes.many[key][1] -%>Input, order: [ order<%= associations.schema_attributes.many[key][1] -%>Input ], pagination: paginationInput): [<%= associations.schema_attributes.many[key][0]-%>]
+    countFiltered<%= associations.schema_attributes.many[key][2]%>(search: search<%= associations.schema_attributes.many[key][1] -%>Input) : Int
+  <%}-%>
+}
+
+  type VueTable<%- nameCp -%>{
+    data : [<%- name -%>]
+    total: Int
+    per_page: Int
+    current_page: Int
+    last_page: Int
+    prev_page_url: String
+    next_page_url: String
+    from: Int
+    to: Int
+  }
+
+  enum <%- name -%>Field {
+    id <%for (var key in attributes) {%>
+    <%= key -%>
+  <% }%>
+  }
+
+  input search<%- nameCp -%>Input {
+    field: <%- name -%>Field
+    value: typeValue
+    operator: Operator
+    search: [search<%- nameCp-%>Input]
+  }
+
+  input order<%- nameCp -%>Input{
+    field: <%- name -%>Field
+    order: Order
+  }
+
+  type Query {
+    <%- namePl -%>(search: search<%- nameCp -%>Input, order: [ order<%- nameCp -%>Input ], pagination: paginationInput ): [<%- name -%>]
+    readOne<%- nameCp -%>(id: ID!): <%- name %>
+    count<%- namePlCp -%>(search: search<%- nameCp -%>Input ): Int
+    vueTable<%- nameCp -%> : VueTable<%- nameCp -%>
+  }
+
+  <% if(storageType === 'sql'){-%>
+  type Mutation {
+    add<%- nameCp -%>( <%- attributesStr -%><% if (associations.mutations_attributes !==""){-%>, <%= associations.mutations_attributes %> <%}-%> <%for(var key in associations.schema_attributes.many){-%>, add<%= associations.schema_attributes.many[key][2]%>:[ID]<%}-%> ): <%- name %>
+    delete<%- nameCp -%>(id: ID!): String!
+    update<%- nameCp -%>(id: ID!, <%- attributesStr -%><% if (associations.mutations_attributes !==""){-%>, <%= associations.mutations_attributes %> <%}-%> <%for(var key in associations.schema_attributes.many){-%>, add<%= associations.schema_attributes.many[key][2]%>:[ID], remove<%= associations.schema_attributes.many[key][2]%>:[ID] <%}-%>): <%- name %>!
+    bulkAdd<%- nameCp -%>Xlsx: [<%- name -%>]
+    bulkAdd<%- nameCp -%>Csv: [<%- name -%>]
+}
+  <%}-%>
+`;

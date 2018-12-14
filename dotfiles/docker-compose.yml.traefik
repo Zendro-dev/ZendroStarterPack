@@ -1,0 +1,22 @@
+version: '3.5'
+
+services:
+  proxy:
+    image: traefik:v1.6.6
+    command: --docker.domain=docker.localhost --logLevel=DEBUG
+    networks:
+      - reverseproxy
+    ports:
+      - "80:80"
+      - "443:443"
+      - "127.0.0.1:8712:8712"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - $PWD/conf/traefik.toml:/etc/traefik/traefik.toml
+      - Acme:/etc/traefik/acme
+
+networks:
+  reverseproxy:
+    name: reverseproxy
+volumes:
+  Acme:

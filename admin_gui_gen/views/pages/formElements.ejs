@@ -1,0 +1,171 @@
+<template>
+  <div id="<%- nameLc -%>-form-elemns-div">
+
+  <input type="hidden" v-model="<%- nameLc -%>.id"/>
+
+  <% for ( i=0; i<attributesArr.length; i++ ) { -%>
+
+    <div id="<%- nameLc -%>-<%- attributesArr[i][0] -%>-div" class="form-group">
+      <% let iterAttr = attributesArr[i] -%>
+      <label><%- iterAttr[0] -%></label>
+      <% include ../partials/input %>
+      <div id="<%- nameLc -%>-<%- iterAttr[0] -%>-err" v-if="validationError('<%- iterAttr[0] -%>')" class="alert alert-danger">
+        {{validationError('<%- iterAttr[0] -%>').message}}
+      </div>
+    </div>
+
+  <% } -%>
+
+  <% for ( i=0; i<belongsTosArr.length; i++ ) { -%>
+    <% var bt = belongsTosArr[i] -%>
+
+    <div id="<%- nameLc -%>-<%- bt.targetModelLc -%>-div" class="form-group">
+      <label><%- bt.relationName -%></label>
+      <foreign-key-form-element
+        :searchUrl = "this.$baseUrl()"
+        v-model:foreignKey="<%- nameLc -%>.<%- bt.foreignKey -%>"
+        label="<%- bt.label -%>"
+        <%let sublabel = ""-%>
+        <%if(bt.sublabel){-%>
+    subLabel = "<%-bt.sublabel-%>"
+        <%sublabel = bt.sublabel-%>
+        <%}-%>
+        valueKey="<%- bt.primaryKey -%>"
+        targetModel="<%-bt.targetModelCp%>"
+        v-bind:initialInput="<%- bt.targetModelLc -%>InitialLabel">
+      </foreign-key-form-element>
+    </div>
+
+  <% } -%>
+
+
+  <% for ( i=0; i<hasManysArr.length; i++ ) { -%>
+    <% var manyRel = hasManysArr[i] -%>
+
+    <div id="<%- nameLc -%>-<%- manyRel.relationName -%>-div" class="form-group">
+      <label><%- manyRel.relationName -%></label>
+      <has-many-form-element
+        :associatedElements.sync="<%- nameLc -%>.<%- manyRel.relationName -%>Filter"
+        :searchUrl="this.$baseUrl()"
+        label="<%- manyRel.label -%>"
+        <%let sublabel = ""-%>
+        <%if(manyRel.sublabel){-%>
+    subLabel ="<%-manyRel.sublabel-%>"
+        <%sublabel = manyRel.sublabel-%><%}-%>
+        valueKey="id"
+        targetModel = "<%-manyRel.targetModelCp-%>"
+        >
+      </has-many-form-element>
+    </div>
+
+  <% } -%>
+
+
+  </div>
+</template>
+
+<script>
+<% if (typeof belongsTosArr !== undefined && belongsTosArr.length > 0 ||
+  typeof hasManysArr !== undefined && hasManysArr.length > 0) { -%>
+import Vue from 'vue'
+<% } -%>
+
+<% if (typeof belongsTosArr !== 'undefined' && belongsTosArr.length > 0) { -%>
+import foreignKeyFormElement from './foreignKeyFormElement.vue'
+
+Vue.component('foreign-key-form-element', foreignKeyFormElement)
+<% } -%>
+
+<% if (typeof hasManysArr !== 'undefined' && hasManysArr.length > 0) { -%>
+import hasManyFormElemn from './hasManyFormElemn.vue'
+
+Vue.component('has-many-form-element', hasManyFormElemn)
+<% } -%>
+import inflection from 'inflection'
+import axios from 'axios'
+
+export default {
+  props: [ '<%- nameLc -%>', 'errors' ],
+  data(){
+    return{
+      target_models: [
+       <%for( i=0; i<hasManysArr.length; i++ ) { -%>
+      <%let hm = hasManysArr[i]-%>
+        {
+            model:'<%-hm.targetModelCp-%>',
+            label: '<%-hm.label-%>',
+            sublabel: '<%-hm.sublabel-%>'
+        }<%if(i!==hasManysArr.length-1){-%>,<%}-%>
+        <%}-%>
+      ],
+      model: '<%- nameLc -%>'
+    }
+  },
+  computed: {
+  <% for ( i=0; i<belongsTosArr.length; i++ ) { -%>
+    <% var bt = belongsTosArr[i] -%>
+    <%- bt.targetModelLc -%>InitialLabel: function () {
+      var x = this.<%- nameLc -%>.<%- bt.relationName %>
+      if (x !== null && typeof x === 'object' &&
+          x['<%- bt.label -%>'] !== null &&
+          typeof x['<%- bt.label -%>'] !== 'undefined') {
+        return x['<%- bt.label -%>']
+      } else {
+        return ''
+      }
+    }
+    <% if (i < (belongsTosArr.length - 1)) { -%>
+    ,
+    <% } -%>
+  <% } -%>
+  },
+  methods: {
+    validationError(modelField) {
+      if (this.errors == null) return false;
+      return this.errors.find(function (el) {
+        return el.path === modelField
+      })
+    },
+    loadAllAssociatedItems(){
+      this.target_models.forEach(tModel=>{
+        let query = this.createQuery(tModel);
+        axios.post( this.$baseUrl(),{
+          query: query,
+          variables:{id: this[ this.model.toLowerCase() ].id},
+          headers: {
+            'authorization': `Bearer ${this.$getAuthToken()}`,
+            'Accept': 'application/graphql'}
+        }).then(res=>{
+          this[ this.model.toLowerCase() ][ `${inflection.pluralize(tModel.model.toLowerCase())}Filter` ]=
+          res.data.data[`readOne${inflection.capitalize(this.model)}`][`${inflection.pluralize(tModel.model.toLowerCase())}Filter`];
+        });
+      })
+    },
+    createQuery(tModel){
+      return ` query
+        readOne${inflection.capitalize(this.model)}($id:ID!){
+          readOne${inflection.capitalize(this.model)}(id:$id ){
+            ${inflection.pluralize(tModel.model.toLowerCase())}Filter{
+              id ${tModel.label} ${tModel.sublabel}
+            }
+          }
+        }
+      `
+    }
+  },
+	mounted: function() {
+    let el = this;
+    $(document).ready(function(){
+      $('.datepicker').datepicker({
+        format: el.$defaultDateFormat(),
+        dateFormat: el.$defaultDateFormat()
+      })
+    })
+	},
+  created(){
+    if(this[this.model.toLowerCase()].id!==undefined){
+      this.loadAllAssociatedItems();
+    }
+  }
+}
+</script>

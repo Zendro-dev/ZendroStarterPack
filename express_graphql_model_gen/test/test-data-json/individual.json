@@ -1,0 +1,15 @@
+{
+  "model" : "individual",
+  "storageType" : "SQL",
+  "attributes" : {
+    "name" : "String"
+  },
+  "associations": {
+    "transcript_counts": {
+      "type" : "sql_hasMany",
+      "target" : "transcript_count",
+      "targetKey" : "individual_id",
+      "targetStorageType" : "sql"
+    }
+  }
+}

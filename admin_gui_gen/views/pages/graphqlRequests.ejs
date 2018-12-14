@@ -1,0 +1,54 @@
+import requestGraphql from './request'
+
+export default {
+
+  add<%- nameCp -%>Query : function({url, variables, token}){
+  let query = ` mutation add<%- nameCp -%>(
+  <% for ( i=0; i<attributesArr.length; i++ ){-%> $<%-attributesArr[i][0]%>:<%-attributesArr[i][1]-%> <%}-%>
+  <% for( i=0; i<belongsTosArr.length; i++ ){-%> $<%-belongsTosArr[i].foreignKey%>:Int <%}-%>
+  <% for( i=0; i<hasManysArr.length; i++ ){-%> $<%-hasManysArr[i].relationName%>Filter:[ID]<%}-%>
+  ){
+    add<%- nameCp -%>(
+    <% for ( i=0; i<attributesArr.length; i++ ){-%> <%-attributesArr[i][0]%>:$<%-attributesArr[i][0]-%>  <%}-%>
+    <% for( i=0; i<belongsTosArr.length; i++ ){-%> <%-belongsTosArr[i].foreignKey%>:$<%-belongsTosArr[i].foreignKey%> <%}-%>
+    <% for( i=0; i<hasManysArr.length; i++ ){-%> <%-hasManysArr[i].relationName%>:$<%-hasManysArr[i].relationName%>Filter<%}-%>
+    ){id <% for ( i=0; i<attributesArr.length; i++ ) {-%> <%- attributesArr[i][0] %>  <%}-%> }
+  }
+  `
+  return requestGraphql({url, query, variables, token});
+},
+
+
+  readOne<%- nameCp -%> : function({url, variables, token}){
+    let query = `query readOne<%- nameCp -%>($id:ID!){
+      readOne<%- nameCp -%>(id:$id){id <% for ( i=0; i<attributesArr.length; i++ ) {-%> <%- attributesArr[i][0] %>  <%}-%>
+      <% for( i=0; i<belongsTosArr.length; i++ ){-%> <%-belongsTosArr[i].relationName%>{ <%-belongsTosArr[i].label%>
+        <%if(belongsTosArr[i].sublabel){%> <%-belongsTosArr[i].sublabel-%> <%}-%> } <%}-%>
+    }
+    }`
+    return requestGraphql({url, query, variables, token});
+  },
+
+  update<%- nameCp -%> : function({url, variables, token}){
+    let query = `mutation update<%- nameCp -%>($id:ID!
+    <% for ( i=0; i<attributesArr.length; i++ ){-%> $<%-attributesArr[i][0]%>:<%-attributesArr[i][1]-%> <%}-%>
+    <% for( i=0; i<belongsTosArr.length; i++ ){-%> $<%-belongsTosArr[i].foreignKey%>:Int <%}-%>
+    <% for( i=0; i<hasManysArr.length; i++ ){-%> $<%-hasManysArr[i].relationName%>Filter:[ID]<%}-%>
+    ){
+      update<%- nameCp -%>(id:$id
+      <% for ( i=0; i<attributesArr.length; i++ ){-%> <%-attributesArr[i][0]%>:$<%-attributesArr[i][0]-%>  <%}-%>
+      <% for( i=0; i<belongsTosArr.length; i++ ){-%> <%-belongsTosArr[i].foreignKey%>:$<%-belongsTosArr[i].foreignKey%> <%}-%>
+      <% for( i=0; i<hasManysArr.length; i++ ){-%> <%-hasManysArr[i].relationName%>:$<%-hasManysArr[i].relationName%>Filter<%}-%>
+      ){id <% for ( i=0; i<attributesArr.length; i++ ) {-%> <%- attributesArr[i][0] %>  <%}-%>}
+    }`
+
+    return requestGraphql({url, query, variables, token});
+  },
+
+  delete<%- nameCp -%> : function({url, variables, token}){
+    let query = `mutation delete<%- nameCp -%>($id:ID!){
+      delete<%- nameCp -%>(id:$id)
+    }`
+    return requestGraphql({url, query, variables, token});
+  }
+}

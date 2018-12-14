@@ -1,0 +1,45 @@
+version: "3.2"
+
+services:
+  postgres:
+    build:
+      context: ../server-graphql-sequelize
+      dockerfile: Dockerfile.postgres
+    volumes:
+      - data:/var/lib/postgresql/data
+    networks:
+      - science_db_backend
+
+  science_db_backend:
+    build:
+      context: ../server-graphql-sequelize
+      dockerfile: Dockerfile.graphql_server
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+    # volumes:
+    #  - ../server-graphql-sequelize:/usr/src/app
+    command: 'npm start'
+    networks:
+      - science_db_backend
+
+  science_db_gui:
+    build:
+      context: ../ScienceDbGui/
+      dockerfile: Dockerfile
+    ports:
+      - "3333:3333"
+    environment:
+      PORT: 3333
+    # volumes:
+    #  - ../ScienceDbGui:/usr/src/app
+    command: "npm run dev"
+    networks:
+      - science_db_backend
+
+
+volumes:
+  data: 
+networks:
+  science_db_backend:

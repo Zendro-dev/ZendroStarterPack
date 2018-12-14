@@ -1,0 +1,17 @@
+{
+  "model" : "Genotype",
+  "storageType" : "sql",
+  "attributes" : {
+    "name" : "String",
+    "description" : "String",
+    "pedigree_type": "String"
+  },
+  "associations" : {
+    "genotypes" : {
+      "type" : "sql_belongsTo",
+      "target" : "BreedingPool",
+      "targetKey" : "Breeding_pool_id",
+      "targetStorageType" : "sql"
+    }
+  }
+}

@@ -1,0 +1,247 @@
+/*
+    Resolvers for basic CRUD operations
+*/
+
+const <%-  nameLc  -%> = require('../models/index').<%- nameLc -%>;
+const searchArg = require('../utils/search-argument');
+const fileTools =  require('../utils/file-tools');
+const helper = require('../utils/helper');
+const globals = require('../config/globals');
+const checkAuthorization = require('../utils/check-authorization');
+const path = require('path')
+const fs = require('fs')
+const uuidv4 = require('uuidv4')
+<%for(let type in associations.explicit_resolvers){-%>
+  <%for(let i=0; i < associations.explicit_resolvers[type].length; i++){-%>
+    const <%=associations.explicit_resolvers[type][i].target.toLowerCase()-%> = require('./<%=associations.explicit_resolvers[type][i].target.toLowerCase()-%>');
+  <%}-%>
+<%}-%>
+
+<%let associations_one = associations.implicit_associations["hasOne"].concat(associations.implicit_associations["belongsTo"])-%>
+<% for(let i=0; i < associations_one.length; i++){ -%>
+  <%- nameLc -%>.prototype.<%=associations_one[i].target.toLowerCase()%> = function(_, context){
+    return this.get<%- associations_one[i].target_cp%>();
+  }
+<%}-%>
+
+<% let associations_temp = associations.implicit_associations["hasMany"].concat(associations.implicit_associations["belongsToMany"])-%>
+<% for(let i=0; i < associations_temp.length; i++){ -%>
+  <%- nameLc -%>.prototype.<%=associations_temp[i].target_pl.toLowerCase()%>Filter = function({search,order,pagination}, context){
+
+    let options = {};
+
+    if(search!== undefined){
+      let arg = new searchArg(search);
+      let arg_sequelize = arg.toSequelize();
+      options['where'] = arg_sequelize;
+    }
+
+    return this.count<%- associations_temp[i].target_cp_pl%>(options).then( items => {
+      if(order !== undefined){
+        options['order'] = order.map( (orderItem) => {return [ orderItem.field, orderItem.order]; } );
+      }
+
+      if(pagination !== undefined){
+        options['offset'] = pagination.offset === undefined ? 0 : pagination.offset;
+        options['limit'] = pagination.limit === undefined ? (items - options['offset']) : pagination.limit;
+      }else{
+        options['offset'] = 0;
+        options['limit'] = items;
+      }
+
+      if(globals.LIMIT_RECORDS < options['limit']){
+        throw new Error(`Request of total <%=associations_temp[i].target_pl.toLowerCase()%>Filter exceeds max limit of ${globals.LIMIT_RECORDS}. Please use pagination.`);
+      }
+      return this.get<%- associations_temp[i].target_cp_pl%>(options);
+    }).catch(error =>{
+      console.log("Catched the error in <%=associations_temp[i].target_pl.toLowerCase()%>Filter ", error);
+      return error;
+    });
+  }
+
+  <%- nameLc -%>.prototype.countFiltered<%=associations_temp[i].target_cp_pl%> = function({search}, context){
+
+    let options = {};
+
+    if(search!== undefined){
+      let arg = new searchArg(search);
+      let arg_sequelize = arg.toSequelize();
+      options['where'] = arg_sequelize;
+    }
+
+    return this.count<%- associations_temp[i].target_cp_pl%>(options);
+  }
+
+<%}-%>
+<% associations_temp = associations.explicit_resolvers["belongsTo"]-%>
+<% for(let i=0; i < associations_temp.length; i++){ -%>
+  <%- nameLc -%>.prototype.<%=associations_temp[i].target.toLowerCase()%> = function(_, context){
+    return <%=associations_temp[i].target.toLowerCase()%>.readOne<%=associations_temp[i].target_cp%>({"id" : this.<%=associations_temp[i].targetKey%>}, context);
+  }
+<%}-%>
+
+<% associations_temp = associations.explicit_resolvers["hasOne"]-%>
+<% for(let i=0; i < associations_temp.length; i++){ -%>
+  <%- nameLc -%>.prototype.<%=associations_temp[i].target.toLowerCase()%> = function(_, context){
+    return <%=associations_temp[i].target.toLowerCase()%>.<%=associations_temp[i].target_pl%>({"search": {"field" : <%=associations_temp[i].targetKey%>, "value":{"value":this.id }, "operator": "eq"} }, context);
+  }
+<%}-%>
+
+<% associations_temp = associations.explicit_resolvers["hasMany"]-%>
+<% for(let i=0; i < associations_temp.length; i++){ -%>
+  <%- nameLc -%>.prototype.<%=associations_temp[i].target_pl.toLowerCase()%>Filter = function({search,order, pagination}, context){
+
+    if(search === undefined)
+    {
+      return <%=associations_temp[i].target.toLowerCase()%>.<%=associations_temp[i].target_pl%>({"search":{"field" : <%=associations_temp[i].targetKey%>, "value":{"value":this.id }, "operator": "eq"}, order, pagination }, context);
+    }else{
+      return <%=associations_temp[i].target.toLowerCase()%>.<%=associations_temp[i].target_pl%>({"search":{"operator":"and", "search":[ {"field" : "<%=associations_temp[i].targetKey%>", "value":{"value":this.id }, "operator": "eq"} , search] }, order, pagination },context)
+    }
+
+  }
+
+  <%- nameLc -%>.prototype.countFiltered<%=associations_temp[i].target_cp_pl%> = function({search}, context){
+
+    if(search === undefined)
+    {
+      return <%=associations_temp[i].target.toLowerCase()%>.count<%=associations_temp[i].target_cp_pl%>({"search":{"field" : "<%=associations_temp[i].targetKey%>", "value":{"value":this.id }, "operator": "eq"} }, context);
+    }else{
+      return <%=associations_temp[i].target.toLowerCase()%>.count<%=associations_temp[i].target_cp_pl%>>({"search":{"operator":"and", "search":[ {"field" : "<%=associations_temp[i].targetKey%>", "value":{"value":this.id }, "operator": "eq"} , search] }},context)
+    }
+
+  }
+<%}-%>
+
+module.exports = {
+
+  <%- namePl -%>: function({search, order, pagination}, context){
+    if(checkAuthorization(context,'<%- namePl -%>', 'read')==true){
+        let options = {};
+        if(search!== undefined){
+          let arg = new searchArg(search);
+          let arg_sequelize = arg.toSequelize();
+          options['where'] = arg_sequelize;
+        }
+
+        return <%- nameLc -%>.count(options).then( items => {
+          if(order !== undefined){
+            options['order'] = order.map( (orderItem) => {return [ orderItem.field, orderItem.order]; } );
+          }
+
+          if(pagination !== undefined){
+            options['offset'] = pagination.offset === undefined ? 0 : pagination.offset;
+            options['limit'] = pagination.limit === undefined ? (items - options['offset']) : pagination.limit;
+          }else{
+            options['offset'] = 0;
+            options['limit'] = items;
+          }
+
+          if(globals.LIMIT_RECORDS < options['limit']){
+            throw new Error(`Request of total <%- namePl -%> exceeds max limit of ${globals.LIMIT_RECORDS}. Please use pagination.`);
+          }
+          return <%- nameLc -%>.findAll(options);
+        }).catch(error =>{
+          console.log("Catched the error in <%- namePl -%> ", error);
+          return error;
+        });
+    }else{
+        return new Error("You don't have authorization to perform this action");
+      }
+  },
+
+  readOne<%- nameCp -%>: function({id}, context){
+    if(checkAuthorization(context, '<%- namePl -%>', 'read')==true)
+    {
+      return <%- nameLc -%>.findOne({where: {id: id}});
+    }else{
+        return "You don't have authorization to perform this action";
+      }
+  },
+
+  add<%- nameCp -%>: function(input, context){
+    if(checkAuthorization(context,'<%- namePl -%>','create')==true)
+    {
+      return <%- nameLc -%>.create(input)
+      .then( <%- nameLc -%> =>{
+        <%associations_temp = associations.implicit_associations["hasMany"].concat(associations.implicit_associations["belongsToMany"])-%>
+        <%for(let i=0; i < associations_temp.length; i++){-%>
+            if(input.add<%=associations_temp[i].target_cp_pl-%>){<%- nameLc -%>.set<%=associations_temp[i].target_cp_pl-%>(input.add<%=associations_temp[i].target_cp_pl-%>);}
+          <%}-%>
+        return <%- nameLc -%>;
+      });
+    }else{
+        return "You don't have authorization to perform this action";
+      }
+  },
+
+  bulkAdd<%- nameCp -%>Xlsx: function(_, context){
+    let xlsxObjs = fileTools.parseXlsx(context.request.files.xlsx_file.data.toString('binary'));
+    return <%- nameLc -%>.bulkCreate(xlsxObjs, {validate: true});
+  },
+
+  bulkAdd<%- nameCp -%>Csv: function(_, context){
+    delim = context.request.body.delim;
+    cols = context.request.body.cols;
+    tmpFile = path.join(__dirname, uuidv4()+'.csv')
+    return context.request.files.csv_file.mv(tmpFile).then(() => {
+      return fileTools.parseCsvStream(tmpFile, <%- nameLc -%>, delim, cols)
+    }).catch((err) => {
+      return new Error(err);
+    }).then(() => {
+      fs.unlinkSync(tmpFile)
+    })
+  },
+
+  delete<%- nameCp -%>: function({id}, context){
+    if(checkAuthorization(context,'<%- namePl -%>','delete')==true)
+    {
+      return <%- nameLc -%>
+        .findById(id)
+        .then( <%- nameLc -%> =>{
+          return <%- nameLc -%>
+            .destroy()
+            .then(()=>{return 'Item succesfully deleted';});
+          });
+    }else{
+        return "You don't have authorization to perform this action";
+      }
+  },
+
+  update<%- nameCp-%>: function(input, context){
+    if(checkAuthorization(context,'<%- namePl -%>','update')==true)
+    {
+      return <%- nameLc -%>
+        .findById(input.id)
+        .then( <%- nameLc -%> => {
+          <%associations_temp = associations.implicit_associations["hasMany"].concat(associations.implicit_associations["belongsToMany"])-%>
+          <%for(let i=0; i < associations_temp.length; i++){-%>
+              if(input.add<%=associations_temp[i].target_cp_pl-%>){<%- nameLc -%>.add<%=associations_temp[i].target_cp_pl-%>(input.add<%=associations_temp[i].target_cp_pl-%>);}
+              if(input.remove<%=associations_temp[i].target_cp_pl-%>){<%- nameLc -%>.remove<%=associations_temp[i].target_cp_pl-%>(input.remove<%=associations_temp[i].target_cp_pl-%>);}
+            <%}-%>
+            return <%- nameLc -%>.update(input);
+          });
+    }else{
+        return "You don't have authorization to perform this action";
+      }
+  },
+
+  count<%-namePlCp-%>: function({search}, context){
+    let options = {};
+    if(search!== undefined){
+      let arg = new searchArg(search);
+      let arg_sequelize = arg.toSequelize();
+      options['where'] = arg_sequelize;
+    }
+
+    return <%- nameLc -%>.count(options);
+  },
+
+  vueTable<%- nameCp-%>: function(_,context){
+    if(checkAuthorization(context,'<%- namePl -%>','read')==true)
+    {
+      return helper.vueTable(context.request, <%- nameLc -%>, <%-  JSON.stringify(arrayAttributeString) -%>  );
+    }else{
+        return "You don't have authorization to perform this action";
+      }
+  }
+}

@@ -1,0 +1,48 @@
+'use strict';
+
+module.exports = {
+
+  up: function(queryInterface, Sequelize){
+    return queryInterface.createTable('<%-namePl-%>', {
+
+      id: {
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+      },
+
+      createdAt: {
+        type: Sequelize.DATE
+      },
+
+      updatedAt: {
+        type: Sequelize.DATE
+      },
+
+      <% let keys = Object.keys(attributes) -%>
+      <%for (let i=0; i< keys.length; i++) {-%>
+        <% let type_seq =  attributes[ keys[i] ] -%>
+        <% if(type_seq === 'Int'){ type_seq = 'INTEGER' } -%>
+        <%=  keys[i] %>: {
+            type: Sequelize.<%= type_seq.toUpperCase() %>
+        }
+        <%if(i !== (keys.length -1) ){ -%>,<%}-%>
+      <%}-%>
+      <%if(associations.explicit_resolvers.belongsTo.length > 0) {-%>
+        <%if( keys.length > 0){%>,<%}-%>
+        <% for(let i=0; i < associations.explicit_resolvers.belongsTo.length; i++){-%>
+          <%=associations.explicit_resolvers.belongsTo[i].targetKey%>: {
+            type: Sequelize.INTEGER
+          }
+          <%if(i !== (associations.explicit_resolvers.belongsTo.length -1) ){ -%>,<%}-%>
+        <%}-%>
+      <%}-%>
+
+    });
+  },
+
+  down: function(queryInterface, Sequelize){
+    return queryInterface.dropTable('<%-namePl-%>');
+  }
+
+};

@@ -1,0 +1,10 @@
+<% let iterAttrType = iterAttr[1].toLowerCase() -%>
+
+<% if (iterAttrType === 'boolean') { -%>
+  <input type="checkbox" v-model="<%- nameLc -%>.<%- iterAttr[0] -%>" class="form-control"/>
+<% } else if ( iterAttrType.match(/date/) || iterAttrType.match(/time/) ) { -%>
+  <input v-model="<%- nameLc -%>.<%- iterAttr[0] -%>" class="datepicker" />
+<% } else { -%>
+  <input type="text" v-model="<%- nameLc -%>.<%- iterAttr[0] -%>" class="form-control"/>
+<% } -%>
+

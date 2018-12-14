@@ -1,0 +1,17 @@
+{
+  "model" : "Dog",
+  "storageType" : "Sql",
+  "attributes" : {
+    "name" : "String",
+    "breed" : "String"
+  },
+
+  "associations" : {
+    "person" : {
+      "type" : "sql_belongsTo",
+      "target" : "Person",
+      "targetKey" : "personId",
+      "targetStorageType" : "sql"
+    }
+  }
+}

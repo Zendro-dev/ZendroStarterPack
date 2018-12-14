@@ -1,0 +1,11 @@
+<%  for ( i=0; i<models.length; i++ ) { -%>
+import <%- models[i].name -%>Routes from './<%- models[i].name -%>Routes'
+<%  } -%>
+
+let child_paths = []
+
+  <%for ( i=0; i<models.length; i++ ) { -%>
+    child_paths.push(...<%- models[i].name -%>Routes)
+  <%  } -%>
+
+export default child_paths

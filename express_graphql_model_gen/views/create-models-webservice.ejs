@@ -1,0 +1,9 @@
+module.exports = class <%- nameLc -%>{
+
+  constructor({id <%for(var key in attributes){-%>,<%=key-%><%}-%>}){
+      this.id = id;
+       <%for(var key in attributes){-%>
+         this.<%=key-%> =<%=key-%>;
+        <%}-%>
+  }
+}

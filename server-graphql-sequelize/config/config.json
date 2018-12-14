@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "sciencedb",
+    "password": "sciencedb",
+    "database": "sciencedb_development",
+    "host": "postgres",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "sciencedb",
+    "password": "sciencedb",
+    "database": "sciencedb_test",
+    "host": "postgres",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "sciencedb",
+    "password": "sciencedb",
+    "database": "sciencedb_production",
+    "host": "postgres",
+    "dialect": "postgres"
+  }
+}

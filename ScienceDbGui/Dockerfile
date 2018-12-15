@@ -8,7 +8,7 @@ COPY ./package.json .
 
 # Need to install git for some npm packages:
 RUN apk update && apk add git && \ 
-  npm install -g
+  npm install
 
 # If you are building your code for production
 # RUN npm install --only=production

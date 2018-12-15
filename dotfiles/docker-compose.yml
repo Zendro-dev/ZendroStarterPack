@@ -6,9 +6,9 @@ services:
       context: ../server-graphql-sequelize
       dockerfile: Dockerfile.postgres
     volumes:
-      - data:/var/lib/postgresql/data
+      - science_db_data:/var/lib/postgresql/data
     networks:
-      - science_db_backend
+      - science_db_network
 
   science_db_backend:
     build:
@@ -22,7 +22,7 @@ services:
     #  - ../server-graphql-sequelize:/usr/src/app
     command: 'npm start'
     networks:
-      - science_db_backend
+      - science_db_network
 
   science_db_gui:
     build:
@@ -36,10 +36,10 @@ services:
     #  - ../ScienceDbGui:/usr/src/app
     command: "npm run dev"
     networks:
-      - science_db_backend
+      - science_db_network
 
 
 volumes:
-  data: 
+  science_db_data: 
 networks:
-  science_db_backend:
+  science_db_network:

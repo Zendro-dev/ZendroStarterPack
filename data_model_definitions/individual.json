@@ -1,0 +1,26 @@
+{
+	"model" : "Individual",
+	"storageType" : "Sql",
+	"attributes" : {
+		"name" : "String",
+		"description" : "String"
+	},
+	"associations" : {
+		"genotype" : {
+			"type" : "sql_belongsTo",
+			"target" : "Genotype",
+			"targetKey" : "genotype_id",
+			"targetStorageType" : "sql",
+			"label": "name",
+      "sublabel": "id"
+		},
+		"marker_data_snps" : {
+			"type" : "sql_hasMany",
+			"target" : "MarkerData",
+			"targetKey" : "individual_id",
+			"targetStorageType" : "sql",
+			"label": "marker_name",
+			"sublabel": "nucleotide"
+		}
+	}
+}

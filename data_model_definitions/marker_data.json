@@ -1,0 +1,18 @@
+{
+	"model" : "MarkerData",
+	"storageType" : "Sql",
+	"attributes" : {
+		"marker_name" : "String",
+		"nucleotide" : "String"
+	},
+	"associations" : {
+		"individual" : {
+			"type" : "sql_belongsTo",
+			"target" : "Individual",
+			"targetKey" : "individual_id",
+			"targetStorageType" : "sql",
+			"label": "name",
+      "sublabel": "id"
+		}
+	}
+}

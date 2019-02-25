@@ -1,0 +1,22 @@
+{
+	"model": "Measurement",
+	"storageType": "Sql",
+	"attributes": {
+		"method": "String",
+		"reference": "String",
+    "float_value": "Float",
+    "int_value": "Int",
+    "text_value": "String",
+    "unit": "String"
+	},
+	"associations": {
+		"field_plot": {
+			"type": "sql_belongsTo",
+			"target": "FieldPlot",
+			"targetKey": "field_plot_id",
+			"targetStorageType": "sql",
+			"label": "field_name",
+      "sublabel": "coordinates_or_name"
+		}
+  }
+}

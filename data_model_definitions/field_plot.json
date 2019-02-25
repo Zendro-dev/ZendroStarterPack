@@ -1,0 +1,21 @@
+{
+	"model" : "FieldPlot",
+	"storageType" : "Sql",
+	"attributes" : {
+		"field_name" : "String",
+		"coordinates_or_name" : "String",
+    "year": "String",
+    "area_sqm": "Float",
+    "type": "String"
+	},
+	"associations" : {
+		"genotype" : {
+			"type" : "sql_belongsTo",
+			"target" : "Genotype",
+			"targetKey" : "genotype_id",
+			"targetStorageType" : "sql",
+			"label": "name",
+      "sublabel": "id"
+		}
+	}
+}

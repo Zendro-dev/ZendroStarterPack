@@ -1,0 +1,23 @@
+{
+	"model" : "NucAcidLibraryResult",
+	"storageType" : "Sql",
+	"attributes" : {
+		"lab_code" : "String",
+    "file_name" : "String",
+    "file_uri": "String",
+    "type": "String",
+    "insert_size": "Float",
+    "technical_replicate": "Int",
+    "trimmed": "Boolean"
+	},
+	"associations" : {
+		"sample" : {
+			"type" : "sql_belongsTo",
+			"target" : "Sample",
+			"targetKey" : "sample_id",
+			"targetStorageType" : "sql",
+			"label": "name",
+      "sublabel": "tissue"
+		}
+	}
+}

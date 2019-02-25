@@ -1,0 +1,20 @@
+{
+	"model" : "TranscriptCount",
+	"storageType" : "Sql",
+	"attributes" : {
+		"gene" : "String",
+		"value" : "Float",
+    "method": "String",
+    "reference_genome": "String"
+	},
+	"associations" : {
+		"sample" : {
+			"type" : "sql_belongsTo",
+			"target" : "Sample",
+			"targetKey" : "sample_id",
+			"targetStorageType" : "sql",
+			"label": "name",
+      "sublabel": "tissue"
+		}
+	}
+}

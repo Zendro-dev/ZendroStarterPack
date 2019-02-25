@@ -1,0 +1,39 @@
+{
+	"model" : "SequencingExperiment",
+	"storageType" : "Sql",
+	"attributes" : {
+		"name" : "String",
+		"description" : "String",
+    "start_date": "String",
+    "end_date": "String",
+    "protocol": "String",
+    "platform": "String",
+    "data_type": "String",
+    "library_type": "String",
+    "library_preparation": "String",
+    "aimed_coverage": "Float",
+    "resulting_coverage": "Float",
+    "insert_size": "Float",
+    "aimed_read_length": "String",
+    "genome_complexity_reduction": "String",
+    "contamination": "String"
+	},
+	"associations" : {
+		"nuc_acid_library_results" : {
+			"type" : "sql_hasMany",
+			"target" : "NucAcidLibraryResult",
+			"targetKey" : "sequencing_experiment_id",
+			"targetStorageType" : "sql",
+			"label": "lab_code",
+      "sublabel": "file_name"
+		},
+		"samples" : {
+			"type" : "sql_hasMany",
+			"target" : "Sample",
+			"targetKey" : "sequencing_experiment_id",
+			"targetStorageType" : "sql",
+			"label": "name",
+			"sublabel": "type"
+		}
+	}
+}

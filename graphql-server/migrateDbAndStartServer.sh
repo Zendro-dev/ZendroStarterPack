@@ -27,4 +27,4 @@ if [ -d ./seeders ]; then
 fi
 
 # Start GraphQL-server
-npm start acl
+npm start # acl

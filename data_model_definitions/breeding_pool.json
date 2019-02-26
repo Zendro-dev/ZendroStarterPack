@@ -1,5 +1,5 @@
 {
-	"model" : "BeedingPool",
+	"model" : "BreedingPool",
 	"storageType" : "Sql",
 	"attributes" : {
 		"name" : "String",

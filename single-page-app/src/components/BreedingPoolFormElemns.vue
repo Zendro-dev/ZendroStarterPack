@@ -1,28 +1,28 @@
 <template>
-  <div id="beedingpool-form-elemns-div">
+  <div id="breedingpool-form-elemns-div">
 
-  <input type="hidden" v-model="beedingpool.id"/>
+  <input type="hidden" v-model="breedingpool.id"/>
 
   
-    <div id="beedingpool-name-div" class="form-group">
+    <div id="breedingpool-name-div" class="form-group">
             <label>name</label>
       
-  <input type="text" v-model="beedingpool.name" class="form-control"/>
+  <input type="text" v-model="breedingpool.name" class="form-control"/>
 
 
-      <div id="beedingpool-name-err" v-if="validationError('name')" class="alert alert-danger">
+      <div id="breedingpool-name-err" v-if="validationError('name')" class="alert alert-danger">
         {{validationError('name').message}}
       </div>
     </div>
 
   
-    <div id="beedingpool-description-div" class="form-group">
+    <div id="breedingpool-description-div" class="form-group">
             <label>description</label>
       
-  <input type="text" v-model="beedingpool.description" class="form-control"/>
+  <input type="text" v-model="breedingpool.description" class="form-control"/>
 
 
-      <div id="beedingpool-description-err" v-if="validationError('description')" class="alert alert-danger">
+      <div id="breedingpool-description-err" v-if="validationError('description')" class="alert alert-danger">
         {{validationError('description').message}}
       </div>
     </div>
@@ -31,22 +31,22 @@
   
 
       
-    <div id="beedingpool-genotypes-div" class="form-group">
+    <div id="breedingpool-genotypes-div" class="form-group">
       <label>genotypes</label>
       <has-many-form-element
         :searchUrl="this.$baseUrl()"
-        :idSelected="beedingpool.id"
-        :countQuery="beedingpool.countFilteredGenotypes"
+        :idSelected="breedingpool.id"
+        :countQuery="breedingpool.countFilteredGenotypes"
         :mode="mode"
-        :addItems.sync="beedingpool.addGenotypes"
+        :addItems.sync="breedingpool.addGenotypes"
         label="name"
                     subLabel ="id"
                 valueKey="id"
-        model="Beedingpool"
+        model="Breedingpool"
         targetModel = "Genotype"
         removeName="removeGenotypes"
         addName="addGenotypes"
-        query="readOneBeedingpool"
+        query="readOneBreedingpool"
         subQuery="genotypesFilter"
         >
       </has-many-form-element>
@@ -68,7 +68,7 @@ import inflection from 'inflection'
 import axios from 'axios'
 
 export default {
-  props: [ 'beedingpool', 'errors', 'mode' ],
+  props: [ 'breedingpool', 'errors', 'mode' ],
   data(){
     return{
       target_models: [
@@ -77,7 +77,7 @@ export default {
             label: 'name',
             sublabel: 'id'
         }              ],
-      model: 'beedingpool'
+      model: 'breedingpool'
     }
   },
   computed: {

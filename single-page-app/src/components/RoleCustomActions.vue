@@ -1,14 +1,14 @@
 <template>
   <div class="custom-actions">
     <button v-on:click="detailsToggle()" class="ui basic button"><i class="zoom icon"></i></button>
-    <router-link v-bind:to="'beedingpool/' + rowData.id"><button class="ui basic button"><i class="edit icon"></i></button></router-link>
+    <router-link v-bind:to="'role/' + rowData.id"><button class="ui basic button"><i class="edit icon"></i></button></router-link>
     <button v-on:click="confirmDelete()" class="ui basic button"><i class="delete icon"></i></button>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-import queries from '../requests/beedingpool'
+import queries from '../requests/role'
 
 export default {
   props: {
@@ -25,16 +25,16 @@ export default {
       this.$parent.toggleDetailRow(this.rowData.id)
     },
     confirmDelete () {
-      if (window.confirm("Do you really want to delete BeedingPool of id '" + this.rowData
+      if (window.confirm("Do you really want to delete Role of id '" + this.rowData
           .id + "'?")) {
         this.deleteInstance()
       }
     },
     deleteInstance () {
       var t = this;
-      queries.deleteBeedingpool({url:this.$baseUrl(), variables: {id:this.rowData.id}})
+      queries.deleteRole({url:this.$baseUrl(), variables: {id:this.rowData.id}})
       .then(function (response) {
-        window.alert(response.data.data.deleteBeedingpool)
+        window.alert(response.data.data.deleteRole)
         t.$parent.reload()
       }).catch(function (error) {
         t.error = error

@@ -1,16 +1,18 @@
 <template>
   <div class="sidenav">
     <a href="/home"> HOME </a>
-        <a href='/beedingpools'> BeedingPools   </a>
+        <a href='/breedingpools'> BreedingPools   </a>
         <a href='/fieldplots'> FieldPlots   </a>
         <a href='/genotypes'> Genotypes   </a>
         <a href='/individuals'> Individuals   </a>
         <a href='/markerdata'> MarkerData   </a>
         <a href='/measurements'> Measurements   </a>
         <a href='/nucacidlibraryresults'> NucAcidLibraryResults   </a>
+        <a href='/roles'> Roles   </a>
         <a href='/samples'> Samples   </a>
         <a href='/sequencingexperiments'> SequencingExperiments   </a>
         <a href='/transcriptcounts'> TranscriptCounts   </a>
+        <a href='/users'> Users   </a>
       </div>
 </template>
 

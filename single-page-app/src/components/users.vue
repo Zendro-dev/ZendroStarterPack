@@ -2,9 +2,9 @@
   <div class="ui container">
     <filter-bar></filter-bar>
     <div class="inline field pull-left">
-      <router-link v-bind:to="'beedingpool'"><button class="ui primary button">Add beedingpool</button></router-link>
+      <router-link v-bind:to="'user'"><button class="ui primary button">Add user</button></router-link>
       <button class="ui primary button" @click="downloadExampleCsv">CSV Example Table</button>
-      <router-link v-bind:to="'/beedingpools/upload_csv'"><button class="ui primary button">CSV Upload</button></router-link>
+      <router-link v-bind:to="'/users/upload_csv'"><button class="ui primary button">CSV Upload</button></router-link>
     </div>
     <vuetable ref="vuetable"
       :api-url="this.$baseUrl()"
@@ -12,9 +12,9 @@
       :per-page="20"
       :appendParams="moreParams"
       :http-options="{ headers: {Authorization: `Bearer ${this.$store.getters.authToken}`} }"
-      pagination-path="data.vueTableBeedingpool"
-      detail-row-component="beedingpool-detail-row"
-      data-path="data.vueTableBeedingpool.data"
+      pagination-path="data.vueTableUser"
+      detail-row-component="user-detail-row"
+      data-path="data.vueTableUser.data"
       @vuetable:pagination-data="onPaginationData"
       @vuetable:cell-clicked="onCellClicked"
       @vuetable:load-error="onError"
@@ -33,8 +33,8 @@
 import Vuetable from 'vuetable-2/src/components/Vuetable.vue'
 import VuetablePagination from 'vuetable-2/src/components/VuetablePagination.vue'
 import VuetablePaginationInfo from 'vuetable-2/src/components/VuetablePaginationInfo.vue'
-import BeedingPoolCustomActions from './BeedingPoolCustomActions.vue'
-import BeedingPoolDetailRow from './BeedingPoolDetailRow.vue'
+import UserCustomActions from './UserCustomActions.vue'
+import UserDetailRow from './UserDetailRow.vue'
 import FilterBar from './FilterBar.vue'
 
 import axios from 'axios'
@@ -43,8 +43,8 @@ import Vue from 'vue'
 import VueEvents from 'vue-events'
 Vue.use(VueEvents)
 
-Vue.component('beedingpool-custom-actions', BeedingPoolCustomActions)
-Vue.component('beedingpool-detail-row', BeedingPoolDetailRow)
+Vue.component('user-custom-actions', UserCustomActions)
+Vue.component('user-detail-row', UserDetailRow)
 Vue.component('filter-bar', FilterBar)
 
 export default {
@@ -52,7 +52,7 @@ export default {
     Vuetable,
     VuetablePagination,
     VuetablePaginationInfo,
-    BeedingPoolDetailRow
+    UserDetailRow
   },
   data() {
     return {
@@ -70,22 +70,22 @@ export default {
         //  dataClass: 'center aligned'
         //},
                   {
-            name: 'name',
-            sortField: 'name'
+            name: 'email',
+            sortField: 'email'
           },
                   {
-            name: 'description',
-            sortField: 'description'
+            name: 'password',
+            sortField: 'password'
           },
                 {
-          name: '__component:beedingpool-custom-actions',
+          name: '__component:user-custom-actions',
           title: 'Actions',
           titleClass: 'center aligned',
           dataClass: 'center aligned'
         }
       ],
       moreParams: {
-        query: `{vueTableBeedingpool{data {id  name description countFilteredGenotypes} total per_page current_page last_page prev_page_url next_page_url from to}}`
+        query: `{vueTableUser{data {id  email password countFilteredRoles} total per_page current_page last_page prev_page_url next_page_url from to}}`
       }
     }
   },
@@ -108,13 +108,13 @@ export default {
     },
     onFilterReset() {
       this.moreParams = {
-        query: `{vueTableBeedingpool{data {id  name description countFilteredGenotypes} total per_page current_page last_page prev_page_url next_page_url from to}}`
+        query: `{vueTableUser{data {id  email password countFilteredRoles} total per_page current_page last_page prev_page_url next_page_url from to}}`
       }
       Vue.nextTick(() => this.$refs.vuetable.refresh())
     },
     onCsvExport () {
       var t = this;
-      var url = this.$baseUrl()() + '/beedingpools/example_csv' + '?array=[' + this.$refs.vuetable.selectedTo.join(",") + ']'
+      var url = this.$baseUrl()() + '/users/example_csv' + '?array=[' + this.$refs.vuetable.selectedTo.join(",") + ']'
 
       axios.get(url).then(function (response) {
 
@@ -124,7 +124,7 @@ export default {
         var blob = new Blob([response.data], {type: "octet/stream"});
         var url = window.URL.createObjectURL(blob);
         a.href = url;
-        a.download = 'beedingpool' + '.csv';
+        a.download = 'user' + '.csv';
         a.click();
         window.URL.revokeObjectURL(url);
       }).catch(function (error) {
@@ -133,13 +133,13 @@ export default {
     },
     downloadExampleCsv: function() {
       var t = this
-      axios.get(t.$baseUrl() + '/beedingpools/example_csv', {
+      axios.get(t.$baseUrl() + '/users/example_csv', {
         responseType: 'blob'
       }).then((response) => {
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement('a');
         link.href = url;
-        link.setAttribute('download', 'beedingpools.csv');
+        link.setAttribute('download', 'users.csv');
         document.body.appendChild(link);
         link.click();
       }).catch(res => {

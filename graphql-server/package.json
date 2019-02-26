@@ -35,9 +35,13 @@
     "supertest": "^3.1.0",
     "uuidv4": "^2.0.0",
     "xlsx": "^0.12.11",
-    "sync-request": "^6.0.0"
+    "sync-request": "^6.0.0",
+    "nodemailer" : "^5.1.1",
+    "nodemailer-smtp-transport": "^2.7.4"
   },
   "devDependencies": {
-    "mocha": "^5.2.0"
+    "mocha": "^5.2.0",
+    "axios": "^0.18.0",
+    "form-data": "^2.3.2-rc1"
   }
 }

@@ -1,0 +1,18 @@
+{
+  "model" : "Role",
+  "storageType" : "SQL",
+  "attributes" : {
+    "name" : "String",
+    "description" : "String"
+  },
+  "associations" : {
+    "users" : {
+      "type" : "sql_belongsToMany",
+      "target" : "User",
+      "targetKey" : "userId",
+      "sourceKey" : "roleId",
+      "keysIn" : "role_to_user",
+      "targetStorageType" : "sql"
+    }
+  }
+}

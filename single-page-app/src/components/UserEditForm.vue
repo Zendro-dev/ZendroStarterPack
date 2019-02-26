@@ -1,11 +1,11 @@
 <template>
   <div class="col-xs-5">
-    <h4>Edit beedingpool</h4>
-    <div id="beedingpool-div">
-      <div v-if="beedingpool" class="content">
-        <form id="beedingpool-form" v-on:submit.prevent="onSubmit">
+    <h4>Edit user</h4>
+    <div id="user-div">
+      <div v-if="user" class="content">
+        <form id="user-form" v-on:submit.prevent="onSubmit">
 
-          <beedingpool-form-elemns mode="edit" v-bind:errors="errors" v-bind:beedingpool="beedingpool"></beedingpool-form-elemns>
+          <user-form-elemns mode="edit" v-bind:errors="errors" v-bind:user="user"></user-form-elemns>
 
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>
@@ -17,17 +17,17 @@
 <script>
 import Vue from 'vue'
 import axios from 'axios'
-import BeedingPoolFormElemns from './BeedingPoolFormElemns.vue'
-import queries from '../requests/beedingpool'
+import UserFormElemns from './UserFormElemns.vue'
+import queries from '../requests/user'
 import Queries from '../requests/index'
 
-Vue.component('beedingpool-form-elemns', BeedingPoolFormElemns)
+Vue.component('user-form-elemns', UserFormElemns)
 
 export default {
   data() {
     return {
       loading: false,
-      beedingpool: null,
+      user: null,
       error: null,
       errors: null,
     }
@@ -43,9 +43,9 @@ export default {
       var t = this
       t.error = null
       if(this.$route.params.id){
-        queries.readOneBeedingpool({ url:this.$baseUrl(), variables: {id:this.$route.params.id}})
+        queries.readOneUser({ url:this.$baseUrl(), variables: {id:this.$route.params.id}})
         .then(function (response) {
-            t.beedingpool = response.data.data.readOneBeedingpool          }, function (err) {
+            t.user = response.data.data.readOneUser          }, function (err) {
             t.parent.error = err
           })
       }
@@ -54,9 +54,9 @@ export default {
       var t = this;
       var url = this.$baseUrl()
       this.getAssociationsIds();
-      Queries.Beedingpool.update({url:url, variables:t.beedingpool})
+      Queries.User.update({url:url, variables:t.user})
       .then(function (response) {
-        t.$router.push('/beedingpools')
+        t.$router.push('/users')
       }).catch( function (res) {
         if(res.response && res.response.data && res.response.data.errors && (res.response.data.errors[0].message === "Validation error")){
           t.errors = res.response.data.errors[0];

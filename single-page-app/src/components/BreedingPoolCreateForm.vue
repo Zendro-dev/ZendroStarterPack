@@ -1,11 +1,11 @@
 <template>
   <div class="col-xs-5">
-    <h4>New beedingpool</h4>
-    <div id="beedingpool-div">
-      <div v-if="beedingpool" class="content">
-        <form id="beedingpool-form" v-on:submit.prevent="onSubmit">
+    <h4>New breedingpool</h4>
+    <div id="breedingpool-div">
+      <div v-if="breedingpool" class="content">
+        <form id="breedingpool-form" v-on:submit.prevent="onSubmit">
 
-          <beedingpool-form-elemns mode="create" v-bind:errors="errors" v-bind:beedingpool="beedingpool"></beedingpool-form-elemns>
+          <breedingpool-form-elemns mode="create" v-bind:errors="errors" v-bind:breedingpool="breedingpool"></breedingpool-form-elemns>
 
           <button type="submit" class="btn btn-primary">Create</button>
         </form>
@@ -17,16 +17,16 @@
 <script>
 import Vue from 'vue'
 import axios from 'axios'
-import BeedingPoolFormElemns from './BeedingPoolFormElemns.vue'
+import BreedingPoolFormElemns from './BreedingPoolFormElemns.vue'
 import Queries from '../requests/index'
 
-Vue.component('beedingpool-form-elemns', BeedingPoolFormElemns)
+Vue.component('breedingpool-form-elemns', BreedingPoolFormElemns)
 
 export default {
   data() {
     return {
       loading: false,
-      beedingpool: {},
+      breedingpool: {},
       error: null,
       errors: null,
     }
@@ -36,9 +36,9 @@ export default {
       var t = this;
       var url = this.$baseUrl()
       this.getAssociationsIds()
-      Queries.Beedingpool.create({url:url, variables: t.beedingpool})
+      Queries.Breedingpool.create({url:url, variables: t.breedingpool})
       .then(function(response) {
-          t.$router.push('/beedingpools')
+          t.$router.push('/breedingpools')
       }).catch(function(res) {
         if(res.response && res.response.data && res.response.data.errors && (res.response.data.errors[0].message === "Validation error")){
           t.errors = res.response.data.errors[0];
@@ -58,7 +58,7 @@ export default {
     },
 
     getAssociationsIds(){
-              this.beedingpool.addGenotypes = this.getOnlyIds(this.beedingpool.addGenotypes);
+              this.breedingpool.addGenotypes = this.getOnlyIds(this.breedingpool.addGenotypes);
           }
   }
 }

@@ -15,17 +15,17 @@
     
   
       
-    <div id="beedingpool-genotypes-div" class="row w-100">
+    <div id="role-users-div" class="row w-100">
       <div class="col">
-        <label>genotypes:</label>
+        <label>users:</label>
         <scroll-list class="list-group"
           :url="this.$baseUrl()"
           :idSelected="rowData.id"
-          :countQuery="rowData.countFilteredGenotypes"
-          query="readOneBeedingpool"
-          subQuery="genotypesFilter"
-          label="name"
-          subLabel="id"
+          :countQuery="rowData.countFilteredUsers"
+          query="readOneRole"
+          subQuery="usersFilter"
+          label=""
+          subLabel=""
         > </scroll-list>
       </div>
     </div>

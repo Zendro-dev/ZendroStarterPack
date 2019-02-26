@@ -3,15 +3,15 @@
     <ul v-for="record in errors" v-if="errors" class="list-group">
       <li class="list-group-item">
         <div class="alert alert-danger">
-          <h4>Errors for beedingpool {{record.record}}</h4>
+          <h4>Errors for role {{record.record}}</h4>
           <ul>
             <li>{{record.errors.message}}</li>
           </ul>
         </div>
       </li>
     </ul>
-    <h4>Upload beedingpools</h4>
-      <form id="beedingpool-form" enctype="multipart/form-data" novalidate v-on:submit.prevent="onSubmit">
+    <h4>Upload roles</h4>
+      <form id="role-form" enctype="multipart/form-data" novalidate v-on:submit.prevent="onSubmit">
 
         <div class="form-group">
           <input type="file" id="uploadTableFile" ref="uploadTable" class="form-control">
@@ -41,10 +41,10 @@ export default {
 
       if (t.$refs.uploadTable.value.indexOf('.xlsx') > 0) {
         var formElm = "xlsx_file"
-        query = `mutation {bulkAddBeedingpoolXlsx{ id }}`
+        query = `mutation {bulkAddRoleXlsx{ id }}`
       } else {
         var formElm = "csv_file"
-        query = `mutation {bulkAddBeedingpoolCsv{ id}}`
+        query = `mutation {bulkAddRoleCsv{ id}}`
       }
 
       try{
@@ -61,7 +61,7 @@ export default {
             'Accept': 'application/graphql'
           }
         }).then(function(response) {
-          t.$router.push('/beedingpools')
+          t.$router.push('/roles')
         }).catch(function(res) {
             if (res.response && res.response.data && res.response.data && Array
               .isArray(res.response.data)) {

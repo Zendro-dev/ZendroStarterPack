@@ -1,0 +1,19 @@
+{
+  "model" : "User",
+  "storageType" : "SQL",
+  "attributes" : {
+    "email" : "String",
+    "password" : "String"
+  },
+  "associations" :{
+    "roles" : {
+      "type" : "sql_belongsToMany",
+      "target" : "Role",
+      "targetKey" : "roleId",
+      "sourceKey" : "userId",
+      "keysIn" : "role_to_user",
+      "targetStorageType" : "sql"
+    }
+  }
+
+}

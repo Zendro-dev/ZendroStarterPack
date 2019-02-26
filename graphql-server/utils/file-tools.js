@@ -71,11 +71,11 @@ exports.parseXlsx = function(bstr) {
 * @param {array|boolean|function} cols - Columns as in csv-parser options.(true if auto-discovered in the first CSV line).
 */
 exports.parseCsvStream = async function(csvFilePath, model, delim, cols) {
-  if (!delim) delim = ","
-  if (typeof cols === 'undefined') cols = true
-  console.log("TYPEOF", typeof model)
+  if (!delim) delim = ",";
+  if (typeof cols === 'undefined') cols = true;
+  console.log("TYPEOF", typeof model);
   // Wrap all database actions within a transaction:
-  let transaction = await model.sequelize.transaction()
+  let transaction = await model.sequelize.transaction();
   try {
     // Pipe a file read-stream through a CSV-Reader and make the records
     // handleable asynchronously:
@@ -88,22 +88,39 @@ exports.parseCsvStream = async function(csvFilePath, model, delim, cols) {
       )
     )
 
-    let record
+    let record;
+    let errors = [];
+
     while (null !== (record = await csvStream.readAsync())) {
-      console.log(`Read record: ${JSON.stringify(record)}`)
+
+      console.log(`Read record: ${JSON.stringify(record)}`);
       await model.create(record, {
         transaction: transaction
+
       }).catch(error => {
+
         console.log(`Caught error in while-loop: ${JSON.stringify(error)}`)
-        // Enable identification of those rows / records that caused validation
-        // errors:
-        error.record = record
-        throw error
+        error.record = record;
+        errors.push(error);
+
       })
     }
-    await transaction.commit()
+
+    if(errors.length > 0) {
+      let message = "Some records could not be submitted. No database changes has been applied.\n";
+      message += "Please see the next list for details:\n";
+
+      errors.forEach(function(error) {
+        message += `record ${JSON.stringify(error.record)} ${error.message}; \n`;
+      });
+
+      throw new Error(message.slice(0, message.length-1));
+    }
+
+    await transaction.commit();
+
   } catch (error) {
-    await transaction.rollback()
-    throw error
+    await transaction.rollback();
+    throw error;
   }
-}
+};

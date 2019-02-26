@@ -1,34 +1,34 @@
 {
-  "model" : "Genotype",
-  "storageType" : "Sql",
-  "attributes" : {
-    "name" : "String",
-    "description" : "String",
+  "model": "Genotype",
+  "storageType": "Sql",
+  "attributes": {
+    "name": "String",
+    "description": "String",
     "pedigree_type": "String"
   },
 
-  "associations" : {
-    "mother" : {
-      "type" : "sql_belongsTo",
-      "target" : "Individual",
-      "targetKey" : "mother_id",
-      "targetStorageType" : "sql",
+  "associations": {
+    "mother": {
+      "type": "sql_belongsTo",
+      "target": "Individual",
+      "targetKey": "mother_id",
+      "targetStorageType": "sql",
       "label": "name",
       "sublabel": "id"
     },
-    "father" : {
-      "type" : "sql_belongsTo",
-      "target" : "Individual",
-      "targetKey" : "father_id",
-      "targetStorageType" : "sql",
+    "father": {
+      "type": "sql_belongsTo",
+      "target": "Individual",
+      "targetKey": "father_id",
+      "targetStorageType": "sql",
       "label": "name",
       "sublabel": "id"
     },
-    "breeding_pool" : {
-      "type" : "sql_belongsTo",
-      "target" : "BreedingPool",
-      "targetKey" : "breeding_pool_id",
-      "targetStorageType" : "sql",
+    "breeding_pool": {
+      "type": "sql_belongsTo",
+      "target": "BreedingPool",
+      "targetKey": "breeding_pool_id",
+      "targetStorageType": "sql",
       "label": "name",
       "sublabel": "id"
     }

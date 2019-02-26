@@ -3,9 +3,9 @@ import requestGraphql from './request'
 export default {
 
   create : function({url, variables, token}){
-  let query = ` mutation addBeedingpool(
+  let query = ` mutation addBreedingpool(
    $name:String  $description:String      $addGenotypes:[ID]  ){
-    addBeedingpool(
+    addBreedingpool(
      name:$name   description:$description           addGenotypes:$addGenotypes     ){id  name   description   }
   }
   `
@@ -13,27 +13,27 @@ export default {
 },
 
 
-  readOneBeedingpool : function({url, variables, token}){
-    let query = `query readOneBeedingpool($id:ID!){
-      readOneBeedingpool(id:$id){id  name   description               countFilteredGenotypes   
+  readOneBreedingpool : function({url, variables, token}){
+    let query = `query readOneBreedingpool($id:ID!){
+      readOneBreedingpool(id:$id){id  name   description               countFilteredGenotypes   
     }
     }`
     return requestGraphql({url, query, variables, token});
   },
 
   update : function({url, variables, token}){
-    let query = `mutation updateBeedingpool($id:ID!
+    let query = `mutation updateBreedingpool($id:ID!
      $name:String  $description:String          $addGenotypes:[ID] $removeGenotypes:[ID]     ){
-      updateBeedingpool(id:$id
+      updateBreedingpool(id:$id
        name:$name   description:$description               addGenotypes:$addGenotypes removeGenotypes:$removeGenotypes       ){id  name   description  }
     }`
 
     return requestGraphql({url, query, variables, token});
   },
 
-  deleteBeedingpool : function({url, variables, token}){
-    let query = `mutation deleteBeedingpool($id:ID!){
-      deleteBeedingpool(id:$id)
+  deleteBreedingpool : function({url, variables, token}){
+    let query = `mutation deleteBreedingpool($id:ID!){
+      deleteBreedingpool(id:$id)
     }`
     return requestGraphql({url, query, variables, token});
   }

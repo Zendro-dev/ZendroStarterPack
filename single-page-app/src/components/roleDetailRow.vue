@@ -24,8 +24,8 @@
           :countQuery="rowData.countFilteredUsers"
           query="readOneRole"
           subQuery="usersFilter"
-          label=""
-          subLabel=""
+          label="email"
+          subLabel="id"
         > </scroll-list>
       </div>
     </div>

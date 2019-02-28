@@ -39,8 +39,9 @@
         :countQuery="user.countFilteredRoles"
         :mode="mode"
         :addItems.sync="user.addRoles"
-        label=""
-                        valueKey="id"
+        label="name"
+                    subLabel ="id"
+                valueKey="id"
         model="User"
         targetModel = "Role"
         removeName="removeRoles"
@@ -73,8 +74,8 @@ export default {
       target_models: [
                      {
             model:'Role',
-            label: '',
-            sublabel: ''
+            label: 'name',
+            sublabel: 'id'
         }              ],
       model: 'user'
     }

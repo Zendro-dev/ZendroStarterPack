@@ -5,11 +5,3 @@
 node_modules
 npm-debug.log
 package-lock.json
-
-# ModelGen output folders
-migrations
-models
-models-webservice
-resolvers
-schemas
-test

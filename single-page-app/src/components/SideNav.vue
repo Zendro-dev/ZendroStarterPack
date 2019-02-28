@@ -1,18 +1,18 @@
 <template>
   <div class="sidenav">
     <a href="/home"> HOME </a>
-        <a href='/breedingpools'> BreedingPools   </a>
-        <a href='/fieldplots'> FieldPlots   </a>
-        <a href='/genotypes'> Genotypes   </a>
-        <a href='/individuals'> Individuals   </a>
-        <a href='/markerdata'> MarkerData   </a>
-        <a href='/measurements'> Measurements   </a>
-        <a href='/nucacidlibraryresults'> NucAcidLibraryResults   </a>
-        <a href='/roles'> Roles   </a>
-        <a href='/samples'> Samples   </a>
-        <a href='/sequencingexperiments'> SequencingExperiments   </a>
-        <a href='/transcriptcounts'> TranscriptCounts   </a>
-        <a href='/users'> Users   </a>
+        <a href='/breeding_pools'> breeding_pools   </a>
+        <a href='/field_plots'> field_plots   </a>
+        <a href='/genotypes'> genotypes   </a>
+        <a href='/individuals'> individuals   </a>
+        <a href='/marker_data'> marker_data   </a>
+        <a href='/measurements'> measurements   </a>
+        <a href='/nuc_acid_library_results'> nuc_acid_library_results   </a>
+        <a href='/roles'> roles   </a>
+        <a href='/samples'> samples   </a>
+        <a href='/sequencing_experiments'> sequencing_experiments   </a>
+        <a href='/transcript_counts'> transcript_counts   </a>
+        <a href='/users'> users   </a>
       </div>
 </template>
 

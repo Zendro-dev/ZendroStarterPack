@@ -33,8 +33,8 @@
 import Vuetable from 'vuetable-2/src/components/Vuetable.vue'
 import VuetablePagination from 'vuetable-2/src/components/VuetablePagination.vue'
 import VuetablePaginationInfo from 'vuetable-2/src/components/VuetablePaginationInfo.vue'
-import UserCustomActions from './UserCustomActions.vue'
-import UserDetailRow from './UserDetailRow.vue'
+import userCustomActions from './userCustomActions.vue'
+import userDetailRow from './userDetailRow.vue'
 import FilterBar from './FilterBar.vue'
 
 import axios from 'axios'
@@ -43,8 +43,8 @@ import Vue from 'vue'
 import VueEvents from 'vue-events'
 Vue.use(VueEvents)
 
-Vue.component('user-custom-actions', UserCustomActions)
-Vue.component('user-detail-row', UserDetailRow)
+Vue.component('user-custom-actions', userCustomActions)
+Vue.component('user-detail-row', userDetailRow)
 Vue.component('filter-bar', FilterBar)
 
 export default {
@@ -52,7 +52,7 @@ export default {
     Vuetable,
     VuetablePagination,
     VuetablePaginationInfo,
-    UserDetailRow
+    userDetailRow
   },
   data() {
     return {

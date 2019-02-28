@@ -33,8 +33,8 @@
 import Vuetable from 'vuetable-2/src/components/Vuetable.vue'
 import VuetablePagination from 'vuetable-2/src/components/VuetablePagination.vue'
 import VuetablePaginationInfo from 'vuetable-2/src/components/VuetablePaginationInfo.vue'
-import SampleCustomActions from './SampleCustomActions.vue'
-import SampleDetailRow from './SampleDetailRow.vue'
+import sampleCustomActions from './sampleCustomActions.vue'
+import sampleDetailRow from './sampleDetailRow.vue'
 import FilterBar from './FilterBar.vue'
 
 import axios from 'axios'
@@ -43,8 +43,8 @@ import Vue from 'vue'
 import VueEvents from 'vue-events'
 Vue.use(VueEvents)
 
-Vue.component('sample-custom-actions', SampleCustomActions)
-Vue.component('sample-detail-row', SampleDetailRow)
+Vue.component('sample-custom-actions', sampleCustomActions)
+Vue.component('sample-detail-row', sampleDetailRow)
 Vue.component('filter-bar', FilterBar)
 
 export default {
@@ -52,7 +52,7 @@ export default {
     Vuetable,
     VuetablePagination,
     VuetablePaginationInfo,
-    SampleDetailRow
+    sampleDetailRow
   },
   data() {
     return {
@@ -105,7 +105,7 @@ export default {
         }
       ],
       moreParams: {
-        query: `{vueTableSample{data {id  name sampling_date type biological_replicate_no lab_code treatment tissue individual{name  id } sequencing_experiment{name  platform } countFilteredNucacidlibraryresults} total per_page current_page last_page prev_page_url next_page_url from to}}`
+        query: `{vueTableSample{data {id  name sampling_date type biological_replicate_no lab_code treatment tissue individual{name  id } sequencing_experiment{name  platform } countFilteredNuc_acid_library_results} total per_page current_page last_page prev_page_url next_page_url from to}}`
       }
     }
   },
@@ -128,7 +128,7 @@ export default {
     },
     onFilterReset() {
       this.moreParams = {
-        query: `{vueTableSample{data {id  name sampling_date type biological_replicate_no lab_code treatment tissue individual{name  id } sequencing_experiment{name  platform } countFilteredNucacidlibraryresults} total per_page current_page last_page prev_page_url next_page_url from to}}`
+        query: `{vueTableSample{data {id  name sampling_date type biological_replicate_no lab_code treatment tissue individual{name  id } sequencing_experiment{name  platform } countFilteredNuc_acid_library_results} total per_page current_page last_page prev_page_url next_page_url from to}}`
       }
       Vue.nextTick(() => this.$refs.vuetable.refresh())
     },

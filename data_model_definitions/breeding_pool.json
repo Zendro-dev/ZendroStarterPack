@@ -1,5 +1,5 @@
 {
-	"model" : "BreedingPool",
+	"model" : "breeding_pool",
 	"storageType" : "Sql",
 	"attributes" : {
 		"name" : "String",
@@ -8,7 +8,7 @@
 	"associations" : {
 		"genotypes" : {
 			"type" : "sql_hasMany",
-			"target" : "Genotype",
+			"target" : "genotype",
 			"targetKey" : "breeding_pool_id",
 			"targetStorageType" : "sql",
 			"label": "name",

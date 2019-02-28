@@ -1,29 +1,29 @@
-import breedingpoolQueries from './breedingpool'
-import fieldplotQueries from './fieldplot'
+import breeding_poolQueries from './breeding_pool'
+import field_plotQueries from './field_plot'
 import genotypeQueries from './genotype'
 import individualQueries from './individual'
-import markerdataQueries from './markerdata'
+import marker_dataQueries from './marker_data'
 import measurementQueries from './measurement'
-import nucacidlibraryresultQueries from './nucacidlibraryresult'
+import nuc_acid_library_resultQueries from './nuc_acid_library_result'
 import roleQueries from './role'
 import sampleQueries from './sample'
-import sequencingexperimentQueries from './sequencingexperiment'
-import transcriptcountQueries from './transcriptcount'
+import sequencing_experimentQueries from './sequencing_experiment'
+import transcript_countQueries from './transcript_count'
 import userQueries from './user'
 
 export default {
 
-    Breedingpool : breedingpoolQueries,
-    Fieldplot : fieldplotQueries,
+    Breeding_pool : breeding_poolQueries,
+    Field_plot : field_plotQueries,
     Genotype : genotypeQueries,
     Individual : individualQueries,
-    Markerdata : markerdataQueries,
+    Marker_data : marker_dataQueries,
     Measurement : measurementQueries,
-    Nucacidlibraryresult : nucacidlibraryresultQueries,
+    Nuc_acid_library_result : nuc_acid_library_resultQueries,
     Role : roleQueries,
     Sample : sampleQueries,
-    Sequencingexperiment : sequencingexperimentQueries,
-    Transcriptcount : transcriptcountQueries,
+    Sequencing_experiment : sequencing_experimentQueries,
+    Transcript_count : transcript_countQueries,
     User : userQueries,
   
 }

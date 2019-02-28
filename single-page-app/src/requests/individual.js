@@ -4,9 +4,9 @@ export default {
 
   create : function({url, variables, token}){
   let query = ` mutation addIndividual(
-   $name:String  $description:String    $genotype_id:Int    $addMarkerdata:[ID]  ){
+   $name:String  $description:String    $genotype_id:Int    $addMarker_data:[ID]  ){
     addIndividual(
-     name:$name   description:$description       genotype_id:$genotype_id      addMarkerdata:$addMarkerdata     ){id  name   description   }
+     name:$name   description:$description       genotype_id:$genotype_id      addMarker_data:$addMarker_data     ){id  name   description   }
   }
   `
   return requestGraphql({url, query, variables, token});
@@ -16,7 +16,7 @@ export default {
   readOneIndividual : function({url, variables, token}){
     let query = `query readOneIndividual($id:ID!){
       readOneIndividual(id:$id){id  name   description         genotype{ name
-         id  }        countFilteredMarkerdata   
+         id  }        countFilteredMarker_data   
     }
     }`
     return requestGraphql({url, query, variables, token});
@@ -24,9 +24,9 @@ export default {
 
   update : function({url, variables, token}){
     let query = `mutation updateIndividual($id:ID!
-     $name:String  $description:String      $genotype_id:Int      $addMarkerdata:[ID] $removeMarkerdata:[ID]     ){
+     $name:String  $description:String      $genotype_id:Int      $addMarker_data:[ID] $removeMarker_data:[ID]     ){
       updateIndividual(id:$id
-       name:$name   description:$description         genotype_id:$genotype_id        addMarkerdata:$addMarkerdata removeMarkerdata:$removeMarkerdata       ){id  name   description  }
+       name:$name   description:$description         genotype_id:$genotype_id        addMarker_data:$addMarker_data removeMarker_data:$removeMarker_data       ){id  name   description  }
     }`
 
     return requestGraphql({url, query, variables, token});

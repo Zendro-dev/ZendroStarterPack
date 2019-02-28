@@ -33,8 +33,8 @@
 import Vuetable from 'vuetable-2/src/components/Vuetable.vue'
 import VuetablePagination from 'vuetable-2/src/components/VuetablePagination.vue'
 import VuetablePaginationInfo from 'vuetable-2/src/components/VuetablePaginationInfo.vue'
-import RoleCustomActions from './RoleCustomActions.vue'
-import RoleDetailRow from './RoleDetailRow.vue'
+import roleCustomActions from './roleCustomActions.vue'
+import roleDetailRow from './roleDetailRow.vue'
 import FilterBar from './FilterBar.vue'
 
 import axios from 'axios'
@@ -43,8 +43,8 @@ import Vue from 'vue'
 import VueEvents from 'vue-events'
 Vue.use(VueEvents)
 
-Vue.component('role-custom-actions', RoleCustomActions)
-Vue.component('role-detail-row', RoleDetailRow)
+Vue.component('role-custom-actions', roleCustomActions)
+Vue.component('role-detail-row', roleDetailRow)
 Vue.component('filter-bar', FilterBar)
 
 export default {
@@ -52,7 +52,7 @@ export default {
     Vuetable,
     VuetablePagination,
     VuetablePaginationInfo,
-    RoleDetailRow
+    roleDetailRow
   },
   data() {
     return {

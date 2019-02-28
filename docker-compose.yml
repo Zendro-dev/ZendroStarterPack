@@ -49,6 +49,31 @@ services:
       MINIO_SECRET_KEY: minio123
     command: server /data
 
+  bp_science_db_shiny:
+    build:
+      context: .
+      dockerfile: Dockerfile.shiny
+    environment:
+      PORT: 3838
+    ports:
+      - "3838:3838"
+    volumes:
+      - bp_shiny_data:/srv/shiny-server
+    command:
+      - /bin/sh
+      - -c
+      - |
+        cp /opt/helloWorld.Rmd /srv/shiny-server 
+        /usr/bin/shiny-server.sh
+    #labels:
+    #  traefik.enable: "true"
+    #  traefik.backend: "science_db_shiny"
+    #  traefik.frontend.rule: "Host:shiny.reconstructdb.org"
+    #  #traefik.frontend.auth.basic: 'testuser:$$apr1$$QBCuO60R$$pJIFSe2x8L/cTbOBOvoOt1'
+    #  traefik.docker.network: "reverseproxy"
+    #  traefik.port: "3838"
+
 volumes:
   bp_db_data:
   bp_minio_data:
+  bp_shiny_data:

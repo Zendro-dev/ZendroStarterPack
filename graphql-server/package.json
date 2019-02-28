@@ -36,7 +36,7 @@
     "uuidv4": "^2.0.0",
     "xlsx": "^0.12.11",
     "sync-request": "^6.0.0",
-    "nodemailer" : "^5.1.1",
+    "nodemailer": "^5.1.1",
     "nodemailer-smtp-transport": "^2.7.4"
   },
   "devDependencies": {

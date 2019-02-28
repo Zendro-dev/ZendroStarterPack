@@ -1,5 +1,5 @@
 {
-  "model" : "Role",
+  "model" : "role",
   "storageType" : "SQL",
   "attributes" : {
     "name" : "String",
@@ -8,7 +8,7 @@
   "associations" : {
     "users" : {
       "type" : "sql_belongsToMany",
-      "target" : "User",
+      "target" : "user",
       "targetKey" : "userId",
       "sourceKey" : "roleId",
       "keysIn" : "role_to_user",

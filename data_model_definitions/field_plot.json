@@ -1,5 +1,5 @@
 {
-	"model" : "FieldPlot",
+	"model" : "field_plot",
 	"storageType" : "Sql",
 	"attributes" : {
 		"field_name" : "String",
@@ -11,7 +11,7 @@
 	"associations" : {
 		"genotype" : {
 			"type" : "sql_belongsTo",
-			"target" : "Genotype",
+			"target" : "genotype",
 			"targetKey" : "genotype_id",
 			"targetStorageType" : "sql",
 			"label": "name",

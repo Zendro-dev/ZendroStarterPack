@@ -1,5 +1,5 @@
 {
-	"model" : "Individual",
+	"model" : "individual",
 	"storageType" : "Sql",
 	"attributes" : {
 		"name" : "String",
@@ -8,7 +8,7 @@
 	"associations" : {
 		"genotype" : {
 			"type" : "sql_belongsTo",
-			"target" : "Genotype",
+			"target" : "genotype",
 			"targetKey" : "genotype_id",
 			"targetStorageType" : "sql",
 			"label": "name",
@@ -16,7 +16,7 @@
 		},
 		"marker_data_snps" : {
 			"type" : "sql_hasMany",
-			"target" : "MarkerData",
+			"target" : "marker_data",
 			"targetKey" : "individual_id",
 			"targetStorageType" : "sql",
 			"label": "marker_name",

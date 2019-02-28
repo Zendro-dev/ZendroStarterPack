@@ -1,5 +1,5 @@
 {
-  "model": "Genotype",
+  "model": "genotype",
   "storageType": "Sql",
   "attributes": {
     "name": "String",
@@ -10,7 +10,7 @@
   "associations": {
     "mother": {
       "type": "sql_belongsTo",
-      "target": "Individual",
+      "target": "individual",
       "targetKey": "mother_id",
       "targetStorageType": "sql",
       "label": "name",
@@ -18,7 +18,7 @@
     },
     "father": {
       "type": "sql_belongsTo",
-      "target": "Individual",
+      "target": "individual",
       "targetKey": "father_id",
       "targetStorageType": "sql",
       "label": "name",
@@ -26,7 +26,7 @@
     },
     "breeding_pool": {
       "type": "sql_belongsTo",
-      "target": "BreedingPool",
+      "target": "breeding_pool",
       "targetKey": "breeding_pool_id",
       "targetStorageType": "sql",
       "label": "name",

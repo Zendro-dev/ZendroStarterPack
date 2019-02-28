@@ -33,8 +33,8 @@
 import Vuetable from 'vuetable-2/src/components/Vuetable.vue'
 import VuetablePagination from 'vuetable-2/src/components/VuetablePagination.vue'
 import VuetablePaginationInfo from 'vuetable-2/src/components/VuetablePaginationInfo.vue'
-import GenotypeCustomActions from './GenotypeCustomActions.vue'
-import GenotypeDetailRow from './GenotypeDetailRow.vue'
+import genotypeCustomActions from './genotypeCustomActions.vue'
+import genotypeDetailRow from './genotypeDetailRow.vue'
 import FilterBar from './FilterBar.vue'
 
 import axios from 'axios'
@@ -43,8 +43,8 @@ import Vue from 'vue'
 import VueEvents from 'vue-events'
 Vue.use(VueEvents)
 
-Vue.component('genotype-custom-actions', GenotypeCustomActions)
-Vue.component('genotype-detail-row', GenotypeDetailRow)
+Vue.component('genotype-custom-actions', genotypeCustomActions)
+Vue.component('genotype-detail-row', genotypeDetailRow)
 Vue.component('filter-bar', FilterBar)
 
 export default {
@@ -52,7 +52,7 @@ export default {
     Vuetable,
     VuetablePagination,
     VuetablePaginationInfo,
-    GenotypeDetailRow
+    genotypeDetailRow
   },
   data() {
     return {

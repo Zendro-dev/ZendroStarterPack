@@ -25,7 +25,11 @@ services:
     # Await POSTGRES role and DB creation, migrate schema, then start web
     # server:
     command:
-      - ./migrateDbAndStartServer.sh
+      - /bin/sh
+      - -c
+      - |
+        npm install
+        ./migrateDbAndStartServer.sh
 
   bp_science_db_app_server:
     depends_on:
@@ -40,7 +44,12 @@ services:
       - PORT=8080
     volumes:
       - ./single-page-app:/usr/src/app
-    command: npm run dev
+    command:
+      - /bin/sh
+      - -c
+      - |
+        npm install
+        npm run dev
 
   bp_minio:
     image: minio/minio:RELEASE.2019-02-20T22-44-29Z
@@ -51,8 +60,27 @@ services:
     environment:
       MINIO_ACCESS_KEY: minio
       MINIO_SECRET_KEY: minio123
-      command: server /data
+    command: server /data
+
+  bp_science_db_shiny:
+    build:
+      context: .
+      dockerfile: Dockerfile.shiny
+    environment:
+      PORT: 3838
+    ports:
+      - "3838:3838"
+    volumes:
+      - ./shiny-data-dev:/srv/shiny-server
+    #labels:
+    #  traefik.enable: "true"
+    #  traefik.backend: "science_db_shiny"
+    #  traefik.frontend.rule: "Host:shiny.reconstructdb.org"
+    #  #traefik.frontend.auth.basic: 'testuser:$$apr1$$QBCuO60R$$pJIFSe2x8L/cTbOBOvoOt1'
+    #  traefik.docker.network: "reverseproxy"
+    #  traefik.port: "3838"
 
 volumes:
   bp_db_data:
   bp_minio_data:
+  bp_shiny_data:

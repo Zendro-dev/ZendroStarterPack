@@ -1,5 +1,5 @@
 {
-	"model": "Measurement",
+	"model": "measurement",
 	"storageType": "Sql",
 	"attributes": {
 		"method": "String",
@@ -12,7 +12,7 @@
 	"associations": {
 		"field_plot": {
 			"type": "sql_belongsTo",
-			"target": "FieldPlot",
+			"target": "field_plot",
 			"targetKey": "field_plot_id",
 			"targetStorageType": "sql",
 			"label": "field_name",

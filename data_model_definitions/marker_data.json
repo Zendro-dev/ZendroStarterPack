@@ -1,5 +1,5 @@
 {
-	"model" : "MarkerData",
+	"model" : "marker_data",
 	"storageType" : "Sql",
 	"attributes" : {
 		"marker_name" : "String",
@@ -8,7 +8,7 @@
 	"associations" : {
 		"individual" : {
 			"type" : "sql_belongsTo",
-			"target" : "Individual",
+			"target" : "individual",
 			"targetKey" : "individual_id",
 			"targetStorageType" : "sql",
 			"label": "name",

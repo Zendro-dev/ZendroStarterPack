@@ -33,8 +33,8 @@
 import Vuetable from 'vuetable-2/src/components/Vuetable.vue'
 import VuetablePagination from 'vuetable-2/src/components/VuetablePagination.vue'
 import VuetablePaginationInfo from 'vuetable-2/src/components/VuetablePaginationInfo.vue'
-import MeasurementCustomActions from './MeasurementCustomActions.vue'
-import MeasurementDetailRow from './MeasurementDetailRow.vue'
+import measurementCustomActions from './measurementCustomActions.vue'
+import measurementDetailRow from './measurementDetailRow.vue'
 import FilterBar from './FilterBar.vue'
 
 import axios from 'axios'
@@ -43,8 +43,8 @@ import Vue from 'vue'
 import VueEvents from 'vue-events'
 Vue.use(VueEvents)
 
-Vue.component('measurement-custom-actions', MeasurementCustomActions)
-Vue.component('measurement-detail-row', MeasurementDetailRow)
+Vue.component('measurement-custom-actions', measurementCustomActions)
+Vue.component('measurement-detail-row', measurementDetailRow)
 Vue.component('filter-bar', FilterBar)
 
 export default {
@@ -52,7 +52,7 @@ export default {
     Vuetable,
     VuetablePagination,
     VuetablePaginationInfo,
-    MeasurementDetailRow
+    measurementDetailRow
   },
   data() {
     return {

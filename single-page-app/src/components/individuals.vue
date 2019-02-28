@@ -33,8 +33,8 @@
 import Vuetable from 'vuetable-2/src/components/Vuetable.vue'
 import VuetablePagination from 'vuetable-2/src/components/VuetablePagination.vue'
 import VuetablePaginationInfo from 'vuetable-2/src/components/VuetablePaginationInfo.vue'
-import IndividualCustomActions from './IndividualCustomActions.vue'
-import IndividualDetailRow from './IndividualDetailRow.vue'
+import individualCustomActions from './individualCustomActions.vue'
+import individualDetailRow from './individualDetailRow.vue'
 import FilterBar from './FilterBar.vue'
 
 import axios from 'axios'
@@ -43,8 +43,8 @@ import Vue from 'vue'
 import VueEvents from 'vue-events'
 Vue.use(VueEvents)
 
-Vue.component('individual-custom-actions', IndividualCustomActions)
-Vue.component('individual-detail-row', IndividualDetailRow)
+Vue.component('individual-custom-actions', individualCustomActions)
+Vue.component('individual-detail-row', individualDetailRow)
 Vue.component('filter-bar', FilterBar)
 
 export default {
@@ -52,7 +52,7 @@ export default {
     Vuetable,
     VuetablePagination,
     VuetablePaginationInfo,
-    IndividualDetailRow
+    individualDetailRow
   },
   data() {
     return {
@@ -85,7 +85,7 @@ export default {
         }
       ],
       moreParams: {
-        query: `{vueTableIndividual{data {id  name description genotype{name  id } countFilteredMarkerdata} total per_page current_page last_page prev_page_url next_page_url from to}}`
+        query: `{vueTableIndividual{data {id  name description genotype{name  id } countFilteredMarker_data} total per_page current_page last_page prev_page_url next_page_url from to}}`
       }
     }
   },
@@ -108,7 +108,7 @@ export default {
     },
     onFilterReset() {
       this.moreParams = {
-        query: `{vueTableIndividual{data {id  name description genotype{name  id } countFilteredMarkerdata} total per_page current_page last_page prev_page_url next_page_url from to}}`
+        query: `{vueTableIndividual{data {id  name description genotype{name  id } countFilteredMarker_data} total per_page current_page last_page prev_page_url next_page_url from to}}`
       }
       Vue.nextTick(() => this.$refs.vuetable.refresh())
     },

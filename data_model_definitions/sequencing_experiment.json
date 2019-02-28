@@ -1,5 +1,5 @@
 {
-	"model" : "SequencingExperiment",
+	"model" : "sequencing_experiment",
 	"storageType" : "Sql",
 	"attributes" : {
 		"name" : "String",
@@ -21,7 +21,7 @@
 	"associations" : {
 		"nuc_acid_library_results" : {
 			"type" : "sql_hasMany",
-			"target" : "NucAcidLibraryResult",
+			"target" : "nuc_acid_library_result",
 			"targetKey" : "sequencing_experiment_id",
 			"targetStorageType" : "sql",
 			"label": "lab_code",
@@ -29,7 +29,7 @@
 		},
 		"samples" : {
 			"type" : "sql_hasMany",
-			"target" : "Sample",
+			"target" : "sample",
 			"targetKey" : "sequencing_experiment_id",
 			"targetStorageType" : "sql",
 			"label": "name",

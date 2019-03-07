@@ -1,0 +1,12 @@
+[submodule "submodules/single-page-app"]
+	path = submodules/single-page-app
+	url = https://github.com/ScienceDb/single-page-app.git
+[submodule "submodules/graphql-server"]
+	path = submodules/graphql-server
+	url = https://github.com/ScienceDb/graphql-server.git
+[submodule "submodules/single-page-app-codegen"]
+	path = submodules/single-page-app-codegen
+	url = https://github.com/ScienceDb/single-page-app-codegen.git
+[submodule "submodules/graphql-server-model-codegen"]
+	path = submodules/graphql-server-model-codegen
+	url = https://github.com/ScienceDb/graphql-server-model-codegen.git

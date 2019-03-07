@@ -2,11 +2,6 @@ dist/
 .DS_Store
 .idea
 .vscode-upload.json
-migrations
-models
-models-webservice
+
 node_modules
 npm-debug.log
-resolvers
-schemas
-schemasnode_modules

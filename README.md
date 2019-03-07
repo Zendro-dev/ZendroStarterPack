@@ -15,3 +15,5 @@ git clone --recursive -b YOUR_BRANCH https://github.com/ScienceDb/ScienceDbStart
 
 After this command, all submodules will be initialized and updated automatically (updated to the current 
 versions in their repositories??? - check this).
+
+To create a new project based on this package

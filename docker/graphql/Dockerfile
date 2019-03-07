@@ -1,0 +1,14 @@
+FROM node:11.9.0-stretch-slim
+
+# Create app directory
+WORKDIR /usr/src/app
+
+# Copy generated code into the skeleton GraphQL-Server
+COPY . .
+
+# Clone the skeleton project and install dependencies
+RUN apt-get update && apt-get install -y git procps &&\
+  chmod u+x ./migrateDbAndStartServer.sh && \
+  npm install
+
+EXPOSE 3000

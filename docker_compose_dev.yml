@@ -1,16 +1,16 @@
 version: "3.2"
 
 services:
-  bp_postgres:
+  sp_postgres:
     build:
       context: .
-      dockerfile: Dockerfile.postgres
+      dockerfile: Dockerfile
     volumes:
       - bp_db_data:/var/lib/postgresql/data
     ports:
       - 5432:5432
 
-  bp_science_db_graphql_server:
+  sp_graphql:
     depends_on:
       - bp_postgres
     build:
@@ -30,13 +30,13 @@ services:
       - |
         npm install
         ./migrateDbAndStartServer.sh
-  bp_science_db_app_server:
+  sp_spa:
     depends_on:
       - bp_postgres
       - bp_science_db_graphql_server
     build:
       context: ./single-page-app
-      dockerfile: Dockerfile.app
+      dockerfile: Dockerfile
     ports:
       - 8080:8080
     environment:
@@ -49,7 +49,7 @@ services:
       - |
         npm install
         npm run dev
-  bp_minio:
+  sp_minio:
     image: minio/minio:RELEASE.2019-02-20T22-44-29Z
     volumes:
       - bp_minio_data:/data
@@ -60,10 +60,10 @@ services:
       MINIO_SECRET_KEY: minio123
     command: server /data
 
-  bp_science_db_shiny:
+  sp_shiny:
     build:
       context: .
-      dockerfile: Dockerfile.shiny
+      dockerfile: Dockerfile
     environment:
       PORT: 3838
     ports:
@@ -81,4 +81,4 @@ services:
 volumes:
   bp_db_data:
   bp_minio_data:
-bp_shiny_data:
+  bp_shiny_data:

@@ -16,4 +16,17 @@ git clone --recursive -b YOUR_BRANCH https://github.com/ScienceDb/ScienceDbStart
 After this command, all submodules will be initialized and updated automatically (updated to the current 
 versions in their repositories??? - check this).
 
-To create a new project based on this package
+
+To create a new project based on this package please run the script:
+```
+./scripts/install.sh
+```
+
+You can run this project in development or in production modes. Just add 
+`docker-compose.yml` symlink to the corresponding `*_dev.yml` or `*_srv.yml` file.
+This way you can use `docker-compose` command without `-f` option.
+
+
+*****
+TODO: What about project-specific installations? How to make it more generic?
+Which rules to adjust? 

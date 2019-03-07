@@ -4,7 +4,7 @@ services:
   bp_postgres:
     build:
       context: .
-      dockerfile: Dockerfile.postgres
+      dockerfile: Dockerfile
     volumes:
       - bp_db_data:/var/lib/postgresql/data
     ports:
@@ -31,7 +31,7 @@ services:
       - bp_science_db_graphql_server
     build:
       context: ./single-page-app
-      dockerfile: Dockerfile.app
+      dockerfile: Dockerfile
     ports:
       - 8080:8080
     environment:
@@ -43,7 +43,7 @@ services:
     volumes:
       - bp_minio_data:/data
     ports:
-      - "9000:9000"
+      - 9000:9000
     environment:
       MINIO_ACCESS_KEY: minio
       MINIO_SECRET_KEY: minio123
@@ -52,7 +52,7 @@ services:
   bp_science_db_shiny:
     build:
       context: .
-      dockerfile: Dockerfile.shiny
+      dockerfile: Dockerfile
     environment:
       PORT: 3838
     ports:

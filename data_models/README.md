@@ -1,2 +1,3 @@
-Each ScienceDB project has it's own tables. To add new database project, 
-create a new folder here that will contain corresponding `.json` files - one per data table.  
+Each isolated database we can consider as a set of relational (or not relational) tables. 
+These tables are called data models here, and are described with `.json` files 
+(see the documentation).  

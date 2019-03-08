@@ -1,28 +1,22 @@
-As long as each submodule project can have it's own standalone configuration,
-we do not distribute `Dockerfile` or any other configurations specific for
-ScienceDbStarterPack within submodule projects, so these are completely independent 
-from this StarterPack distribution.
+#Docker
 
-Some containers need additional setup while running. Here we store all files 
-that are required by corresponding docker images, startup scripts, default 
-configuration files, etc.
+ScienceDB servers and submodules are running within docker-compose containers. 
+Each container have it’s own internal environment and project-specific configurations. 
+Here you can find a per-container folders that contain a corresponding `Dockerfile` 
+(if necesarry) and all the other data required to run container.
 
-Each image has it's own sub-folder here, so that image-specific files are
-isolated one from the other, and all are collected in the same place.
+It is assumed that some configurations are project specific, such as `config.json` or 
+`globals.js` files under the `graphql` folder. Therefore, it is here the place where you 
+can modify these files and store them within the project branch at GitHub.
 
-The context of each container is the ScienceDbStarterPack root folder,
-so that all `Dockerfile` routes are relative to that folder.
+Therefore, none of the project-specific or container-specific configurations are not 
+distributed within submodule projects referred in the `../.gitmodules` file.
+
+The context of each container is the ScienceDbStarterPack root folder, so that any 
+`Dockerfile` route is relative to the root folder of the ScienceDBStarterPack project.
 
 *****
 
 All `.sh` scripts present here are to be copied to /etc/init.d/ folder of each
-corresponding container, so each script has to start it's server automatically.
-
-No image specific `command: ...` options are present in docker_compose.yml. 
-However, some commands can be used for debugging purposes, for example:
-```
-command:
-    - top > /dev/null ...
-```
-
-These are particularly useful when server fails to start within it's container (maybe). 
+corresponding container, so each script has to start it's server automatically. 
+(questionable)

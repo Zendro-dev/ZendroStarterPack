@@ -1,6 +1,8 @@
 # ScienceDBStarterPack
 
-ScienceDB can be used for different collecting data projects. 
+//To be strongly edited
+
+ScienceDB can be used for different projects where it is desirable to open access to to vaious databases . 
 Each projects can have have it's own data sets, project specific code, etc. However, 
 all these projects are based on the same package: ScienceDBStarterPack.
 

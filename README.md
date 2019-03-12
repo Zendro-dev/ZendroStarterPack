@@ -25,9 +25,18 @@ To create a new project based on this package please run the script:
 ```
 
 You can run this project in development or in production modes. Just add 
-`docker-compose.yml` symlink to the corresponding `*_dev.yml` or `*_srv.yml` file.
+a full path `docker-compose.yml` symlink to the corresponding `*_dev.yml` or `*_srv.yml` file.
 This way you can use `docker-compose` command without `-f` option.
 
+```
+ln -s `pwd`/docker_compose_dev.yml docker-compose.yml
+```
+
+
+To checkout submodules content manually, use:
+```
+git submodule update --recursive
+```
 
 *****
 TODO: What about project-specific installations? How to make it more generic?

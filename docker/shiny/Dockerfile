@@ -1,5 +1,3 @@
-
-43 lines (32 sloc) 1.67 KB
 FROM r-base:3.5.1
 
 MAINTAINER Dr. Asis Hallab "a.hallab@fz-juelich.de"
@@ -28,10 +26,10 @@ EXPOSE 3838
   # /usr/local/lib/R/site-library/shiny/examples/*
 
   # Executable
-COPY shiny-server.sh /usr/bin/shiny-server.sh
-RUN chmod u+x /usr/bin/shiny-server.sh
+COPY docker/shiny/run_shiny.sh /usr/bin/run_shiny.sh
+RUN chmod u+x /usr/bin/run_shiny.sh
   # Copy the default entry Rmd
-COPY helloWorld.Rmd /opt
+#COPY helloWorld.Rmd /opt
 
   ## Uncomment the line below to include a custom configuration file. You can download the default file at
   ## https://raw.githubusercontent.com/rstudio/shiny-server/master/config/default.config
@@ -41,4 +39,4 @@ COPY helloWorld.Rmd /opt
 
   # COPY shiny-customized.config /etc/shiny-server/shiny-server.conf
 
-CMD ["/usr/bin/shiny-server.sh"]
+CMD ["/usr/bin/run_shiny.sh"]

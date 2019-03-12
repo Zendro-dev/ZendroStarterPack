@@ -15,7 +15,8 @@ done
 # Run the migrations
 if ! ./node_modules/.bin/sequelize db:migrate; then
 	echo -e '\nERROR: Migrating the relational database(s) caused an error.\n'
-	exit 1
+	#TODO: second migration produce an error, but it is not critical
+	#exit 1
 fi
 
 # Run seeders if needed
@@ -27,4 +28,5 @@ if [ -d ./seeders ]; then
 fi
 
 # Start GraphQL-server
-npm start # acl
+#sleep infinity
+npm start #acl

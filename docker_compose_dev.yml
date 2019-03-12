@@ -4,57 +4,46 @@ services:
   sp_postgres:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: docker/postgres/Dockerfile
     volumes:
-      - bp_db_data:/var/lib/postgresql/data
+      - ./volumes/pg_data:/var/lib/postgresql/data
     ports:
-      - 5432:5432
+      - 1234:5432
 
   sp_graphql:
     depends_on:
-      - bp_postgres
+      - sp_postgres
     build:
-      context: ./graphql-server
-      dockerfile: Dockerfile.graphql_server
+      context: .
+      dockerfile: docker/graphql/Dockerfile
     ports:
       - 3000:3000
     environment:
       - PORT=3000
-    volumes:
-      - ./graphql-server:/usr/src/app
-    # Await POSTGRES role and DB creation, migrate schema, then start web
-    # server:
     command:
-      - /bin/sh
-      - -c
-      - |
-        npm install
-        ./migrateDbAndStartServer.sh
+      - ./run_graphql.sh
+
   sp_spa:
     depends_on:
-      - bp_postgres
-      - bp_science_db_graphql_server
+      - sp_postgres
+      - sp_graphql
     build:
-      context: ./single-page-app
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: docker/spa/Dockerfile
     ports:
       - 8080:8080
     environment:
       - PORT=8080
-    volumes:
-      - ./single-page-app:/usr/src/app
-    command:
-      - /bin/sh
-      - -c
-      - |
-        npm install
-        npm run dev
+    # debug this image
+    #command: /bin/sh -c top
+    command: /bin/sh -c "npm run dev"
+
   sp_minio:
     image: minio/minio:RELEASE.2019-02-20T22-44-29Z
     volumes:
-      - bp_minio_data:/data
+      - ./volumes/pg_data:/data
     ports:
-      - "9000:9000"
+      - 9000:9000
     environment:
       MINIO_ACCESS_KEY: minio
       MINIO_SECRET_KEY: minio123
@@ -63,13 +52,13 @@ services:
   sp_shiny:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: docker/shiny/Dockerfile
     environment:
       PORT: 3838
     ports:
-      - "3838:3838"
+      - 3838:3838
     volumes:
-      - ./shiny-data-dev:/srv/shiny-server
+      - ./volumes/shiny_data:/srv/shiny-server
     #labels:
     #  traefik.enable: "true"
     #  traefik.backend: "science_db_shiny"
@@ -77,8 +66,3 @@ services:
     #  #traefik.frontend.auth.basic: 'testuser:$$apr1$$QBCuO60R$$pJIFSe2x8L/cTbOBOvoOt1'
     #  traefik.docker.network: "reverseproxy"
     #  traefik.port: "3838"
-
-volumes:
-  bp_db_data:
-  bp_minio_data:
-  bp_shiny_data:

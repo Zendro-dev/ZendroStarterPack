@@ -1,0 +1,8 @@
+{
+  "model" : "example",
+  "storageType" : "SQL",
+  "attributes" : {
+    "name" : "String"
+  },
+  "associations": {}
+}

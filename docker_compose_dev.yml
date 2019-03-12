@@ -9,6 +9,7 @@ services:
       - ./volumes/pg_data:/var/lib/postgresql/data
     ports:
       - 1234:5432
+#    command: /bin/sh -c top
 
   sp_graphql:
     depends_on:
@@ -49,16 +50,16 @@ services:
       MINIO_SECRET_KEY: minio123
     command: server /data
 
-  sp_shiny:
-    build:
-      context: .
-      dockerfile: docker/shiny/Dockerfile
-    environment:
-      PORT: 3838
-    ports:
-      - 3838:3838
-    volumes:
-      - ./volumes/shiny_data:/srv/shiny-server
+  #sp_shiny:
+  #  build:
+  #    context: .
+  #    dockerfile: docker/shiny/Dockerfile
+  #  environment:
+  #    PORT: 3838
+  #  ports:
+  #    - 3838:3838
+  #  volumes:
+  #    - ./volumes/shiny_data:/srv/shiny-server
     #labels:
     #  traefik.enable: "true"
     #  traefik.backend: "science_db_shiny"

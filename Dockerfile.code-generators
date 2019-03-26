@@ -1,0 +1,9 @@
+FROM node:11.12.0-alpine
+
+RUN apk update && \
+ apk add git && apk add bash && \
+ npm install -g github:ScienceDb/graphql-server-model-codegen.git#master && \
+ npm install -g github:ScienceDb/single-page-app-codegen.git#master
+
+ENTRYPOINT ["/bin/bash"]
+CMD []

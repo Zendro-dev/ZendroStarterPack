@@ -57,7 +57,7 @@ services:
       - -c
       - |
         npm install
-        npm run dev
+        npm run serve
 
   sdb_minio:
     image: minio/minio:RELEASE.2019-02-20T22-44-29Z

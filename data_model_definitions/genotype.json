@@ -9,7 +9,7 @@
 
   "associations": {
     "mother": {
-      "type": "sql_belongsTo",
+      "type": "belongsTo",
       "target": "individual",
       "targetKey": "mother_id",
       "targetStorageType": "sql",
@@ -17,7 +17,7 @@
       "sublabel": "id"
     },
     "father": {
-      "type": "sql_belongsTo",
+      "type": "belongsTo",
       "target": "individual",
       "targetKey": "father_id",
       "targetStorageType": "sql",
@@ -25,7 +25,7 @@
       "sublabel": "id"
     },
     "breeding_pool": {
-      "type": "sql_belongsTo",
+      "type": "belongsTo",
       "target": "breeding_pool",
       "targetKey": "breeding_pool_id",
       "targetStorageType": "sql",

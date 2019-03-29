@@ -7,7 +7,7 @@
 	},
 	"associations" : {
 		"genotype" : {
-			"type" : "sql_belongsTo",
+			"type" : "belongsTo",
 			"target" : "genotype",
 			"targetKey" : "genotype_id",
 			"targetStorageType" : "sql",
@@ -15,7 +15,7 @@
       "sublabel": "id"
 		},
 		"marker_data_snps" : {
-			"type" : "sql_hasMany",
+			"type" : "hasMany",
 			"target" : "marker_data",
 			"targetKey" : "individual_id",
 			"targetStorageType" : "sql",

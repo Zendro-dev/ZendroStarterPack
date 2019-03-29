@@ -10,7 +10,7 @@
 	},
 	"associations" : {
 		"genotype" : {
-			"type" : "sql_belongsTo",
+			"type" : "belongsTo",
 			"target" : "genotype",
 			"targetKey" : "genotype_id",
 			"targetStorageType" : "sql",

@@ -9,7 +9,7 @@
 	},
 	"associations" : {
 		"sample" : {
-			"type" : "sql_belongsTo",
+			"type" : "belongsTo",
 			"target" : "sample",
 			"targetKey" : "sample_id",
 			"targetStorageType" : "sql",

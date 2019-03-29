@@ -7,7 +7,7 @@
 	},
 	"associations" : {
 		"genotypes" : {
-			"type" : "sql_hasMany",
+			"type" : "hasMany",
 			"target" : "genotype",
 			"targetKey" : "breeding_pool_id",
 			"targetStorageType" : "sql",

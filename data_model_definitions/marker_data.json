@@ -7,7 +7,7 @@
 	},
 	"associations" : {
 		"individual" : {
-			"type" : "sql_belongsTo",
+			"type" : "belongsTo",
 			"target" : "individual",
 			"targetKey" : "individual_id",
 			"targetStorageType" : "sql",

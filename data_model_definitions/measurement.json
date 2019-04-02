@@ -11,7 +11,7 @@
 	},
 	"associations": {
 		"field_plot": {
-			"type": "sql_belongsTo",
+			"type": "belongsTo",
 			"target": "field_plot",
 			"targetKey": "field_plot_id",
 			"targetStorageType": "sql",

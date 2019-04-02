@@ -20,7 +20,7 @@
 	},
 	"associations" : {
 		"nuc_acid_library_results" : {
-			"type" : "sql_hasMany",
+			"type" : "hasMany",
 			"target" : "nuc_acid_library_result",
 			"targetKey" : "sequencing_experiment_id",
 			"targetStorageType" : "sql",
@@ -28,7 +28,7 @@
       "sublabel": "file_name"
 		},
 		"samples" : {
-			"type" : "sql_hasMany",
+			"type" : "hasMany",
 			"target" : "sample",
 			"targetKey" : "sequencing_experiment_id",
 			"targetStorageType" : "sql",

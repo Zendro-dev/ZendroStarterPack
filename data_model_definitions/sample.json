@@ -12,7 +12,7 @@
 	},
 	"associations" : {
 		"individual" : {
-			"type" : "sql_belongsTo",
+			"type" : "belongsTo",
 			"target" : "individual",
 			"targetKey" : "individual_id",
 			"targetStorageType" : "sql",
@@ -20,7 +20,7 @@
 			"sublabel": "id"
 		},
 		"sequencing_experiment" : {
-			"type" : "sql_belongsTo",
+			"type" : "belongsTo",
 			"target" : "sequencing_experiment",
 			"targetKey" : "sequencing_experiment_id",
 			"targetStorageType" : "sql",
@@ -28,7 +28,7 @@
 			"sublabel": "platform"
 		},
 		"library_data" : {
-			"type" : "sql_hasMany",
+			"type" : "hasMany",
 			"target" : "nuc_acid_library_result",
 			"targetKey" : "sample_id",
 			"targetStorageType" : "sql",

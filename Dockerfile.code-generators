@@ -6,4 +6,3 @@ RUN apk update && \
  npm install -g github:ScienceDb/single-page-app-codegen.git#master
 
 ENTRYPOINT ["/bin/bash"]
-CMD []

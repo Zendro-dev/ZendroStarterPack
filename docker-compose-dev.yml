@@ -1,4 +1,4 @@
-version: "3.2"
+version: "3.7"
 
 services:
   sdb_postgres:
@@ -24,7 +24,6 @@ services:
       - .:/usr/ScienceDbStarterPack
       # Use the Sequelize config adjusted for the Docker setup of ScienceDbStarterPack:
       - ./graphql-server/config/config_postgres_docker.json:/usr/ScienceDbStarterPack/graphql-server/config/config.json
-      - sdb_graphql_server_node_modules:/usr/ScienceDbStarterPack/graphql-server/node_modules
     # Await POSTGRES role and DB creation, migrate schema, then start web
     # server:
     command:
@@ -47,11 +46,8 @@ services:
       - PORT=8080
     volumes:
       - .:/usr/ScienceDbStarterPack
-      - sdb_graphql_server_node_modules:/usr/src/single-page-app/node_modules
-    # Link symbolically all non '.*' files or dirs from /opt/app to
-    # /usr/src/app. This is done to exclude '.git*' which causes problems when
-    # running npm install. Then install dependencies and start
-    # single-page-app-server in development mode.
+    # Install dependencies and start single-page-app-server in development
+    # mode.
     command:
       - /bin/sh
       - -c
@@ -66,8 +62,8 @@ services:
     ports:
       - "9000:9000"
     environment:
-      MINIO_ACCESS_KEY: minio
-      MINIO_SECRET_KEY: minio123
+      MINIO_ACCESS_KEY: sciencedb
+      MINIO_SECRET_KEY: sciencedb
     command: server /data
 
     #sdb_science_db_shiny:
@@ -91,6 +87,4 @@ services:
 volumes:
   sdb_db_data:
   sdb_minio_data:
-  sdb_graphql_server_node_modules:
-  sdb_app_server_node_modules:
   #sdb_shiny_data:

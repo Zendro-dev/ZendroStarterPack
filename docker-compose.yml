@@ -21,8 +21,6 @@ services:
     environment:
       - PORT=3000
       - NODE_ENV=production
-    volumes:
-      - sdb_graphql_server_node_modules:/usr/ScienceDbStarterPack/graphql-server/node_modules
     # Await POSTGRES role and DB creation, migrate schema, then start web
     # server:
     command:
@@ -80,6 +78,4 @@ services:
 volumes:
   sdb_db_data:
   sdb_minio_data:
-  sdb_graphql_server_node_modules:
-  sdb_app_server_node_modules:
   #sdb_shiny_data:

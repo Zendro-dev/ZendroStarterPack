@@ -1,0 +1,24 @@
+{
+  "model" : "EnvironmentalData",
+  "storageType": "sql",
+  "attributes":{
+      "name": "String",
+      "description": "String",
+      "source": " String",
+      "resolution": "String",
+      "reference": "String",
+      "value": "String",
+      "unit": "String"
+    },
+   "associations": {
+     "accession" : {
+       "type": "belongsTo",
+       "target": "Accession",
+       "targetKey": "accessionId",
+       "targetStorageType": "sql",
+       "label": "collection_name" ,
+       "sublabel": "catalog_number"
+      }
+   }
+
+}

@@ -1,0 +1,49 @@
+{
+  "model" : "GenotypingData",
+  "storageType": "sql",
+  "attributes":{
+      "file_name": "String",
+      "file_uri": "String",
+      "snp_call_pipeline": "String",
+      "denovo_or_reference": "String",
+      "reference_genome": "String",
+      "format": "String",
+      "max_missing_geno": "Float",
+      "maf": "Float"
+    },
+   "associations": {
+     "samples" : {
+       "type": "belongsToMany",
+       "target" : "Sample",
+       "targetKey": "sample_id",
+       "sourceKey": "genotype_data_id",
+       "keysIn": "sample_to_genotype_data",
+       "targetStorageType": "sql",
+       "label": "name"
+     },
+
+     "library_results": {
+       "type": "belongsToMany",
+       "target": "GenotypingData",
+       "targetKey": "library_result_id",
+       "sourceKey": "genotype_data_id",
+       "keysIn": "genotyping_to_library_results",
+       "targetStorageType": "sql",
+       "label": "lab_code"
+     },
+
+     "individuals" : {
+       "type": "belongsToMany",
+       "target": "Individual",
+       "targetKey": "individual_id",
+       "sourceKey": "genotype_data_id",
+       "keysIn": "genotyping_to_individual",
+       "targetStorageType": "sql",
+       "label": "name"
+     }
+
+
+
+   }
+
+}

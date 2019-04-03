@@ -1,26 +1,85 @@
 {
-	"model" : "individual",
-	"storageType" : "Sql",
-	"attributes" : {
-		"name" : "String",
-		"description" : "String"
-	},
-	"associations" : {
-		"genotype" : {
-			"type" : "belongsTo",
-			"target" : "genotype",
-			"targetKey" : "genotype_id",
-			"targetStorageType" : "sql",
-			"label": "name",
-      "sublabel": "id"
-		},
-		"marker_data_snps" : {
-			"type" : "hasMany",
-			"target" : "marker_data",
-			"targetKey" : "individual_id",
-			"targetStorageType" : "sql",
-			"label": "marker_name",
-			"sublabel": "nucleotide"
-		}
-	}
+  "model" : "Individual",
+  "storageType": "sql",
+  "attributes":{
+      "name": "String",
+      "origin": "String",
+      "description": "String"
+    },
+   "associations": {
+
+      "accession": {
+         "type": "belongsTo",
+         "target": "Accession",
+         "targetKey": "accessionId",
+         "targetStorageType": "sql",
+         "label": "institution_deposited",
+         "sublabel": "collection_name"
+      },
+
+      "genotype": {
+          "type": "belongsTo",
+          "target": "Genotype",
+          "targetKey": "genotypeId",
+          "targetStorageType": "sql",
+          "label": "name"
+      },
+
+      "samples": {
+          "type": "belongsToMany",
+          "target": "Sample",
+          "targetKey": "sample_id",
+          "sourceKey": "individual_id",
+          "keysIn": "sample_to_individual",
+          "targetStorageType": "sql",
+          "label": "name",
+          "sublabel": "tissue"
+      },
+
+      "field_unit": {
+        "type": "belongsTo",
+        "target": "FieldUnit",
+        "targetKey": "field_unit_id",
+        "targetStorageType": "sql",
+        "label": "field_name" ,
+        "sublabel": "treatment"
+      },
+
+      "measurements": {
+        "type": "hasMany",
+        "target": "Individual",
+        "targetKey": "individual_id",
+        "targetStorageType": "sql",
+        "label": "name" ,
+        "sublabel": "method"
+      },
+
+      "mother_to" :{
+        "type": "hasMany",
+        "target": "Genotype",
+        "targetKey": "mother_id",
+        "targetStorageType": "sql",
+        "label": "name"
+      },
+
+      "father_to" :{
+        "type": "hasMany",
+        "target": "Genotype",
+        "targetKey": "father_id",
+        "targetStorageType": "sql",
+        "label": "name"
+      },
+
+      "genotyping_data": {
+        "type": "belongsToMany",
+        "target": "GenotypingData",
+        "targetKey": "genotype_data_id",
+        "sourceKey": "individual_id",
+        "keysIn": "genotyping_to_individual",
+        "targetStorageType": "sql",
+        "label": "file_name"
+      }
+
+   }
+
 }

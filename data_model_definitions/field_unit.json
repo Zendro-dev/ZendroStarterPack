@@ -1,0 +1,44 @@
+{
+  "model" : "FieldUnit",
+  "storageType": "sql",
+  "attributes":{
+      "field_name": "String",
+      "location": "String",
+      "coordinate_or_name": "String",
+      "year": "Int",
+      "cycle": "String",
+      "area_sqm": "Float",
+      "type": "String",
+      "treatment": "String"
+    },
+   "associations": {
+     "individuals" : {
+       "type": "hasMany",
+       "target": "Individual",
+       "targetKey": "field_unit_id",
+       "targetStorageType": "sql",
+       "label": "name"
+     },
+
+       "measurements" : {
+         "type": "hasMany",
+         "target": "Measurement",
+         "targetKey": "field_unit_id",
+         "targetStorageType": "sql",
+         "label": "name" ,
+         "sublabel": "method"
+       },
+
+       "genotypes": {
+         "type": "belongsToMany",
+         "target": "Genotype",
+         "targetKey": "genotype_id",
+         "sourceKey": "field_unit_id",
+         "keysIn": "field_unit_to_genotype",
+         "targetStorageType": "sql",
+         "label": "name"
+       }
+
+   }
+
+}

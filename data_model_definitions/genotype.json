@@ -1,36 +1,54 @@
 {
-  "model": "genotype",
-  "storageType": "Sql",
-  "attributes": {
-    "name": "String",
-    "description": "String",
-    "pedigree_type": "String"
-  },
+  "model" : "Genotype",
+  "storageType": "sql",
+  "attributes":{
+      "name": "String",
+      "description": "String",
+      "origin": "String",
+      "description": "String"
+    },
+   "associations": {
+     "mother" : {
+        "type": "belongsTo",
+        "target": "Individual",
+        "targetKey": "mother_id",
+        "targetStorageType": "sql",
+        "label": "name"
+      },
 
-  "associations": {
-    "mother": {
-      "type": "belongsTo",
-      "target": "individual",
-      "targetKey": "mother_id",
-      "targetStorageType": "sql",
-      "label": "name",
-      "sublabel": "id"
-    },
-    "father": {
-      "type": "belongsTo",
-      "target": "individual",
-      "targetKey": "father_id",
-      "targetStorageType": "sql",
-      "label": "name",
-      "sublabel": "id"
-    },
-    "breeding_pool": {
-      "type": "belongsTo",
-      "target": "breeding_pool",
-      "targetKey": "breeding_pool_id",
-      "targetStorageType": "sql",
-      "label": "name",
-      "sublabel": "id"
-    }
-  }
+      "father" : {
+        "type": "belongsTo",
+        "target": "Individual",
+        "targetKey": "father_id",
+        "targetStorageType": "sql",
+        "label": "name"
+      },
+
+      "pools" : {
+        "type": "hasMany",
+        "target": "BreedingPool",
+        "targetKey": "genotype_id",
+        "targetStorageType": "sql",
+        "label": "name"
+      },
+
+      "individuals" : {
+        "type": "hasMany",
+        "target": "Individual",
+        "targetKey": "genotypeId",
+        "targetStorageType": "sql",
+        "label": "name"
+      },
+
+      "fields_unit": {
+        "type": "belongsToMany",
+        "target": "FieldUnit",
+        "targetKey": "field_unit_id",
+        "sourceKey": "genotype_id",
+        "keysIn": "field_unit_to_genotype",
+        "targetStorageType": "sql",
+        "label": "field_name"
+      }
+   }
+
 }

@@ -1,0 +1,36 @@
+{
+  "model" : "Plate",
+  "storageType": "sql",
+  "attributes":{
+      "plate_id": "String",
+      "type": "String",
+      "row": "String",
+      "column": "Int",
+      "well": "String",
+      "barcode": "String",
+      "storage": "String",
+      "concentration": "float",
+      "concentration_measurement_method": "String"
+    },
+   "associations": {
+       "sequencing_experiment" : {
+       "type": "belongsTo",
+       "target": "SequencingExperiment",
+       "targetKey": "experiment_id",
+       "targetStorageType": "sql",
+       "label": "name",
+       "sublabel": "sequencing_place"
+     },
+
+     "samples": {
+       "type": "belongsToMany",
+       "target": "Sample",
+       "targetKey": "sample_id",
+       "sourceKey": "plate_id",
+       "keysIn": "sample_to_plate",
+       "targetStorageType": "sql",
+       "label": "name",
+       "sublabel": "tissue"
+     }
+   }
+ }

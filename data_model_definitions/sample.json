@@ -1,39 +1,85 @@
 {
-	"model" : "sample",
-	"storageType" : "Sql",
-	"attributes" : {
-		"name" : "String",
-		"sampling_date" : "String",
-		"type": "String",
-		"biological_replicate_no": "Int",
-		"lab_code": "String",
-		"treatment": "String",
-		"tissue": "String"
-	},
-	"associations" : {
-		"individual" : {
-			"type" : "belongsTo",
-			"target" : "individual",
-			"targetKey" : "individual_id",
-			"targetStorageType" : "sql",
-			"label": "name",
-			"sublabel": "id"
-		},
-		"sequencing_experiment" : {
-			"type" : "belongsTo",
-			"target" : "sequencing_experiment",
-			"targetKey" : "sequencing_experiment_id",
-			"targetStorageType" : "sql",
-			"label": "name",
-			"sublabel": "platform"
-		},
-		"library_data" : {
-			"type" : "hasMany",
-			"target" : "nuc_acid_library_result",
-			"targetKey" : "sample_id",
-			"targetStorageType" : "sql",
-			"label": "lab_code",
-			"sublabel": "file_name"
-		}
-	}
-}
+  "model" : "Sample",
+  "storageType": "sql",
+  "attributes":{
+      "name": "String",
+      "sampling_day": "Int",
+      "sampling_month": "Int",
+      "sampling_year": "Int",
+      "sampling_year": "String",
+      "sample_type": "String",
+      "tissue": "String",
+      "compound": "String",
+      "biological_replicate_num": "Int",
+      "treatment": "String",
+      "pool_dna_extracts": "Boolean",
+      "sample_vol_weight": "String"
+    },
+   "associations": {
+
+     "samples": {
+       "type": "belongsToMany",
+       "target": "Sample",
+       "targetKey": "sample_id",
+       "sourceKey": "source_sample_id",
+       "keysIn": "sample_to_sample",
+       "targetStorageType": "sql",
+       "label":  "name",
+       "sublabel": "tissue"
+     },
+
+     "sequencing_experiments" : {
+       "type": "belongsToMany",
+       "target": "SequencingExperiment",
+       "targetKey": "experiment_id",
+       "sourceKey": "sample_id",
+       "keysIn": "sample_to_experiment",
+       "targetStorageType": "sql",
+       "label": "name",
+       "sublabel": "sequencing_place"
+     },
+
+     "plates" : {
+       "type": "belongsToMany",
+       "target": "Plate",
+       "targetKey": "plate_id",
+       "sourceKey": "sample_id",
+       "keysIn": "sample_to_plate",
+       "targetStorageType": "sql",
+       "label": "plate_id",
+       "sublabel": "barcode"
+     },
+
+     "library_results" : {
+       "type": "belongsToMany",
+       "target": "NucAcidLibraryResult",
+       "targetKey": "library_result_id",
+       "sourceKey": "sample_id",
+       "keysIn": "sample_to_library_results",
+       "targetStorageType": "sql",
+       "label": "lab_code",
+       "sublabel": "file_name"
+     },
+
+     "individuals" : {
+       "type": "belongsToMany",
+       "target" : "Individual",
+       "targetKey": "individual_id",
+       "sourceKey": "sample_id",
+       "keysIn": "sample_to_individual",
+       "targetStorageType": "sql",
+       "label": "name"
+     },
+
+     "genotyping_data" : {
+       "type": "belongsToMany",
+       "target" : "GenotypingData",
+       "targetKey": "genotype_data_id",
+       "sourceKey": "sample_id",
+       "keysIn": "sample_to_genotype_data",
+       "targetStorageType": "sql",
+       "label": "file_name"
+     }
+
+   }
+ }

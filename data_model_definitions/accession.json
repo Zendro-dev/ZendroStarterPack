@@ -1,0 +1,59 @@
+{
+  "model" : "Accession",
+  "storageType": "sql",
+  "attributes":{
+      "accession_id": "String",
+      "collectors_name": "String",
+      "collectors_initials": "String",
+      "sampling_day": "Int",
+      "sampling_month": "Int",
+      "sampling_year": "Int",
+      "sampling_number": "String",
+      "catalog_number": "String",
+      "institution_deposited": "String",
+      "collection_name": "String",
+      "collection_acronym": "String",
+      "country": "String",
+      "state": "String",
+      "municipality": "String",
+      "locality": "String",
+      "latitude": "Float",
+      "longintude": "Float",
+      "altitude": "Float",
+      "identified_by": "String",
+      "identification_date": "String",
+      "abundance": "String",
+      "habitat": "String",
+      "observations": "String",
+      "taxon_id": "String"
+    },
+   "associations": {
+
+     "environmental_data" : {
+       "type": "hasMany",
+       "target": "EnvironmentalData",
+       "targetKey": "accessionId",
+       "targetStorageType": "sql",
+       "label": "name" ,
+       "sublabel": "description"
+     },
+
+     "individuals": {
+       "type": "hasMany",
+       "target": "Individual",
+       "targetKey": "accessionId",
+       "targetStorageType": "sql",
+       "label": "name"
+     },
+
+      "taxon": {
+        "type": "belongsTo",
+        "target": "Taxon",
+        "targetKey": "taxon_id",
+        "targetStorageType": "webservice",
+        "label": "scientificName",
+        "sublabel": "taxonRank"
+      }
+
+   }
+}

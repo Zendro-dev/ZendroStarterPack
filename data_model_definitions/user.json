@@ -13,8 +13,7 @@
       "sourceKey" : "userId",
       "keysIn" : "role_to_user",
       "targetStorageType" : "sql",
-      "label": "name",
-      "sublabel": "id"
+      "label": "name"
     }
   }
 

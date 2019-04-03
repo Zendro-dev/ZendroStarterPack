@@ -13,8 +13,7 @@
       "sourceKey" : "roleId",
       "keysIn" : "role_to_user",
       "targetStorageType" : "sql",
-      "label": "email",
-      "sublabel": "id"
+      "label": "email"
     }
   }
 }

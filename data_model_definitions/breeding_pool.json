@@ -1,18 +1,17 @@
 {
-	"model" : "breeding_pool",
-	"storageType" : "Sql",
-	"attributes" : {
-		"name" : "String",
-		"description" : "String"
-	},
-	"associations" : {
-		"genotypes" : {
-			"type" : "hasMany",
-			"target" : "genotype",
-			"targetKey" : "breeding_pool_id",
-			"targetStorageType" : "sql",
-			"label": "name",
-      "sublabel": "id"
-		}
-	}
-}
+  "model" : "BreedingPool",
+  "storageType": "sql",
+  "attributes":{
+      "name": "String",
+      "description": "String"
+    },
+   "associations": {
+     "genotype" : {
+       "type": "belongsTo",
+       "target": "Genotype",
+       "targetKey": "genotype_id",
+       "targetStorageType": "sql",
+       "label": "name"
+     }
+   }
+ }

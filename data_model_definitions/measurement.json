@@ -1,22 +1,30 @@
 {
-	"model": "measurement",
-	"storageType": "Sql",
-	"attributes": {
-		"method": "String",
-		"reference": "String",
-    "float_value": "Float",
-    "int_value": "Int",
-    "text_value": "String",
-    "unit": "String"
-	},
-	"associations": {
-		"field_plot": {
-			"type": "belongsTo",
-			"target": "field_plot",
-			"targetKey": "field_plot_id",
-			"targetStorageType": "sql",
-			"label": "field_name",
-      "sublabel": "coordinates_or_name"
-		}
-  }
+  "model" : "Measurement",
+  "storageType": "sql",
+  "attributes":{
+      "name": "String",
+      "method": "String",
+      "reference": "String",
+      "value": "String",
+      "unit": "String"
+    },
+   "associations": {
+     "field_unit" : {
+        "type": "belongsTo",
+        "target": "FieldUnit",
+        "targetKey": "field_unit_id",
+        "targetStorageType": "sql",
+        "label": "field_name" ,
+        "sublabel": "treatment"
+      },
+
+      "individual": {
+        "type": "belongsTo",
+        "target": "Individual",
+        "targetKey": "individual_id",
+        "targetStorageType": "sql",
+        "label": "name" 
+      }
+   }
+
 }

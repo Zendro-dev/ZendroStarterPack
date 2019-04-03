@@ -9,7 +9,7 @@
       "well": "String",
       "barcode": "String",
       "storage": "String",
-      "concentration": "float",
+      "concentration": "Float",
       "concentration_measurement_method": "String"
     },
    "associations": {

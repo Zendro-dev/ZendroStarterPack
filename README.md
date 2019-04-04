@@ -153,6 +153,22 @@ database migrations and seeding is automatically triggered. See file
 `./graphql-server/migrateDbAndStartServer.sh`, and the two docker-compose files
 `docker-compose-dev.yml` (development) and `docker-compose.yml` (production).
 
+### Setup
+
+If you do not run the development, and definitely later the production
+environment, on `localhost`, you need to tell the single page application which
+URLs to use for login and to send GraphQL queries to. This is controlled by the
+following environment variables of `sdb_science_db_app_server` in the two
+docker-compose files.
+
+* `MY_SERVER_URL=http://localhost:3000/graphql`
+* `MY_LOGIN_URL=http://localhost:3000/login`
+* `MAX_UPLOAD_SIZE=500`
+
+For more details see our [manual](https://sciencedb.github.io/) and the
+[single-page-application
+`README`](https://github.com/ScienceDb/single-page-app/blob/master/README.md).
+
 ### Development environment
 
 As long as you are developing your applications, you want the servers to react

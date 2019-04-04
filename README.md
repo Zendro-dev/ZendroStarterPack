@@ -161,9 +161,9 @@ URLs to use for login and to send GraphQL queries to. This is controlled by the
 following environment variables of `sdb_science_db_app_server` in the two
 docker-compose files.
 
-* `MY_SERVER_URL=http://localhost:3000/graphql`
-* `MY_LOGIN_URL=http://localhost:3000/login`
-* `MAX_UPLOAD_SIZE=500`
+* `VUE_APP_SERVER_URL=http://localhost:3000/graphql`
+* `VUE_APP_LOGIN_URL=http://localhost:3000/login`
+* `VUE_APP_MAX_UPLOAD_SIZE=500`
 
 For more details see our [manual](https://sciencedb.github.io/) and the
 [single-page-application

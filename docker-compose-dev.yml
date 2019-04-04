@@ -44,9 +44,9 @@ services:
       - 8080:8080
     environment:
       - PORT=8080
-      - MY_SERVER_URL=http://localhost:3000/graphql
-      - MY_LOGIN_URL=http://localhost:3000/login
-      - MAX_UPLOAD_SIZE=500
+      - VUE_APP_SERVER_URL=http://siagro.conabio.gob.mx:3000/graphql
+      - VUE_APP_LOGIN_URL=http://siagro.conabio.gob.mx:3000/login
+      - VUE_APP_MAX_UPLOAD_SIZE=500
     volumes:
       - .:/usr/ScienceDbStarterPack
     # Install dependencies and start single-page-app-server in development

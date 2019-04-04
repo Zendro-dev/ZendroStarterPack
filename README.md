@@ -206,7 +206,7 @@ app.use('/graphql', cors(), graphqlHTTP((req) => ({
    schema: Schema,
    rootValue: resolvers,
    pretty: true,
-   graphiql: false, # SWITCH OFF SUPPORT FOR GraphiQL by setting this to 'false'
+   graphiql: false, // SWITCH OFF SUPPORT FOR GraphiQL by setting this to 'false'
    context: {
      request: req,
      acl: acl

@@ -47,7 +47,7 @@
 
       "measurements": {
         "type": "hasMany",
-        "target": "Individual",
+        "target": "Measurement",
         "targetKey": "individual_id",
         "targetStorageType": "sql",
         "label": "name" ,

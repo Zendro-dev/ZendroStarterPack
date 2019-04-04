@@ -169,6 +169,59 @@ For more details see our [manual](https://sciencedb.github.io/) and the
 [single-page-application
 `README`](https://github.com/ScienceDb/single-page-app/blob/master/README.md).
 
+
+#### Access Control
+
+ScienceDb can be used checking access rights for every single GraphQL query
+received by the currently logged in user identified by the respective [JSON Web
+Token](https://jwt.io/) found in the request header. The user is decoded and
+his roles are loaded to check his access rights. This step is carried out by
+the [NPM acl package](https://www.npmjs.com/package/acl). Respective access
+rights can and must be declared in the file
+[`./graphql-server/acl_rules.js`](https://github.com/ScienceDb/graphql-server/blob/master/acl_rules.js).
+
+You can run ScienceDb with or without this access control check. The default is
+to run it _without_ checking access rights. 
+
+To switch access right check on, you must uncomment the command line switch
+`acl` and change the following line in
+[`./graphql-server/migrateDbAndStartServer.sh`](https://github.com/ScienceDb/graphql-server/blob/master/migrateDbAndStartServer.sh)
+
+```
+npm start # acl
+```
+to
+```
+npm start acl
+```
+
+If you decide _not_ to use access control, we strongly recommend to restrict
+access to the GraphiQL interface through the `graphql-server`. Switch off the
+support for GraphiQL in [`./graphql-server/server.js`]():
+
+```
+// Excerpt from server.js
+
+app.use('/graphql', cors(), graphqlHTTP((req) => ({
+   schema: Schema,
+   rootValue: resolvers,
+   pretty: true,
+   graphiql: false, # SWITCH OFF SUPPORT FOR GraphiQL by setting this to 'false'
+   context: {
+     request: req,
+     acl: acl
+   },
+   formatError(error){
+     return {
+       message: error.message,
+       details: error.originalError && error.originalError.errors ? error.originalError.errors : "",
+       path: error.path
+     };
+   }
+ })));
+```
+
+
 ### Development environment
 
 As long as you are developing your applications, you want the servers to react

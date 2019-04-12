@@ -1,6 +1,11 @@
 version: "3.7"
 
 services:
+  sdb_cassandra:
+    image: 'cassandra:3.11.4'
+    volumes:
+      - sdb_cassandra_data:/var/lib/cassandra
+
   sdb_postgres:
     build:
       context: .
@@ -69,25 +74,7 @@ services:
       MINIO_SECRET_KEY: sciencedb
     command: server /data
 
-    #sdb_science_db_shiny:
-    #bpbuild:
-    #bp  context: .
-    #bp  dockerfile: Dockerfile.shiny
-    #bpenvironment:
-    #bp  PORT: 3838
-    #bpports:
-    #bp  - "3838:3838"
-    #bpvolumes:
-    #bp  - ./shiny-data-dev:/srv/shiny-server
-    #bp#labels:
-    #bp#  traefik.enable: "true"
-    #bp#  traefik.backend: "science_db_shiny"
-    #bp#  traefik.frontend.rule: "Host:shiny.reconstructdb.org"
-    #bp#  #traefik.frontend.auth.basic: 'testuser:$$apr1$$QBCuO60R$$pJIFSe2x8L/cTbOBOvoOt1'
-    #bp#  traefik.docker.network: "reverseproxy"
-    #bp#  traefik.port: "3838"
-
 volumes:
   sdb_db_data:
   sdb_minio_data:
-  #sdb_shiny_data:
+  sdb_cassandra_data:

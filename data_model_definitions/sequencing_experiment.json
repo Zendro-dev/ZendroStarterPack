@@ -18,7 +18,10 @@
       "genome_complexity_reduction": "String",
       "enzyme": "String",
       "contaminations": "String",
-      "sequencing_place": "String"
+      "sequencing_place": "String",
+      "flowcell": "String",
+      "sequencing_lane": "String",
+      "protocol_reference_link": "String"
     },
    "associations": {
       "result_libraries" : {

@@ -5,8 +5,11 @@
       "name": "String",
       "method": "String",
       "reference": "String",
+      "reference_link": "String",
       "value": "String",
-      "unit": "String"
+      "unit": "String",
+      "short_name": "String",
+      "comments": "String"
     },
    "associations": {
      "field_unit" : {
@@ -23,7 +26,7 @@
         "target": "Individual",
         "targetKey": "individual_id",
         "targetStorageType": "sql",
-        "label": "name" 
+        "label": "name"
       }
    }
 

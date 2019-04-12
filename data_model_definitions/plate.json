@@ -10,7 +10,9 @@
       "barcode": "String",
       "storage": "String",
       "concentration": "Float",
-      "concentration_measurement_method": "String"
+      "concentration_measurement_method": "String",
+      "library_prep_id": "String",
+      "compound": "String"
     },
    "associations": {
        "sequencing_experiment" : {

@@ -9,7 +9,8 @@
       "cycle": "String",
       "area_sqm": "Float",
       "type": "String",
-      "treatment": "String"
+      "treatment": "String",
+      "comments": "String"
     },
    "associations": {
      "individuals" : {

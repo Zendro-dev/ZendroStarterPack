@@ -29,6 +29,8 @@ services:
       - .:/usr/ScienceDbStarterPack
       # Use the Sequelize config adjusted for the Docker setup of ScienceDbStarterPack:
       - ./graphql-server/config/config_postgres_docker.json:/usr/ScienceDbStarterPack/graphql-server/config/config.json
+      # Use the Cassandra config adjusted for the Docker setup of ScienceDbStarterPack:
+      - ./cassandra.config.json:/usr/ScienceDbStarterPack/graphql-server/config/cassandra.config.json
     # Await POSTGRES role and DB creation, migrate schema, then start web
     # server:
     command:

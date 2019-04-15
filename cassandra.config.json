@@ -1,0 +1,6 @@
+{
+  "contactPoints": ["sdb_cassandra"],
+  "localDataCenter": "datacenter1",
+  "keyspace": "ks1",
+  "replication": "{'class': 'SimpleStrategy', 'replication_factor': 1}"
+}

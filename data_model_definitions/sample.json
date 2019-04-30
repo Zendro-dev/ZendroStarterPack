@@ -6,7 +6,6 @@
       "sampling_day": "Int",
       "sampling_month": "Int",
       "sampling_year": "Int",
-      "sampling_year": "String",
       "sample_type": "String",
       "tissue": "String",
       "compound": "String",

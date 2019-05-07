@@ -19,7 +19,8 @@
        "sourceKey": "genotype_data_id",
        "keysIn": "sample_to_genotype_data",
        "targetStorageType": "sql",
-       "label": "name"
+       "label": "name",
+       "sublabel": "sample_type"
      },
 
      "library_results": {

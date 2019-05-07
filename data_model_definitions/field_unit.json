@@ -27,7 +27,7 @@
          "targetKey": "field_unit_id",
          "targetStorageType": "sql",
          "label": "name" ,
-         "sublabel": "method"
+         "sublabel": "value"
        },
 
        "genotypes": {

@@ -16,7 +16,7 @@
        "targetKey": "taxon_id",
        "targetStorageType": "sql",
        "label": "collection_name" ,
-       "sublabel": "catalog_number"
+       "sublabel": "accession_id"
      }
 
    }

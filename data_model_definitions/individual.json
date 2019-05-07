@@ -14,7 +14,7 @@
          "targetKey": "accessionId",
          "targetStorageType": "sql",
          "label": "institution_deposited",
-         "sublabel": "collection_name"
+         "sublabel": "accession_id"
       },
 
       "genotype": {
@@ -33,7 +33,7 @@
           "keysIn": "sample_to_individual",
           "targetStorageType": "sql",
           "label": "name",
-          "sublabel": "tissue"
+          "sublabel": "sample_type"
       },
 
       "field_unit": {
@@ -51,7 +51,7 @@
         "targetKey": "individual_id",
         "targetStorageType": "sql",
         "label": "name" ,
-        "sublabel": "method"
+        "sublabel": "value"
       },
 
       "mother_to" :{

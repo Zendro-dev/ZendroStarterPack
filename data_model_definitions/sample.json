@@ -24,7 +24,7 @@
        "keysIn": "sample_to_sample",
        "targetStorageType": "sql",
        "label":  "name",
-       "sublabel": "tissue"
+       "sublabel": "sample_type"
      },
 
      "sequencing_experiments" : {
@@ -34,8 +34,7 @@
        "sourceKey": "sample_id",
        "keysIn": "sample_to_experiment",
        "targetStorageType": "sql",
-       "label": "name",
-       "sublabel": "sequencing_place"
+       "label": "name"
      },
 
      "plates" : {
@@ -56,8 +55,8 @@
        "sourceKey": "sample_id",
        "keysIn": "sample_to_library_results",
        "targetStorageType": "sql",
-       "label": "lab_code",
-       "sublabel": "file_name"
+       "label": "file_name",
+       "sublabel": "file_uri"
      },
 
      "individuals" : {

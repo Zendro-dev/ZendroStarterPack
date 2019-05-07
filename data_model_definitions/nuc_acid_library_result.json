@@ -19,8 +19,7 @@
       "target": "SequencingExperiment",
       "targetKey": "sequencing_experiment_id",
       "targetStorageType": "sql",
-      "label": "name" ,
-      "sublabel": "sequencing_place"
+      "label": "name"
     },
 
       "samples" : {
@@ -31,7 +30,7 @@
         "keysIn": "sample_to_library_results",
         "targetStorageType": "sql",
         "label": "name",
-        "sublabel": "tissue"
+        "sublabel": "sample_type"
       },
 
       "genotyping_data": {

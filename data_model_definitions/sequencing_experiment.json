@@ -41,7 +41,7 @@
         "keysIn": "sample_to_experiment",
         "targetStorageType": "sql",
         "label": "name",
-        "sublabel": "tissue"
+        "sublabel": "sample_type"
       },
 
       "plates": {

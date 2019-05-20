@@ -34,7 +34,7 @@ services:
       context: ./single-page-app
       dockerfile: Dockerfile.nginx
     ports:
-      - 8080:80
+      - 80:80
 
   sdb_minio:
     image: minio/minio:RELEASE.2019-02-20T22-44-29Z

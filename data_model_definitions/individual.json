@@ -13,8 +13,8 @@
          "target": "Accession",
          "targetKey": "accessionId",
          "targetStorageType": "sql",
-         "label": "institution_deposited",
-         "sublabel": "accession_id"
+         "label": "accession_id",
+         "sublabel": "institution_deposited"
       },
 
       "genotype": {

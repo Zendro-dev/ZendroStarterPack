@@ -18,17 +18,17 @@ module.exports = {
         description: 'A guest is allowed read access to all data models, excluding users and user-roles.'
       }]).then(function(x) {
         return queryInterface.bulkInsert('users', [{
-          email: 'a.hallab@fz-juelich.de',
+          email: 'asis.hallab@gmail.com',
           password: 'admin'
         }])
       }).then(function(x) {
         return queryInterface.sequelize.query(
           'INSERT INTO role_to_user ("userId", "roleId") VALUES ' +
-          '( (SELECT (id) FROM users WHERE email = \'a.hallab@fz-juelich.de\'), ' +
+          '( (SELECT (id) FROM users WHERE email = \'asis.hallab@gmail.com\'), ' +
           '(SELECT (id) FROM roles WHERE name = \'admin\') ), ' +
-          '( (SELECT (id) FROM users WHERE email = \'a.hallab@fz-juelich.de\'), ' +
+          '( (SELECT (id) FROM users WHERE email = \'asis.hallab@gmail.com\'), ' +
           '(SELECT (id) FROM roles WHERE name = \'scientist\') ), ' +
-          '( (SELECT (id) FROM users WHERE email = \'a.hallab@fz-juelich.de\'), ' +
+          '( (SELECT (id) FROM users WHERE email = \'asis.hallab@gmail.com\'), ' +
           '(SELECT (id) FROM roles WHERE name = \'guest\') )'
         )
       }).then(function(x) {

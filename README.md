@@ -249,16 +249,6 @@ docker-compose -f docker-compose-dev.yml run --user 1000:1000 sdb_science_db_app
 npm run build
 ```
 
-#### Set the URL to the GraphQL-Server and your login-server
-
-See the `environment` section of the `sdb_nginx` image in `docker-compose.yml`.
-
-* `MY_SERVER_URL` - url where your backend server will be running, default value is http://localhost:3000/graphql
-* `MY_LOGIN_URL` - url where your backend will check authentication, default value is http://localhost:3000/login.
-* `MAX_UPLOAD_SIZE` - maximum size(in MB) of a file intended to be uploaded, default value is 500, which means that user can not upload a file larger than 500MB.
-
-The above is taken from the [single-page-app `README`](https://github.com/ScienceDb/single-page-app/blob/master/README.md)
-
 #### Build the Docker images
 
 ```

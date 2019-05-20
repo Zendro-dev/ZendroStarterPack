@@ -35,10 +35,6 @@ services:
       dockerfile: Dockerfile.nginx
     ports:
       - 8080:80
-    environment:
-      - MY_SERVER_URL=http://localhost:3000/graphql
-      - MY_LOGIN_URL=http://localhost:3000/login
-      - MAX_UPLOAD_SIZE=500
 
   sdb_minio:
     image: minio/minio:RELEASE.2019-02-20T22-44-29Z

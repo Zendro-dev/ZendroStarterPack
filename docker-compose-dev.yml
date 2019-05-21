@@ -70,7 +70,7 @@ services:
     environment:
       MINIO_ACCESS_KEY: sciencedb
       MINIO_SECRET_KEY: sciencedb
-		restart: unless-stopped
+    restart: unless-stopped
     command: server /data
 
     #sdb_science_db_shiny:

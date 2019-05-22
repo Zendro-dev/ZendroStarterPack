@@ -296,3 +296,35 @@ seeder files, are actually persisted on the host file-system.
 ```
 docker-compose -f docker-compose.yml run --rm sdb_postgres psql -h sdb_postgres -U sciencedb -W sciencedb_development
 ```
+
+## Get a command line interface to the Minio instance
+
+There is a [Minio CLI documented in detail](https://docs.min.io/docs/minio-client-complete-guide). You can use it for example to upload local files into a designated bucket on the minio server.
+
+You need the Docker image from minio. See above manual for installation details.
+
+### Start and use the Minio CLI
+
+Assuming your local files are on your `Desktop`, launch the Minio container mounting you Desktop to opt.
+
+```
+docker run -v ~/Desktop:/opt --rm -it --entrypoint=/bin/sh minio/mc
+```
+
+Now register your Minio instance:
+```
+mc config host add my_minio http://my.sciencedb.org minioUser minioPw --api S3v4
+```
+The above `minioUser` and `minioPw` are set as environment variables in your docker-compose files. The URL depends on your server setup.
+
+List all content on your Minio server
+```
+mc ls my_minio
+```
+
+List all commands
+```
+mc -h
+```
+
+Have fun!

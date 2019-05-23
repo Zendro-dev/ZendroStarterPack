@@ -12,25 +12,15 @@
       "maf": "Float"
     },
    "associations": {
-     "samples" : {
+     "wells" : {
        "type": "belongsToMany",
-       "target" : "Sample",
-       "targetKey": "sample_id",
-       "sourceKey": "genotype_data_id",
-       "keysIn": "sample_to_genotype_data",
+       "target" : "plateWell",
+       "targetKey": "wellId",
+       "sourceKey": "genotypeDataId",
+       "keysIn": "well_to_genotype_data",
        "targetStorageType": "sql",
-       "label": "name",
-       "sublabel": "sample_type"
-     },
-
-     "library_results": {
-       "type": "belongsToMany",
-       "target": "GenotypingData",
-       "targetKey": "library_result_id",
-       "sourceKey": "genotype_data_id",
-       "keysIn": "genotyping_to_library_results",
-       "targetStorageType": "sql",
-       "label": "lab_code"
+       "label": "well_id",
+       "sublabel": "barcode"
      },
 
      "individuals" : {

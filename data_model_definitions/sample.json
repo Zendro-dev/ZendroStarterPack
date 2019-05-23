@@ -27,36 +27,13 @@
        "sublabel": "sample_type"
      },
 
-     "sequencing_experiments" : {
-       "type": "belongsToMany",
-       "target": "SequencingExperiment",
-       "targetKey": "experiment_id",
-       "sourceKey": "sample_id",
-       "keysIn": "sample_to_experiment",
+     "wells" : {
+       "type": "hasMany",
+       "target": "plateWell",
+       "targetKey": "sample_id",
        "targetStorageType": "sql",
-       "label": "name"
-     },
-
-     "plates" : {
-       "type": "belongsToMany",
-       "target": "Plate",
-       "targetKey": "plate_id",
-       "sourceKey": "sample_id",
-       "keysIn": "sample_to_plate",
-       "targetStorageType": "sql",
-       "label": "plate_id",
+       "label": "well_id",
        "sublabel": "barcode"
-     },
-
-     "library_results" : {
-       "type": "belongsToMany",
-       "target": "NucAcidLibraryResult",
-       "targetKey": "library_result_id",
-       "sourceKey": "sample_id",
-       "keysIn": "sample_to_library_results",
-       "targetStorageType": "sql",
-       "label": "file_name",
-       "sublabel": "file_uri"
      },
 
      "individuals" : {
@@ -67,16 +44,6 @@
        "keysIn": "sample_to_individual",
        "targetStorageType": "sql",
        "label": "name"
-     },
-
-     "genotyping_data" : {
-       "type": "belongsToMany",
-       "target" : "GenotypingData",
-       "targetKey": "genotype_data_id",
-       "sourceKey": "sample_id",
-       "keysIn": "sample_to_genotype_data",
-       "targetStorageType": "sql",
-       "label": "file_name"
      }
 
    }

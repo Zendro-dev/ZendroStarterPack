@@ -4,7 +4,7 @@
   "attributes":{
       "lab_code": "String",
       "file_name": "String",
-      "file_uri": "String",
+      "bucket_uri": "String",
       "type": "String",
       "insert_size": "Int",
       "technical_replicate": "Int",
@@ -20,27 +20,6 @@
       "targetKey": "sequencing_experiment_id",
       "targetStorageType": "sql",
       "label": "name"
-    },
-
-      "samples" : {
-        "type": "belongsToMany",
-        "target": "Sample",
-        "targetKey": "sample_id",
-        "sourceKey": "library_result_id",
-        "keysIn": "sample_to_library_results",
-        "targetStorageType": "sql",
-        "label": "name",
-        "sublabel": "sample_type"
-      },
-
-      "genotyping_data": {
-        "type": "belongsToMany",
-        "target": "GenotypingData",
-        "targetKey": "genotype_data_id",
-        "sourceKey": "library_result_id",
-        "keysIn": "genotyping_to_library_results",
-        "targetStorageType": "sql",
-        "label": "file_name"
-      }
+    }
    }
  }

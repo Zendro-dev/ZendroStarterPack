@@ -4,15 +4,7 @@
   "attributes":{
       "plate_id": "String",
       "type": "String",
-      "row": "String",
-      "column": "Int",
-      "well": "String",
-      "barcode": "String",
-      "storage": "String",
-      "concentration": "Float",
-      "concentration_measurement_method": "String",
-      "library_prep_id": "String",
-      "well_id": "String"
+      "storage": "String"
     },
    "associations": {
        "sequencing_experiment" : {
@@ -23,15 +15,13 @@
        "label": "name"
      },
 
-     "samples": {
-       "type": "belongsToMany",
-       "target": "Sample",
-       "targetKey": "sample_id",
-       "sourceKey": "plate_id",
-       "keysIn": "sample_to_plate",
+     "wells": {
+       "type": "hasMany",
+       "target": "plateWell",
+       "targetKey": "plateId",
        "targetStorageType": "sql",
-       "label": "name",
-       "sublabel": "sample_type"
+       "label": "well_id",
+       "sublabel": "barcode"
      }
    }
  }

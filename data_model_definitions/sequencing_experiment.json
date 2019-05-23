@@ -33,17 +33,6 @@
       "sublabel": "file_name"
     },
 
-      "samples": {
-        "type": "belongsToMany",
-        "target": "Sample",
-        "targetKey": "sample_id",
-        "sourceKey": "experiment_id",
-        "keysIn": "sample_to_experiment",
-        "targetStorageType": "sql",
-        "label": "name",
-        "sublabel": "sample_type"
-      },
-
       "plates": {
         "type": "hasMany",
         "target": "Plate",

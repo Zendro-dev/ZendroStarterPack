@@ -135,14 +135,14 @@ generators and/or skeleton server projects `graphql-server` or
 #### Generate the GraphQL server
 
 ```
-docker run --rm -v `pwd`:/opt --user 1000:1000 sciencedb-code-generators:latest 
+docker run --rm -it -v `pwd`:/opt --user 1000:1000 sciencedb-code-generators:latest 
 graphql-server-model-codegen generate /opt/data_model_definitions /opt/graphql-server
 ```
 
 #### Generate the Single Page Application (SPA) server
 
 ```
-docker run --rm -v `pwd`:/opt --user 1000:1000 sciencedb-code-generators:latest 
+docker run --rm -it -v `pwd`:/opt --user 1000:1000 sciencedb-code-generators:latest 
 single-page-app-codegen --jsonFiles /opt/data_model_definitions /opt/single-page-app
 ```
 
@@ -152,6 +152,75 @@ Upon starting the servers in any mode development or production any pending
 database migrations and seeding is automatically triggered. See file
 `./graphql-server/migrateDbAndStartServer.sh`, and the two docker-compose files
 `docker-compose-dev.yml` (development) and `docker-compose.yml` (production).
+
+### Setup
+
+If you do not run the development, and definitely later the production
+environment, on `localhost`, you need to tell the single page application which
+URLs to use for login and to send GraphQL queries to. This is controlled by the
+following environment variables of `sdb_science_db_app_server` in the two
+docker-compose files.
+
+* `VUE_APP_SERVER_URL=http://localhost:3000/graphql`
+* `VUE_APP_LOGIN_URL=http://localhost:3000/login`
+* `VUE_APP_MAX_UPLOAD_SIZE=500`
+
+For more details see our [manual](https://sciencedb.github.io/) and the
+[single-page-application
+`README`](https://github.com/ScienceDb/single-page-app/blob/master/README.md).
+
+
+#### Access Control
+
+ScienceDb can be used checking access rights for every single GraphQL query
+received by the currently logged in user identified by the respective [JSON Web
+Token](https://jwt.io/) found in the request header. The user is decoded and
+his roles are loaded to check his access rights. This step is carried out by
+the [NPM acl package](https://www.npmjs.com/package/acl). Respective access
+rights can and must be declared in the file
+[`./graphql-server/acl_rules.js`](https://github.com/ScienceDb/graphql-server/blob/master/acl_rules.js).
+
+You can run ScienceDb with or without this access control check. The default is
+to run it _without_ checking access rights. 
+
+To switch access right check on, you must uncomment the command line switch
+`acl` and change the following line in
+[`./graphql-server/migrateDbAndStartServer.sh`](https://github.com/ScienceDb/graphql-server/blob/master/migrateDbAndStartServer.sh)
+
+```
+npm start # acl
+```
+to
+```
+npm start acl
+```
+
+If you decide _not_ to use access control, we strongly recommend to restrict
+access to the GraphiQL interface through the `graphql-server`. Switch off the
+support for GraphiQL in [`./graphql-server/server.js`]():
+
+```
+// Excerpt from server.js
+
+app.use('/graphql', cors(), graphqlHTTP((req) => ({
+   schema: Schema,
+   rootValue: resolvers,
+   pretty: true,
+   graphiql: false, // SWITCH OFF SUPPORT FOR GraphiQL by setting this to 'false'
+   context: {
+     request: req,
+     acl: acl
+   },
+   formatError(error){
+     return {
+       message: error.message,
+       details: error.originalError && error.originalError.errors ? error.originalError.errors : "",
+       path: error.path
+     };
+   }
+ })));
+```
+
 
 ### Development environment
 
@@ -179,16 +248,6 @@ rebuild them to have them using it your latest code!
 docker-compose -f docker-compose-dev.yml run --user 1000:1000 sdb_science_db_app_server bash
 npm run build
 ```
-
-#### Set the URL to the GraphQL-Server and your login-server
-
-See the `environment` section of the `sdb_nginx` image in `docker-compose.yml`.
-
-* `MY_SERVER_URL` - url where your backend server will be running, default value is http://localhost:3000/graphql
-* `MY_LOGIN_URL` - url where your backend will check authentication, default value is http://localhost:3000/login.
-* `MAX_UPLOAD_SIZE` - maximum size(in MB) of a file intended to be uploaded, default value is 500, which means that user can not upload a file larger than 500MB.
-
-The above is taken from the [single-page-app `README`](https://github.com/ScienceDb/single-page-app/blob/master/README.md)
 
 #### Build the Docker images
 

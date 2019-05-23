@@ -297,13 +297,13 @@ seeder files, are actually persisted on the host file-system.
 docker-compose -f docker-compose.yml run --rm sdb_postgres psql -h sdb_postgres -U sciencedb -W sciencedb_development
 ```
 
-## Get a command line interface to the Minio instance
+### Get a command line interface to the Minio instance
 
 There is a [Minio CLI documented in detail](https://docs.min.io/docs/minio-client-complete-guide). You can use it for example to upload local files into a designated bucket on the minio server.
 
 You need the Docker image from minio. See above manual for installation details.
 
-### Start and use the Minio CLI
+#### Start and use the Minio CLI
 
 Assuming your local files are on your `Desktop`, launch the Minio container mounting you Desktop to opt.
 
@@ -328,3 +328,25 @@ mc -h
 ```
 
 Have fun!
+
+## Stop the whole docker-compose
+
+If you have started your docker-compose with `-d` or if you just want to delete the created containers, execute:
+```
+docker-compose -f docker-compose[-dev].yml down
+```
+The above `[-dev]` has to be user or not, depending on whether you ran the development or production environment.
+
+### Abolish everything
+
+To remove the docker images execute (see above):
+```
+docker images | grep sciencedbstarterpack_ | awk '{print "docker rmi " $1}' | sh
+```
+
+To delete the volumes _permanently_ in which your data has been stored execute:
+```
+docker volume ls | grep sciencedbstarterpack | awk '{print "docker volume rm " $2}' | sh
+```
+Be _warned_: All your data will be lost!
+

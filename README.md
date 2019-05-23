@@ -350,3 +350,7 @@ docker volume ls | grep sciencedbstarterpack | awk '{print "docker volume rm " $
 ```
 Be _warned_: All your data will be lost!
 
+If you also want to delete the Docker image holding the code generators execute:
+```
+docker rmi sciencedb-code-generators:latest
+```

@@ -146,6 +146,13 @@ docker run --rm -it -v `pwd`:/opt --user 1000:1000 sciencedb-code-generators:lat
 single-page-app-codegen --jsonFiles /opt/data_model_definitions /opt/single-page-app
 ```
 
+### Multiple code generation
+
+Be very carefull when running the code generators multiple times on the same data model definitions. Two nasty things can happen:
+
+1. You might overwrite manual changes you might have made to come of the code that was automatically generated.
+2. In the case of relational databases, ScienceDb code generators also create migrations (using Sequelize). As these are named using the current date, you might have several migrations to create the same tables. This will lead to errors. Make sure you delete the migrations folder content, if you want to run the code generators multiple times on the same model definitions: `rm ./graphql-server/migrations/*`. 
+
 ## Start the servers
 
 Upon starting the servers in any mode development or production any pending
@@ -354,3 +361,8 @@ If you also want to delete the Docker image holding the code generators execute:
 ```
 docker rmi sciencedb-code-generators:latest
 ```
+
+#### Start from scratch
+
+If you want to start from scratch, and generate the code for your model definitions again, we recommend to remove your local copies of `graphql-server` and `single-page-application` and check these sub-modules out again using git.
+

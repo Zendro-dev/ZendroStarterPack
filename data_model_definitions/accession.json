@@ -31,7 +31,30 @@
       "subspecies": "String",
       "variety": "String",
       "race": "String",
-      "taxon_id": "String"
+      "form": "String",
+      "taxon_id": "String",
+
+      "country": "String",
+      "natural_area": "Boolean",
+      "natural_area_name": "String",
+      "georeference_method": "String",
+      "georeference_source": "String",
+      "datum": "String",
+      "collection_deposit": "String",
+      "collect_number": "String",
+      "collect_source": "String",
+      "collected_seeds": "Int",
+      "collected_plants": "Int",
+      "collected_other": "String",
+      "habit": "String",
+      "local_name": "String",
+      "vegetation": "String",
+      "stoniness": "String",
+      "sewer": "String",
+      "topography": "String",
+      "slope": "Float",
+      "observations": "String"
+
     },
    "associations": {
 
@@ -59,6 +82,38 @@
         "targetStorageType": "webservice",
         "label": "scientificName",
         "sublabel": "taxonRank"
+      },
+
+      "collected_materials" : {
+        "type": "hasMany",
+        "target": "CollectedMaterial",
+        "targetKey": "accessionId",
+        "targetStorageType": "sql",
+        "label": "value"
+      },
+
+      "soil_textures" : {
+        "type": "hasMany",
+        "target": "SoilTexture",
+        "targetKey": "accessionId",
+        "targetStorageType": "sql",
+        "label": "value"
+      },
+
+      "orientations": {
+        "type": "hasMany",
+        "target": "Orientation",
+        "targetKey": "accessionId",
+        "targetStorageType": "sql",
+        "label": "value"
+      },
+
+      "uses" : {
+        "type": "hasMany",
+        "target": "AccessionUse",
+        "targetKey": "accessionId",
+        "targetStorageType": "sql",
+        "label": "value"
       }
 
    }

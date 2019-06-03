@@ -18,6 +18,7 @@ services:
   sdb_science_db_graphql_server:
     depends_on:
       - sdb_postgres
+      - sdb_cassandra
     build:
       context: ./graphql-server
       dockerfile: Dockerfile.graphql_server

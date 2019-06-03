@@ -135,16 +135,23 @@ generators and/or skeleton server projects `graphql-server` or
 #### Generate the GraphQL server
 
 ```
-docker run --rm -v `pwd`:/opt --user 1000:1000 sciencedb-code-generators:latest 
+docker run --rm -it -v `pwd`:/opt --user 1000:1000 sciencedb-code-generators:latest 
 graphql-server-model-codegen generate /opt/data_model_definitions /opt/graphql-server
 ```
 
 #### Generate the Single Page Application (SPA) server
 
 ```
-docker run --rm -v `pwd`:/opt --user 1000:1000 sciencedb-code-generators:latest 
+docker run --rm -it -v `pwd`:/opt --user 1000:1000 sciencedb-code-generators:latest 
 single-page-app-codegen --jsonFiles /opt/data_model_definitions /opt/single-page-app
 ```
+
+### Multiple code generation
+
+Be very carefull when running the code generators multiple times on the same data model definitions. Two nasty things can happen:
+
+1. You might overwrite manual changes you might have made to come of the code that was automatically generated.
+2. In the case of relational databases, ScienceDb code generators also create migrations (using Sequelize). As these are named using the current date, you might have several migrations to create the same tables. This will lead to errors. Make sure you delete the migrations folder content, if you want to run the code generators multiple times on the same model definitions: `rm ./graphql-server/migrations/*`. 
 
 ## Start the servers
 
@@ -296,3 +303,66 @@ seeder files, are actually persisted on the host file-system.
 ```
 docker-compose -f docker-compose.yml run --rm sdb_postgres psql -h sdb_postgres -U sciencedb -W sciencedb_development
 ```
+
+### Get a command line interface to the Minio instance
+
+There is a [Minio CLI documented in detail](https://docs.min.io/docs/minio-client-complete-guide). You can use it for example to upload local files into a designated bucket on the minio server.
+
+You need the Docker image from minio. See above manual for installation details.
+
+#### Start and use the Minio CLI
+
+Assuming your local files are on your `Desktop`, launch the Minio container mounting you Desktop to opt.
+
+```
+docker run -v ~/Desktop:/opt --rm -it --entrypoint=/bin/sh minio/mc
+```
+
+Now register your Minio instance:
+```
+mc config host add my_minio http://my.sciencedb.org minioUser minioPw --api S3v4
+```
+The above `minioUser` and `minioPw` are set as environment variables in your docker-compose files. The URL depends on your server setup.
+
+List all content on your Minio server
+```
+mc ls my_minio
+```
+
+List all commands
+```
+mc -h
+```
+
+Have fun!
+
+## Stop the whole docker-compose
+
+If you have started your docker-compose with `-d` or if you just want to delete the created containers, execute:
+```
+docker-compose -f docker-compose[-dev].yml down
+```
+The above `[-dev]` has to be user or not, depending on whether you ran the development or production environment.
+
+### Abolish everything
+
+To remove the docker images execute (see above):
+```
+docker images | grep sciencedbstarterpack_ | awk '{print "docker rmi " $1}' | sh
+```
+
+To delete the volumes _permanently_ in which your data has been stored execute:
+```
+docker volume ls | grep sciencedbstarterpack | awk '{print "docker volume rm " $2}' | sh
+```
+Be _warned_: All your data will be lost!
+
+If you also want to delete the Docker image holding the code generators execute:
+```
+docker rmi sciencedb-code-generators:latest
+```
+
+#### Start from scratch
+
+If you want to start from scratch, and generate the code for your model definitions again, we recommend to remove your local copies of `graphql-server` and `single-page-application` and check these sub-modules out again using git.
+

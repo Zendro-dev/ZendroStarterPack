@@ -38,8 +38,7 @@
         "target": "Plate",
         "targetKey": "experiment_id",
         "targetStorageType": "sql",
-        "label": "plate_id" ,
-        "sublabel": "barcode"
+        "label": "plate_id"
       }
 
    }

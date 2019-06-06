@@ -6,7 +6,7 @@
       "method": "String",
       "reference": "String",
       "reference_link": "String",
-      "value": "String",
+      "value": "Float",
       "unit": "String",
       "short_name": "String",
       "comments": "String"

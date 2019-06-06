@@ -50,8 +50,7 @@
         "target": "Measurement",
         "targetKey": "individual_id",
         "targetStorageType": "sql",
-        "label": "name" ,
-        "sublabel": "value"
+        "label": "name"
       },
 
       "mother_to" :{

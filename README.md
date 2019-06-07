@@ -341,8 +341,8 @@ mc mb my_minio/my_bucket
 
 Copy files to bucket
 ```
-mc cp opt/C872HANXX_1_fastq.gz my_minio/my_bucket
-mc cp opt/C877GANXX_2_fastq.gz my_minio/my_bucket
+mc cp opt/my_file1 my_minio/my_bucket
+mc cp opt/my_file2 my_minio/my_bucket
 ```
 
 Have fun!

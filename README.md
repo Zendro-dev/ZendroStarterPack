@@ -334,6 +334,17 @@ List all commands
 mc -h
 ```
 
+Create a bucket
+```
+mc mb my_minio/my_bucket
+```
+
+Copy files to bucket
+```
+mc cp opt/C872HANXX_1_fastq.gz my_minio/my_bucket
+mc cp opt/C877GANXX_2_fastq.gz my_minio/my_bucket
+```
+
 Have fun!
 
 ## Stop the whole docker-compose

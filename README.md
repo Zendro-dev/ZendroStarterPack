@@ -52,7 +52,7 @@ to the latest remote repository version, run the following command:
 git submodule foreach git pull origin master
 ```
 
-### Start your own branch of the servers 
+### Start your own branch of the servers
 
 To correctly manage your code with git you will need to create your own
 branches of the servers. Furthermore, you might have to add your own remote
@@ -65,7 +65,7 @@ on github:
 
 Then update your submodules (the servers) to track your own forked version of
 the two repositories. To update the git URLs simply edit the file `.gitmodules`.
-For example change 
+For example change
 ```
 [submodule "graphql-server"]
   path = graphql-server
@@ -94,7 +94,7 @@ git submodule foreach 'git checkout -b featureA'
 
 To avoid having to install the ScienceDb code-generators on your host system we
 provide a dedicated Docker image in which two code generators are installed and
-ready to be used. 
+ready to be used.
 
 ```
 docker build -f Dockerfile.code-generators -t sciencedb-code-generators:latest .
@@ -135,15 +135,15 @@ generators and/or skeleton server projects `graphql-server` or
 #### Generate the GraphQL server
 
 ```
-docker run --rm -it -v `pwd`:/opt --user 1000:1000 sciencedb-code-generators:latest 
-graphql-server-model-codegen generate /opt/data_model_definitions /opt/graphql-server
+docker run --rm -it -v `pwd`:/opt --user 1000:1000 sciencedb-code-generators:latest
+graphql-server-model-codegen -f /opt/data_model_definitions -o /opt/graphql-server
 ```
 
 #### Generate the Single Page Application (SPA) server
 
 ```
-docker run --rm -it -v `pwd`:/opt --user 1000:1000 sciencedb-code-generators:latest 
-single-page-app-codegen --jsonFiles /opt/data_model_definitions /opt/single-page-app
+docker run --rm -it -v `pwd`:/opt --user 1000:1000 sciencedb-code-generators:latest
+single-page-app-codegen -f /opt/data_model_definitions -o /opt/single-page-app
 ```
 
 ## Start the servers
@@ -181,7 +181,7 @@ rights can and must be declared in the file
 [`./graphql-server/acl_rules.js`](https://github.com/ScienceDb/graphql-server/blob/master/acl_rules.js).
 
 You can run ScienceDb with or without this access control check. The default is
-to run it _without_ checking access rights. 
+to run it _without_ checking access rights.
 
 To switch access right check on, you must uncomment the command line switch
 `acl` and change the following line in
@@ -227,7 +227,7 @@ app.use('/graphql', cors(), graphqlHTTP((req) => ({
 As long as you are developing your applications, you want the servers to react
 to any changes you make to your code immediately. Hence, in the development
 environment, the single-page-application is served through a dedicated server
-and not compiled with `webpack` to be served statically. 
+and not compiled with `webpack` to be served statically.
 
 ```
 docker-compose -f docker-compose-dev.yml up --force-recreate --remove-orphans

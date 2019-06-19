@@ -2,7 +2,8 @@
   "model": "CollectedMaterial",
   "storageType": "sql",
   "attributes": {
-    "value": "String"
+    "value": "String",
+    "accessionId": "Int"
   },
   "associations" : {
     "accession": {

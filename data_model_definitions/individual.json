@@ -4,7 +4,10 @@
   "attributes":{
       "name": "String",
       "origin": "String",
-      "description": "String"
+      "description": "String",
+      "accessionId": "Int",
+      "genotypeId": "Int",
+      "field_unit_id": "Int"
     },
    "associations": {
 

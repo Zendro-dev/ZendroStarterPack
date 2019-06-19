@@ -9,7 +9,9 @@
       "concentration": "Float",
       "concentration_measurement_method": "String",
       "library_prep_id": "String",
-      "well_id": "String"
+      "well_id": "String",
+      "plateId": "Int",
+      "sample_id": "Int"
     },
    "associations": {
 

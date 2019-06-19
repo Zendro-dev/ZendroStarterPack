@@ -5,7 +5,9 @@
       "name": "String",
       "description": "String",
       "origin": "String",
-      "description": "String"
+      "description": "String",
+      "mother_id": "Int",
+      "father_id": "Int"
     },
    "associations": {
      "mother" : {

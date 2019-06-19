@@ -9,7 +9,9 @@
       "value": "Float",
       "unit": "String",
       "short_name": "String",
-      "comments": "String"
+      "comments": "String",
+      "field_unit_id": "Int",
+      "individual_id": "Int"
     },
    "associations": {
      "field_unit" : {

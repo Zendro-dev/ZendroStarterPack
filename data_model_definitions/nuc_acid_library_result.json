@@ -11,7 +11,8 @@
       "trimmed": "Boolean",
       "trimming_method": "String",
       "demultiplexed": "String",
-      "demultiplexing": "String"
+      "demultiplexing": "String",
+      "sequencing_experiment_id": "Int"
     },
    "associations": {
      "sequencing_experiment" : {

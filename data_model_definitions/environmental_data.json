@@ -8,7 +8,8 @@
       "resolution": "String",
       "reference": "String",
       "value": "String",
-      "unit": "String"
+      "unit": "String",
+      "accessionId": "Int"
     },
    "associations": {
      "accession" : {

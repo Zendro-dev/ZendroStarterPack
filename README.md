@@ -136,7 +136,7 @@ generators and/or skeleton server projects `graphql-server` or
 
 ```
 docker run --rm -it -v `pwd`:/opt --user 1000:1000 sciencedb-code-generators:latest 
-graphql-server-model-codegen generate /opt/data_model_definitions /opt/graphql-server
+graphql-server-model-codegen generate --jsonFiles /opt/data_model_definitions /opt/graphql-server
 ```
 
 #### Generate the Single Page Application (SPA) server

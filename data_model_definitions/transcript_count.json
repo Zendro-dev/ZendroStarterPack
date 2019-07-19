@@ -4,8 +4,8 @@
 	"attributes" : {
 		"gene" : "String",
 		"value" : "Float",
-    "method": "String",
-    "reference_genome": "String"
+	        "method": "String",
+	        "reference_genome": "String"
 	},
 	"associations" : {
 		"sample" : {

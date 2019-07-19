@@ -4,10 +4,10 @@
 	"attributes": {
 		"method": "String",
 		"reference": "String",
-    "float_value": "Float",
-    "int_value": "Int",
-    "text_value": "String",
-    "unit": "String"
+		"float_value": "Float",
+		"int_value": "Int",
+		"text_value": "String",
+		"unit": "String"
 	},
 	"associations": {
 		"field_plot": {
@@ -16,7 +16,7 @@
 			"targetKey": "field_plot_id",
 			"targetStorageType": "sql",
 			"label": "field_name",
-      "sublabel": "coordinates_or_name"
+			"sublabel": "coordinates_or_name"
 		}
   }
 }

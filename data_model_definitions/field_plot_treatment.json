@@ -1,0 +1,22 @@
+{
+	"model" : "field_plot_treatment",
+	"storageType" : "Sql",
+	"attributes" : {
+		"start_date" : "String",
+		"end_date" : "String",
+		"name" : "String",
+		"description" : "String",
+		"chemical" : "String",
+		"pesticide_type" : "String"
+	},
+	"associations" : {
+		"field_plot" : {
+			"type" : "belongsTo",
+			"target" : "field_plot",
+			"targetKey" : "field_plot_id",
+			"targetStorageType" : "sql",
+			"label": "field_name",
+			"sublabel": "coordinates_or_name"
+		}
+	}
+}

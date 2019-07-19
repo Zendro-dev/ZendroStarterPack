@@ -1,6 +1,6 @@
 {
   "model" : "role",
-  "storageType" : "SQL",
+  "storageType" : "Sql",
   "attributes" : {
     "name" : "String",
     "description" : "String"

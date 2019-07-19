@@ -3,12 +3,12 @@
 	"storageType" : "Sql",
 	"attributes" : {
 		"lab_code" : "String",
-    "file_name" : "String",
-    "file_uri": "String",
-    "type": "String",
-    "insert_size": "Float",
-    "technical_replicate": "Int",
-    "trimmed": "Boolean"
+		"file_name" : "String",
+		"file_uri": "String",
+		"type": "String",
+		"insert_size": "Float",
+		"technical_replicate": "Int",
+		"trimmed": "Boolean"
 	},
 	"associations" : {
 		"sample" : {
@@ -17,7 +17,7 @@
 			"targetKey" : "sample_id",
 			"targetStorageType" : "sql",
 			"label": "name",
-      "sublabel": "tissue"
+			"sublabel": "tissue"
 		}
 	}
 }

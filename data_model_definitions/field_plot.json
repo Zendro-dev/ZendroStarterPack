@@ -4,9 +4,9 @@
 	"attributes" : {
 		"field_name" : "String",
 		"coordinates_or_name" : "String",
-    "year": "String",
-    "area_sqm": "Float",
-    "type": "String"
+		"year": "String",
+		"area_sqm": "Float",
+		"type": "String"
 	},
 	"associations" : {
 		"genotype" : {
@@ -15,7 +15,14 @@
 			"targetKey" : "genotype_id",
 			"targetStorageType" : "sql",
 			"label": "name",
-      "sublabel": "id"
+			"sublabel": "id"
+		},
+		"field_plot_treatment" : {
+			"type" : "belongsTo",
+			"target" : "field_plot_treatment",
+			"targetKey" : "field_plot_treatment_id",
+			"targetStorageType" : "sql",
+			"label": "name"
 		}
 	}
 }

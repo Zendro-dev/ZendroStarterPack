@@ -9,6 +9,9 @@ services:
       - sdb_db_data:/var/lib/postgresql/data
     ports:
       - 5432:5432
+    networks:
+      - backend
+    restart: unless-stopped
 
   sdb_science_db_graphql_server:
     depends_on:
@@ -32,6 +35,19 @@ services:
       - |
         npm install
         ./migrateDbAndStartServer.sh
+    networks:
+      - backend
+      - reverseproxy
+    labels:
+      traefik.enable: "true"
+      traefik.backend: "sdb_science_db_graphql_server"
+      #traefik.frontend.rule: "Host:v-10292.cloud.intertech.de,vmd17974.contabo.host;PathPrefix:/api"
+      traefik.frontend.rule: "Host:bpapi.reconstructdb.org"
+      #traefik.frontend.auth.basic: 'testuser:$$apr1$$QBCuO60R$$pJIFSe2x8L/cTbOBOvoOt1'
+      #traefik.frontend.headers.SSLRedirect=true
+      traefik.docker.network: "reverseproxy"
+      traefik.port: "3000"
+    restart: unless-stopped
 
   sdb_science_db_app_server:
     depends_on:
@@ -44,8 +60,8 @@ services:
       - 8080:8080
     environment:
       - PORT=8080
-      - VUE_APP_SERVER_URL=http://localhost:3000/graphql
-      - VUE_APP_LOGIN_URL=http://localhost:3000/login
+      - VUE_APP_SERVER_URL=http://bpapi.reconstructdb.org/graphql
+      - VUE_APP_LOGIN_URL=http://bpapi.reconstructdb.org/login
       - VUE_APP_MAX_UPLOAD_SIZE=500
     volumes:
       - .:/usr/ScienceDbStarterPack
@@ -57,6 +73,19 @@ services:
       - |
         npm install
         npm run serve
+    networks:
+      - backend
+      - reverseproxy
+    labels:
+      traefik.enable: "true"
+      traefik.backend: "sdb_science_db_app_server"
+      #traefik.frontend.rule: "Host:vmd17974.hallab.de,vmd17974.contabo.host"
+      traefik.frontend.rule: "Host:bpspa.reconstructdb.org"
+      #traefik.frontend.auth.basic: 'testuser:$$apr1$$QBCuO60R$$pJIFSe2x8L/cTbOBOvoOt1'
+      #traefik.frontend.headers.SSLRedirect=true
+      traefik.docker.network: "reverseproxy"
+      traefik.port: "8080"
+    restart: unless-stopped
 
   sdb_minio:
     image: minio/minio:RELEASE.2019-02-20T22-44-29Z
@@ -68,6 +97,19 @@ services:
       MINIO_ACCESS_KEY: sciencedb
       MINIO_SECRET_KEY: sciencedb
     command: server /data
+    networks:
+      - backend
+      - reverseproxy
+    labels:
+      traefik.enable: "true"
+      traefik.backend: "sdb_minio"
+      #traefik.frontend.rule: "Host:vmd17974.hallab.de,vmd17974.contabo.host"
+      traefik.frontend.rule: "Host:bpminio.reconstructdb.org"
+      #traefik.frontend.auth.basic: 'testuser:$$apr1$$QBCuO60R$$pJIFSe2x8L/cTbOBOvoOt1'
+      #traefik.frontend.headers.SSLRedirect=true
+      traefik.docker.network: "reverseproxy"
+      traefik.port: "9000"
+    restart: unless-stopped
 
     #sdb_science_db_shiny:
     #bpbuild:
@@ -91,3 +133,7 @@ volumes:
   sdb_db_data:
   sdb_minio_data:
   #sdb_shiny_data:
+networks:
+  backend:
+  reverseproxy:
+    external: true

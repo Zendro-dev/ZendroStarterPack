@@ -364,7 +364,7 @@ If you have started your docker-compose with `-d` or if you just want to delete 
 ```
 docker-compose -f docker-compose[-dev].yml down
 ```
-The above `[-dev]` has to be user or not, depending on whether you ran the development or production environment.
+The above `[-dev]` has to be used or not, depending on whether you ran the development or production environment.
 
 ### Abolish everything
 

@@ -1,15 +1,14 @@
 {
-  "model": "transcript_count",
+  "model": "plant_measurement",
   "storageType": "sql",
   "attributes": {
-    "gene": "String",
     "variable": "String",
-    "count": "Float",
-    "tissue_or_condition": "String",
+    "value": "Float",
+    "unit": "String",
     "individual_id" : "Int"
   },
   "associations": {
-    "individual": {
+    "individual" : {
       "type" : "belongsTo",
       "target" : "individual",
       "targetKey" : "individual_id",

@@ -1,0 +1,29 @@
+{
+  "model": "taxon",
+  "storageType": "sql",
+  "attributes": {
+    "name": "String",
+    "taxonomic_level": "String",
+    "reference_sequence": "String",
+    "reference_gene": "String",
+    "taxon_id": "Int"
+  },
+  "associations": {
+    "parent": {
+      "type" : "belongsTo",
+      "target" : "taxon",
+      "targetKey" : "taxon_id",
+      "targetStorageType" : "sql",
+      "label" : "name",
+      "sublabel": "id"
+    },
+    "microbiome_asvs": {
+      "type" : "hasMany",
+      "target" : "microbiome_asv",
+      "targetKey" : "microbiome_asv_id",
+      "targetStorageType" : "sql",
+      "label" : "name",
+      "sublabel": "id"
+    }
+  }
+}

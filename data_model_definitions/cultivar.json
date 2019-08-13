@@ -1,0 +1,19 @@
+{
+  "model": "cultivar",
+  "storageType": "sql",
+  "attributes": {
+    "description": "String",
+    "genotype": "String",
+    "taxon_id": "Int"
+  }, 
+  "associations": {
+    "taxon": {
+      "type" : "belongsTo",
+      "target" : "taxon",
+      "targetKey" : "taxon_id",
+      "targetStorageType" : "sql",
+      "label" : "name",
+      "sublabel": "id"
+    }
+  }
+}

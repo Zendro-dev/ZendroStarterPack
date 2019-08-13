@@ -1,26 +1,41 @@
 {
-	"model" : "individual",
-	"storageType" : "Sql",
-	"attributes" : {
-		"name" : "String",
-		"description" : "String"
-	},
-	"associations" : {
-		"genotype" : {
-			"type" : "belongsTo",
-			"target" : "genotype",
-			"targetKey" : "genotype_id",
-			"targetStorageType" : "sql",
-			"label": "name",
-      "sublabel": "id"
-		},
-		"marker_data_snps" : {
-			"type" : "hasMany",
-			"target" : "marker_data",
-			"targetKey" : "individual_id",
-			"targetStorageType" : "sql",
-			"label": "marker_name",
-			"sublabel": "nucleotide"
-		}
-	}
+  "model": "individual",
+  "storageType": "sql",
+  "attributes": {
+    "name": "String",
+    "sowing_date": "Date",
+    "harvest_date": "Date",
+    "developmental_state": "String",
+    "life_cycle_phase": "String",
+    "location_type": "String",
+    "cultivar_id": "Int",
+    "field_plot_id": "Int",
+    "pot_id": "Int"
+  },
+  "associations": {
+    "cultivar": {
+      "type" : "belongsTo",
+      "target" : "cultivar",
+      "targetKey" : "cultivar_id",
+      "targetStorageType" : "sql",
+      "label" : "genotype",
+      "sublabel": "description"
+    },
+    "field_plot": {
+      "type" : "belongsTo",
+      "target" : "field_plot",
+      "targetKey" : "field_plot_id",
+      "targetStorageType" : "sql",
+      "label" : "location_code",
+      "sublabel": "field_name"
+    },
+    "pot": {
+      "type" : "belongsTo",
+      "target" : "pot",
+      "targetKey" : "pot_id",
+      "targetStorageType" : "sql",
+      "label" : "pot",
+      "sublabel": "greenhouse"
+    }
+  }
 }

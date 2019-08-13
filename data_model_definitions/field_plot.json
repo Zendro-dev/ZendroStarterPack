@@ -1,21 +1,11 @@
 {
-	"model" : "field_plot",
-	"storageType" : "Sql",
-	"attributes" : {
-		"field_name" : "String",
-		"coordinates_or_name" : "String",
-    "year": "String",
-    "area_sqm": "Float",
-    "type": "String"
-	},
-	"associations" : {
-		"genotype" : {
-			"type" : "belongsTo",
-			"target" : "genotype",
-			"targetKey" : "genotype_id",
-			"targetStorageType" : "sql",
-			"label": "name",
-      "sublabel": "id"
-		}
-	}
+  "model": "field_plot",
+  "storageType": "sql",
+  "attributes": {
+    "field_name": "String",
+    "latitude": "Float",
+    "longitude": "Float",
+    "location_code": "String",
+    "soil_treatment": "String"
+  }
 }

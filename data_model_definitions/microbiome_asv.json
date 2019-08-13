@@ -1,0 +1,31 @@
+{
+  "model": "microbiome_asv",
+  "storageType": "sql",
+  "attributes": {
+    "asv_id": "String",
+    "compartment": "String",
+    "count": "Int",
+    "version": "Int",
+    "primer_kingdom": "String",
+    "sample_id": "Int",
+    "taxon_id": "Int"
+  },
+  "associations": {
+    "sample": {
+      "type" : "belongsTo",
+      "target" : "sample",
+      "targetKey" : "sample_id",
+      "targetStorageType" : "sql",
+      "label" : "name",
+      "sublabel": "id"
+    },
+    "taxon": {
+      "type" : "belongsTo",
+      "target" : "taxon",
+      "targetKey" : "taxon_id",
+      "targetStorageType" : "sql",
+      "label" : "name",
+      "sublabel": "id"
+    }
+  }
+}

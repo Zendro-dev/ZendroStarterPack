@@ -1,39 +1,68 @@
 {
-	"model" : "sample",
-	"storageType" : "Sql",
-	"attributes" : {
-		"name" : "String",
-		"sampling_date" : "String",
-		"type": "String",
-		"biological_replicate_no": "Int",
-		"lab_code": "String",
-		"treatment": "String",
-		"tissue": "String"
-	},
-	"associations" : {
-		"individual" : {
-			"type" : "belongsTo",
-			"target" : "individual",
-			"targetKey" : "individual_id",
-			"targetStorageType" : "sql",
-			"label": "name",
-			"sublabel": "id"
-		},
-		"sequencing_experiment" : {
-			"type" : "belongsTo",
-			"target" : "sequencing_experiment",
-			"targetKey" : "sequencing_experiment_id",
-			"targetStorageType" : "sql",
-			"label": "name",
-			"sublabel": "platform"
-		},
-		"library_data" : {
-			"type" : "hasMany",
-			"target" : "nuc_acid_library_result",
-			"targetKey" : "sample_id",
-			"targetStorageType" : "sql",
-			"label": "lab_code",
-			"sublabel": "file_name"
-		}
-	}
+  "model": "sample",
+  "storageType": "sql",
+  "attributes": {
+    "name": "String",
+    "material": "String",
+    "life_cycle_phase": "String",
+    "description": "String",
+    "harvest_date": "Date",
+    "library": "String",
+    "barcode_number": "Int",
+    "barcode_sequence": "String",
+    "sample_id": "Int",
+    "individual_id" : "Int",
+    "pot_id": "Int",
+    "field_plot_id": "Int"
+  },
+  "associations": {
+    "parent": {
+      "type" : "belongsTo",
+      "target" : "sample",
+      "targetKey" : "sample_id",
+      "targetStorageType" : "sql",
+      "label" : "name",
+      "sublabel": "material"
+    },
+    "individual": {
+      "type" : "belongsTo",
+      "target" : "individual",
+      "targetKey" : "individual_id",
+      "targetStorageType" : "sql",
+      "label" : "name",
+      "sublabel": "location_type"
+    },
+    "pot": {
+      "type" : "belongsTo",
+      "target" : "pot",
+      "targetKey" : "pot_id",
+      "targetStorageType" : "sql",
+      "label" : "name",
+      "sublabel": "id"
+    },
+    "field_plot": {
+      "type" : "belongsTo",
+      "target" : "field_plot",
+      "targetKey" : "field_plot_id",
+      "targetStorageType" : "sql",
+      "label" : "name",
+      "sublabel": "id"
+    },
+    "samples": {
+      "type" : "hasMany",
+      "target" : "sample",
+      "targetKey" : "sample_id",
+      "targetStorageType" : "sql",
+      "label" : "name",
+      "sublabel": "id"
+    },
+    "microbiome_asvs": {
+      "type" : "hasMany",
+      "target" : "microbiome_asv",
+      "targetKey" : "microbiome_asv_id",
+      "targetStorageType" : "sql",
+      "label" : "name",
+      "sublabel": "id"
+    }
+  }
 }

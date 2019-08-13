@@ -1,0 +1,10 @@
+{
+  "model": "pot",
+  "storageType": "sql",
+  "attributes": {
+    "pot": "String",
+    "greenhouse": "String",
+    "climate_chamber": "String",
+    "conditions": "String"
+  }
+}

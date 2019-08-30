@@ -23,7 +23,7 @@ module.exports = {
         }])
       }).then(function(x) {
         return queryInterface.sequelize.query(
-          'INSERT INTO role_to_user ("userId", "roleId") VALUES ' +
+          'INSERT INTO role_to_users ("userId", "roleId") VALUES ' +
           '( (SELECT (id) FROM users WHERE email = \'a.hallab@fz-juelich.de\'), ' +
           '(SELECT (id) FROM roles WHERE name = \'admin\') ), ' +
           '( (SELECT (id) FROM users WHERE email = \'a.hallab@fz-juelich.de\'), ' +
@@ -43,7 +43,7 @@ module.exports = {
 
   down: (queryInterface, Sequelize) => {
     return queryInterface.bulkDelete('users', null, {}).then(u => {
-      return queryInterface.bulkDelete('role_to_user', null, {})
+      return queryInterface.bulkDelete('role_to_users', null, {})
     }).then(r => {
       return queryInterface.bulkDelete('roles', null, {})
     });

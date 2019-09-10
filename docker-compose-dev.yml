@@ -38,10 +38,7 @@ services:
     labels:
       traefik.enable: "true"
       traefik.backend: "sdb_science_db_graphql_server"
-      #traefik.frontend.rule: "Host:v-10292.cloud.intertech.de,vmd17974.contabo.host;PathPrefix:/api"
       traefik.frontend.rule: "Host:api.reconstructdb.org"
-      #traefik.frontend.auth.basic: 'testuser:$$apr1$$QBCuO60R$$pJIFSe2x8L/cTbOBOvoOt1'
-      #traefik.frontend.headers.SSLRedirect=true
       traefik.docker.network: "reverseproxy"
       traefik.port: "3000"
     restart: unless-stopped
@@ -60,7 +57,7 @@ services:
       - 8080:8080
     environment:
       - PORT=8080
-      - VUE_APP_SERVER_URL=http:///api.reconstructdb.org/graphql
+      - VUE_APP_SERVER_URL=http://api.reconstructdb.org/graphql
       - VUE_APP_LOGIN_URL=http://api.reconstructdb.org/login
       - VUE_APP_MAX_UPLOAD_SIZE=500
     volumes:
@@ -77,12 +74,41 @@ services:
     labels:
       traefik.enable: "true"
       traefik.backend: "sdb_science_db_app_server"
-      #traefik.frontend.rule: "Host:v-10292.cloud.intertech.de,vmd17974.contabo.host;PathPrefix:/api"
       traefik.frontend.rule: "Host:spa.reconstructdb.org"
-      #traefik.frontend.auth.basic: 'testuser:$$apr1$$QBCuO60R$$pJIFSe2x8L/cTbOBOvoOt1'
-      #traefik.frontend.headers.SSLRedirect=true
       traefik.docker.network: "reverseproxy"
       traefik.port: "8080"
+    networks:
+      - backend
+      - reverseproxy
+
+  sdb_graphiql:
+    depends_on:
+      - sdb_postgres
+      - sdb_science_db_graphql_server
+    build:
+      context: ./graphiql-auth
+      dockerfile: Dockerfile
+    ports:
+      - 7000:7000
+    environment:
+      - REACT_APP_MY_SERVER_URL=http://api.reconstructdb.org
+    volumes:
+      - .:/usr/ScienceDbStarterPack
+    # Install dependencies and start single-page-app-server in development
+    # mode.
+    command:
+      - /bin/sh
+      - -c
+      - |
+        npm install
+        npm start
+    restart: unless-stopped
+    labels:
+      traefik.enable: "true"
+      traefik.backend: "sdb_graphiql"
+      traefik.frontend.rule: "Host:graphiql.reconstructdb.org"
+      traefik.docker.network: "reverseproxy"
+      traefik.port: "7000"
     networks:
       - backend
       - reverseproxy

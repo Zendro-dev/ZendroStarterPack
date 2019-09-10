@@ -36,6 +36,14 @@
       "targetStorageType" : "sql",
       "label" : "pot",
       "sublabel": "greenhouse"
+    },
+    "samples": {
+      "type" : "hasMany",
+      "target" : "sample",
+      "targetKey" : "sample_id",
+      "targetStorageType" : "sql",
+      "label" : "name",
+      "sublabel": "id"
     }
   }
 }

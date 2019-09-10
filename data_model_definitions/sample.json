@@ -37,16 +37,16 @@
       "target" : "pot",
       "targetKey" : "pot_id",
       "targetStorageType" : "sql",
-      "label" : "name",
-      "sublabel": "id"
+      "label" : "pot",
+      "sublabel": "greenhouse"
     },
     "field_plot": {
       "type" : "belongsTo",
       "target" : "field_plot",
       "targetKey" : "field_plot_id",
       "targetStorageType" : "sql",
-      "label" : "name",
-      "sublabel": "id"
+      "label" : "location_code",
+      "sublabel": "field_name"
     },
     "samples": {
       "type" : "hasMany",
@@ -61,8 +61,8 @@
       "target" : "microbiome_asv",
       "targetKey" : "microbiome_asv_id",
       "targetStorageType" : "sql",
-      "label" : "name",
-      "sublabel": "id"
+      "label" : "asv_id",
+      "sublabel": "primer_kingdom"
     }
   }
 }

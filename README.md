@@ -132,19 +132,30 @@ Whenever you make changes to your data model definitions or update the code
 generators and/or skeleton server projects `graphql-server` or
 `single-page-app`, you should repeat the following code generation.
 
+#### Create files as current user
+
+To generate code files from within a Docker container into which external host
+folders are mounted, you need to start the respective Docker container as the
+yourself.
+
+First, find out your user and your group identifiers by running `id` in a terminal.
+Remember your user ID (`uid`) and your group ID (`gid`).
+
 #### Generate the GraphQL server
 
 ```
-docker run --rm -it -v `pwd`:/opt --user 1000:1000 sciencedb-code-generators:latest 
-graphql-server-model-codegen generate /opt/data_model_definitions /opt/graphql-server
+docker run --rm -it -v `pwd`:/opt --user <your_uid>:<your_gid> sciencedb-code-generators:latest 
+graphql-server-model-codegen --jsonFiles /opt/data_model_definitions -o /opt/graphql-server
 ```
+where `<your_uid>` and `<your_gid>` are your user ID and your group ID, respectively.
 
 #### Generate the Single Page Application (SPA) server
 
 ```
-docker run --rm -it -v `pwd`:/opt --user 1000:1000 sciencedb-code-generators:latest 
-single-page-app-codegen --jsonFiles /opt/data_model_definitions /opt/single-page-app
+docker run --rm -it -v `pwd`:/opt --user <your_uid>:<your_gid> sciencedb-code-generators:latest 
+single-page-app-codegen --jsonFiles /opt/data_model_definitions -o /opt/single-page-app
 ```
+where `<your_uid>` and `<your_gid>` are your user ID and your group ID, respectively.
 
 ### Multiple code generation
 
@@ -353,7 +364,7 @@ If you have started your docker-compose with `-d` or if you just want to delete 
 ```
 docker-compose -f docker-compose[-dev].yml down
 ```
-The above `[-dev]` has to be user or not, depending on whether you ran the development or production environment.
+The above `[-dev]` has to be used or not, depending on whether you ran the development or production environment.
 
 ### Abolish everything
 

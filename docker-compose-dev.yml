@@ -91,7 +91,9 @@ services:
     ports:
       - 7000:7000
     environment:
-      - REACT_APP_MY_SERVER_URL=http://api.reconstructdb.org
+      - REACT_APP_SERVER_URL=http://api.reconstructdb.org/graphql
+      - REACT_APP_LOGIN_URL=http://api.reconstructdb.org/login
+      - PORT=7000
     volumes:
       - .:/usr/ScienceDbStarterPack
     # Install dependencies and start single-page-app-server in development

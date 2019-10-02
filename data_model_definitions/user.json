@@ -7,7 +7,7 @@
   },
   "associations" :{
     "roles" : {
-      "type" : "belongsToMany",
+      "type" : "to_many",
       "target" : "role",
       "targetKey" : "roleId",
       "sourceKey" : "userId",

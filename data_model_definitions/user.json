@@ -1,6 +1,6 @@
 {
   "model" : "user",
-  "storageType" : "Sql",
+  "storageType" : "SQL",
   "attributes" : {
     "email" : "String",
     "password" : "String"

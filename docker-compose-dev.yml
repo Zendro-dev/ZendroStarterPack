@@ -7,8 +7,6 @@ services:
       dockerfile: Dockerfile.postgres
     volumes:
       - sdb_db_data:/var/lib/postgresql/data
-    ports:
-      - 5432:5432
     networks:
       - backend
     restart: unless-stopped
@@ -19,8 +17,6 @@ services:
     build:
       context: ./graphql-server
       dockerfile: Dockerfile.graphql_server
-    ports:
-      - 3000:3000
     environment:
       - PORT=3000
     volumes:
@@ -41,8 +37,7 @@ services:
     labels:
       traefik.enable: "true"
       traefik.backend: "sdb_science_db_graphql_server"
-      #traefik.frontend.rule: "Host:v-10292.cloud.intertech.de,vmd17974.contabo.host;PathPrefix:/api"
-      traefik.frontend.rule: "Host:bpapi.reconstructdb.org"
+      traefik.frontend.rule: "Host:api.breedpath-db.org"
       #traefik.frontend.auth.basic: 'testuser:$$apr1$$QBCuO60R$$pJIFSe2x8L/cTbOBOvoOt1'
       #traefik.frontend.headers.SSLRedirect=true
       traefik.docker.network: "reverseproxy"
@@ -56,12 +51,10 @@ services:
     build:
       context: ./single-page-app
       dockerfile: Dockerfile.app
-    ports:
-      - 8080:8080
     environment:
       - PORT=8080
-      - VUE_APP_SERVER_URL=http://bpapi.reconstructdb.org/graphql
-      - VUE_APP_LOGIN_URL=http://bpapi.reconstructdb.org/login
+      - VUE_APP_SERVER_URL=http://api.breedpath-db.org/graphql
+      - VUE_APP_LOGIN_URL=http://api.breedpath-db.org/login
       - VUE_APP_MAX_UPLOAD_SIZE=500
     volumes:
       - .:/usr/ScienceDbStarterPack
@@ -79,23 +72,52 @@ services:
     labels:
       traefik.enable: "true"
       traefik.backend: "sdb_science_db_app_server"
-      #traefik.frontend.rule: "Host:vmd17974.hallab.de,vmd17974.contabo.host"
-      traefik.frontend.rule: "Host:bpspa.reconstructdb.org"
+      traefik.frontend.rule: "Host:spa.breedpath-db.org"
       #traefik.frontend.auth.basic: 'testuser:$$apr1$$QBCuO60R$$pJIFSe2x8L/cTbOBOvoOt1'
       #traefik.frontend.headers.SSLRedirect=true
       traefik.docker.network: "reverseproxy"
       traefik.port: "8080"
     restart: unless-stopped
 
+  sdb_graphiql:
+    depends_on:
+      - sdb_postgres
+      - sdb_science_db_graphql_server
+    build:
+      context: ./graphiql-auth
+      dockerfile: Dockerfile
+    environment:
+      - REACT_APP_SERVER_URL=http://api.breedpath-db.org/graphql
+      - REACT_APP_LOGIN_URL=http://api.breedpath-db.org/login
+      - PORT=7000
+    volumes:
+      - .:/usr/ScienceDbStarterPack
+    # Install dependencies and start single-page-app-server in development
+    # mode.
+    command:
+      - /bin/sh
+      - -c
+      - |
+        npm install
+        npm start
+    restart: unless-stopped
+    labels:
+      traefik.enable: "true"
+      traefik.backend: "sdb_graphiql"
+      traefik.frontend.rule: "Host:graphiql.breedpath-db.org"
+      traefik.docker.network: "reverseproxy"
+      traefik.port: "7000"
+    networks:
+      - backend
+      - reverseproxy
+
   sdb_minio:
     image: minio/minio:RELEASE.2019-02-20T22-44-29Z
     volumes:
       - sdb_minio_data:/data
-    ports:
-      - "9000:9000"
     environment:
-      MINIO_ACCESS_KEY: sciencedb
-      MINIO_SECRET_KEY: sciencedb
+      MINIO_ACCESS_KEY: breedpath-db
+      MINIO_SECRET_KEY: breedpath10!-db01
     command: server /data
     networks:
       - backend
@@ -103,36 +125,16 @@ services:
     labels:
       traefik.enable: "true"
       traefik.backend: "sdb_minio"
-      #traefik.frontend.rule: "Host:vmd17974.hallab.de,vmd17974.contabo.host"
-      traefik.frontend.rule: "Host:bpminio.reconstructdb.org"
+      traefik.frontend.rule: "Host:minio.breedpath-db.org"
       #traefik.frontend.auth.basic: 'testuser:$$apr1$$QBCuO60R$$pJIFSe2x8L/cTbOBOvoOt1'
       #traefik.frontend.headers.SSLRedirect=true
       traefik.docker.network: "reverseproxy"
       traefik.port: "9000"
     restart: unless-stopped
 
-    #sdb_science_db_shiny:
-    #bpbuild:
-    #bp  context: .
-    #bp  dockerfile: Dockerfile.shiny
-    #bpenvironment:
-    #bp  PORT: 3838
-    #bpports:
-    #bp  - "3838:3838"
-    #bpvolumes:
-    #bp  - ./shiny-data-dev:/srv/shiny-server
-    #bp#labels:
-    #bp#  traefik.enable: "true"
-    #bp#  traefik.backend: "science_db_shiny"
-    #bp#  traefik.frontend.rule: "Host:shiny.reconstructdb.org"
-    #bp#  #traefik.frontend.auth.basic: 'testuser:$$apr1$$QBCuO60R$$pJIFSe2x8L/cTbOBOvoOt1'
-    #bp#  traefik.docker.network: "reverseproxy"
-    #bp#  traefik.port: "3838"
-
 volumes:
   sdb_db_data:
   sdb_minio_data:
-  #sdb_shiny_data:
 networks:
   backend:
   reverseproxy:

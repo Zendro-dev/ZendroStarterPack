@@ -4,3 +4,6 @@
 [submodule "graphql-server"]
 	path = graphql-server
 	url = https://github.com/ScienceDb/graphql-server.git
+[submodule "graphiql-auth"]
+	path = graphiql-auth
+	url = git@github.com:ScienceDb/graphiql-auth.git

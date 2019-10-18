@@ -6,7 +6,9 @@
 		"coordinates_or_name" : "String",
 		"year": "String",
 		"area_sqm": "Float",
-		"type": "String"
+		"type": "String",
+    "genotype_id": "Int",
+    "field_plot_treatment_id": "Int"
 	},
 	"associations" : {
 		"genotype" : {
@@ -22,7 +24,8 @@
 			"target" : "field_plot_treatment",
 			"targetKey" : "field_plot_treatment_id",
 			"targetStorageType" : "sql",
-			"label": "name"
+			"label": "name",
+      "sublabel": "id"
 		}
 	}
 }

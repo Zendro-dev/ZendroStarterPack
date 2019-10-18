@@ -3,7 +3,8 @@
 	"storageType" : "Sql",
 	"attributes" : {
 		"marker_name" : "String",
-		"nucleotide" : "String"
+		"nucleotide" : "String",
+    "individual_id": "Int"
 	},
 	"associations" : {
 		"individual" : {

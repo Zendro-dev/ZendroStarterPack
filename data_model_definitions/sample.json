@@ -8,7 +8,9 @@
 		"biological_replicate_no": "Int",
 		"lab_code": "String",
 		"treatment": "String",
-		"tissue": "String"
+		"tissue": "String",
+    "individual_id": "Int",
+    "sequencing_experiment_id": "Int"
 	},
 	"associations" : {
 		"individual" : {

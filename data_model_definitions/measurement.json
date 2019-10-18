@@ -7,7 +7,8 @@
 		"float_value": "Float",
 		"int_value": "Int",
 		"text_value": "String",
-		"unit": "String"
+		"unit": "String",
+    "field_plot_id": "Int"
 	},
 	"associations": {
 		"field_plot": {

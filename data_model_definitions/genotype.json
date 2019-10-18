@@ -4,9 +4,11 @@
   "attributes": {
     "name": "String",
     "description": "String",
-    "pedigree_type": "String"
+    "pedigree_type": "String",
+    "mother_id": "Int",
+    "father_id": "Int",
+    "breeding_pool_id": "Int"
   },
-
   "associations": {
     "mother": {
       "type": "belongsTo",

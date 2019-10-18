@@ -8,7 +8,8 @@
 		"type": "String",
 		"insert_size": "Float",
 		"technical_replicate": "Int",
-		"trimmed": "Boolean"
+		"trimmed": "Boolean",
+    "sample_id": "Int"
 	},
 	"associations" : {
 		"sample" : {

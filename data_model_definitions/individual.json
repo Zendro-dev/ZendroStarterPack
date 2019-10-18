@@ -3,7 +3,9 @@
 	"storageType" : "Sql",
 	"attributes" : {
 		"name" : "String",
-		"description" : "String"
+		"description" : "String",
+    "genotype_id": "Int",
+    "individual_id": "Int"
 	},
 	"associations" : {
 		"genotype" : {

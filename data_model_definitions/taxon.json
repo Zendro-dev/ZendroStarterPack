@@ -20,7 +20,7 @@
     "microbiome_asvs": {
       "type" : "to_many",
       "target" : "microbiome_asv",
-      "targetKey" : "microbiome_asv_id",
+      "targetKey" : "taxon_id",
       "targetStorageType" : "sql",
       "label" : "name",
       "sublabel": "id"

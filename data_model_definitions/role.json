@@ -7,7 +7,7 @@
   },
   "associations" : {
     "users" : {
-      "type" : "to_oneMany",
+      "type" : "to_many",
       "target" : "user",
       "targetKey" : "userId",
       "sourceKey" : "roleId",

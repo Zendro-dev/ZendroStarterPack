@@ -40,7 +40,7 @@
     "samples": {
       "type" : "to_many",
       "target" : "sample",
-      "targetKey" : "sample_id",
+      "targetKey" : "individual_id",
       "targetStorageType" : "sql",
       "label" : "name",
       "sublabel": "id"

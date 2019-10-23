@@ -12,7 +12,7 @@
   },
   "associations": {
     "sample": {
-      "type" : "belongsTo",
+      "type" : "to_one",
       "target" : "sample",
       "targetKey" : "sample_id",
       "targetStorageType" : "sql",
@@ -20,7 +20,7 @@
       "sublabel": "id"
     },
     "taxon": {
-      "type" : "belongsTo",
+      "type" : "to_one",
       "target" : "taxon",
       "targetKey" : "taxon_id",
       "targetStorageType" : "sql",

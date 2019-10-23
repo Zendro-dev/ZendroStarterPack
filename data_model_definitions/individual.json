@@ -14,7 +14,7 @@
   },
   "associations": {
     "cultivar": {
-      "type" : "belongsTo",
+      "type" : "to_one",
       "target" : "cultivar",
       "targetKey" : "cultivar_id",
       "targetStorageType" : "sql",
@@ -22,7 +22,7 @@
       "sublabel": "description"
     },
     "field_plot": {
-      "type" : "belongsTo",
+      "type" : "to_one",
       "target" : "field_plot",
       "targetKey" : "field_plot_id",
       "targetStorageType" : "sql",
@@ -30,7 +30,7 @@
       "sublabel": "field_name"
     },
     "pot": {
-      "type" : "belongsTo",
+      "type" : "to_one",
       "target" : "pot",
       "targetKey" : "pot_id",
       "targetStorageType" : "sql",
@@ -38,7 +38,7 @@
       "sublabel": "greenhouse"
     },
     "samples": {
-      "type" : "hasMany",
+      "type" : "to_many",
       "target" : "sample",
       "targetKey" : "sample_id",
       "targetStorageType" : "sql",

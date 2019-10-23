@@ -1,13 +1,13 @@
 {
   "model" : "role",
-  "storageType" : "SQL",
+  "storageType" : "sql",
   "attributes" : {
     "name" : "String",
     "description" : "String"
   },
   "associations" : {
     "users" : {
-      "type" : "belongsToMany",
+      "type" : "to_oneMany",
       "target" : "user",
       "targetKey" : "userId",
       "sourceKey" : "roleId",

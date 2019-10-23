@@ -11,7 +11,7 @@
   },
   "associations": {
     "sample": {
-      "type" : "belongsTo",
+      "type" : "to_one",
       "target" : "sample",
       "targetKey" : "sample_id",
       "targetStorageType" : "sql",

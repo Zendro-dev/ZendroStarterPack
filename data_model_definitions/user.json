@@ -1,13 +1,13 @@
 {
   "model" : "user",
-  "storageType" : "SQL",
+  "storageType" : "sql",
   "attributes" : {
     "email" : "String",
     "password" : "String"
   },
   "associations" :{
     "roles" : {
-      "type" : "belongsToMany",
+      "type" : "to_many",
       "target" : "role",
       "targetKey" : "roleId",
       "sourceKey" : "userId",

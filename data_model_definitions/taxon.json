@@ -10,7 +10,7 @@
   },
   "associations": {
     "parent": {
-      "type" : "belongsTo",
+      "type" : "to_one",
       "target" : "taxon",
       "targetKey" : "taxon_id",
       "targetStorageType" : "sql",
@@ -18,7 +18,7 @@
       "sublabel": "id"
     },
     "microbiome_asvs": {
-      "type" : "hasMany",
+      "type" : "to_many",
       "target" : "microbiome_asv",
       "targetKey" : "microbiome_asv_id",
       "targetStorageType" : "sql",

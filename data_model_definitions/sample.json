@@ -17,7 +17,7 @@
   },
   "associations": {
     "parent": {
-      "type" : "belongsTo",
+      "type" : "to_one",
       "target" : "sample",
       "targetKey" : "sample_id",
       "targetStorageType" : "sql",
@@ -25,7 +25,7 @@
       "sublabel": "material"
     },
     "individual": {
-      "type" : "belongsTo",
+      "type" : "to_one",
       "target" : "individual",
       "targetKey" : "individual_id",
       "targetStorageType" : "sql",
@@ -33,7 +33,7 @@
       "sublabel": "location_type"
     },
     "pot": {
-      "type" : "belongsTo",
+      "type" : "to_one",
       "target" : "pot",
       "targetKey" : "pot_id",
       "targetStorageType" : "sql",
@@ -41,7 +41,7 @@
       "sublabel": "greenhouse"
     },
     "field_plot": {
-      "type" : "belongsTo",
+      "type" : "to_one",
       "target" : "field_plot",
       "targetKey" : "field_plot_id",
       "targetStorageType" : "sql",
@@ -49,7 +49,7 @@
       "sublabel": "field_name"
     },
     "samples": {
-      "type" : "hasMany",
+      "type" : "to_many",
       "target" : "sample",
       "targetKey" : "sample_id",
       "targetStorageType" : "sql",
@@ -57,12 +57,20 @@
       "sublabel": "id"
     },
     "microbiome_asvs": {
-      "type" : "hasMany",
+      "type" : "to_many",
       "target" : "microbiome_asv",
-      "targetKey" : "microbiome_asv_id",
+      "targetKey" : "sample_id",
       "targetStorageType" : "sql",
       "label" : "asv_id",
       "sublabel": "primer_kingdom"
+    },
+    "sample_measurements": {
+      "type" : "to_many",
+      "target" : "sample_measurement",
+      "targetKey" : "sample_id",
+      "targetStorageType" : "sql",
+      "label" : "variable",
+      "sublabel": "value"
     }
   }
 }

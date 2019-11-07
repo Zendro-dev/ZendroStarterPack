@@ -15,17 +15,19 @@
       "type" : "to_one",
       "target" : "sample",
       "targetKey" : "sample_id",
+      "keyIn": "microbiome_asv",
       "targetStorageType" : "sql",
       "label" : "name",
-      "sublabel": "id"
+      "sublabel": "material"
     },
     "taxon": {
       "type" : "to_one",
       "target" : "taxon",
       "targetKey" : "taxon_id",
+      "keyIn": "microbiome_asv",
       "targetStorageType" : "sql",
       "label" : "name",
-      "sublabel": "id"
+      "sublabel": "taxonomic_level"
     }
   }
 }

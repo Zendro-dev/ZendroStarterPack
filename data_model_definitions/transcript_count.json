@@ -13,9 +13,10 @@
       "type" : "to_one",
       "target" : "individual",
       "targetKey" : "individual_id",
+      "keyIn": "transcript_count",
       "targetStorageType" : "sql",
       "label" : "name",
-      "sublabel": "id"
+      "sublabel": "developmental_state"
     }
   }
 }

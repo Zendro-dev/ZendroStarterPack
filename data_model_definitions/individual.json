@@ -17,6 +17,7 @@
       "type" : "to_one",
       "target" : "cultivar",
       "targetKey" : "cultivar_id",
+      "keyIn": "individual",
       "targetStorageType" : "sql",
       "label" : "genotype",
       "sublabel": "description"
@@ -25,6 +26,7 @@
       "type" : "to_one",
       "target" : "field_plot",
       "targetKey" : "field_plot_id",
+      "keyIn": "individual",
       "targetStorageType" : "sql",
       "label" : "location_code",
       "sublabel": "field_name"
@@ -33,6 +35,7 @@
       "type" : "to_one",
       "target" : "pot",
       "targetKey" : "pot_id",
+      "keyIn": "individual",
       "targetStorageType" : "sql",
       "label" : "pot",
       "sublabel": "greenhouse"
@@ -41,9 +44,10 @@
       "type" : "to_many",
       "target" : "sample",
       "targetKey" : "individual_id",
+      "keyIn": "sample",
       "targetStorageType" : "sql",
       "label" : "name",
-      "sublabel": "id"
+      "sublabel": "material"
     }
   }
 }

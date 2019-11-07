@@ -11,9 +11,10 @@
       "type" : "to_one",
       "target" : "taxon",
       "targetKey" : "taxon_id",
+      "keyIn": "cultivar",
       "targetStorageType" : "sql",
       "label" : "name",
-      "sublabel": "id"
+      "sublabel": "taxonomic_level"
     }
   }
 }

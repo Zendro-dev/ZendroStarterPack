@@ -12,9 +12,10 @@
       "type" : "to_one",
       "target" : "individual",
       "targetKey" : "individual_id",
+      "keyIn": "plant_measurement",
       "targetStorageType" : "sql",
       "label" : "name",
-      "sublabel": "id"
+      "sublabel": "developmental_state"
     }
   }
 }

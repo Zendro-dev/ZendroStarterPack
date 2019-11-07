@@ -14,7 +14,7 @@
       "keysIn" : "role_to_user",
       "targetStorageType" : "sql",
       "label": "name",
-      "sublabel": "id"
+      "sublabel": "description"
     }
   }
 }

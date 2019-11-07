@@ -20,6 +20,7 @@
       "type" : "to_one",
       "target" : "sample",
       "targetKey" : "sample_id",
+      "keyIn": "sample",
       "targetStorageType" : "sql",
       "label" : "name",
       "sublabel": "material"
@@ -28,6 +29,7 @@
       "type" : "to_one",
       "target" : "individual",
       "targetKey" : "individual_id",
+      "keyIn": "sample",
       "targetStorageType" : "sql",
       "label" : "name",
       "sublabel": "location_type"
@@ -36,6 +38,7 @@
       "type" : "to_one",
       "target" : "pot",
       "targetKey" : "pot_id",
+      "keyIn": "sample",
       "targetStorageType" : "sql",
       "label" : "pot",
       "sublabel": "greenhouse"
@@ -44,6 +47,7 @@
       "type" : "to_one",
       "target" : "field_plot",
       "targetKey" : "field_plot_id",
+      "keyIn": "sample",
       "targetStorageType" : "sql",
       "label" : "location_code",
       "sublabel": "field_name"
@@ -52,14 +56,16 @@
       "type" : "to_many",
       "target" : "sample",
       "targetKey" : "sample_id",
+      "keyIn": "sample",
       "targetStorageType" : "sql",
       "label" : "name",
-      "sublabel": "id"
+      "sublabel": "material"
     },
     "microbiome_asvs": {
       "type" : "to_many",
       "target" : "microbiome_asv",
       "targetKey" : "sample_id",
+      "keyIn": "microbiome_asv",
       "targetStorageType" : "sql",
       "label" : "asv_id",
       "sublabel": "primer_kingdom"
@@ -68,6 +74,7 @@
       "type" : "to_many",
       "target" : "sample_measurement",
       "targetKey" : "sample_id",
+      "keyIn": "sample_measurement",
       "targetStorageType" : "sql",
       "label" : "variable",
       "sublabel": "value"

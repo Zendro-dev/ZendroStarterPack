@@ -13,17 +13,19 @@
       "type" : "to_one",
       "target" : "taxon",
       "targetKey" : "taxon_id",
+      "keyIn": "taxon",
       "targetStorageType" : "sql",
       "label" : "name",
-      "sublabel": "id"
+      "sublabel": "taxonomic_level"
     },
     "microbiome_asvs": {
       "type" : "to_many",
       "target" : "microbiome_asv",
       "targetKey" : "taxon_id",
+      "keyIn": "microbiome_asv",
       "targetStorageType" : "sql",
-      "label" : "name",
-      "sublabel": "id"
+      "label" : "asv_id",
+      "sublabel": "compartment"
     }
   }
 }

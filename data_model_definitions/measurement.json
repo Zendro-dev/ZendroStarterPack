@@ -1,0 +1,33 @@
+{
+  "model": "Measurement",
+  "storageType": "sql",
+  "attributes": {
+    "name": "String",
+    "method": "String",
+    "reference": "String",
+    "reference_link": "String",
+    "value": "Float",
+    "unit": "String",
+    "short_name": "String",
+    "comments": "String",
+    "field_unit_id": "Int",
+    "individual_id": "Int"
+  },
+  "associations": {
+    "field_unit": {
+      "type": "to_one",
+      "target": "FieldUnit",
+      "targetKey": "field_unit_id",
+      "targetStorageType": "sql",
+      "label": "field_name",
+      "sublabel": "treatment"
+    },
+    "individual": {
+      "type": "to_one",
+      "target": "Individual",
+      "targetKey": "individual_id",
+      "targetStorageType": "sql",
+      "label": "name"
+    }
+  }
+}

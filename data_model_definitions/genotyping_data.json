@@ -1,0 +1,35 @@
+{
+  "model": "GenotypingData",
+  "storageType": "sql",
+  "attributes": {
+    "file_name": "String",
+    "file_uri": "String",
+    "snp_call_pipeline": "String",
+    "denovo_or_reference": "String",
+    "reference_genome": "String",
+    "format": "String",
+    "max_missing_geno": "Float",
+    "maf": "Float"
+  },
+  "associations": {
+    "wells": {
+      "type": "to_many",
+      "target": "plateWell",
+      "targetKey": "wellId",
+      "sourceKey": "genotypeDataId",
+      "keysIn": "well_to_genotype_data",
+      "targetStorageType": "sql",
+      "label": "well_id",
+      "sublabel": "barcode"
+    },
+    "individuals": {
+      "type": "to_many",
+      "target": "Individual",
+      "targetKey": "individual_id",
+      "sourceKey": "genotype_data_id",
+      "keysIn": "genotyping_to_individual",
+      "targetStorageType": "sql",
+      "label": "name"
+    }
+  }
+}

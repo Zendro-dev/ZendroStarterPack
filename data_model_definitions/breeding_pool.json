@@ -1,0 +1,18 @@
+{
+  "model": "BreedingPool",
+  "storageType": "sql",
+  "attributes": {
+    "name": "String",
+    "description": "String",
+    "genotype_id": "Int"
+  },
+  "associations": {
+    "genotype": {
+      "type": "to_one",
+      "target": "Genotype",
+      "targetKey": "genotype_id",
+      "targetStorageType": "sql",
+      "label": "name"
+    }
+  }
+}

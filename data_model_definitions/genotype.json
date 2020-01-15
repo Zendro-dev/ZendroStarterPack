@@ -1,0 +1,51 @@
+{
+  "model": "Genotype",
+  "storageType": "sql",
+  "attributes": {
+    "name": "String",
+    "description": "String",
+    "origin": "String",
+    "description": "String",
+    "mother_id": "Int",
+    "father_id": "Int"
+  },
+  "associations": {
+    "mother": {
+      "type": "to_one",
+      "target": "Individual",
+      "targetKey": "mother_id",
+      "targetStorageType": "sql",
+      "label": "name"
+    },
+    "father": {
+      "type": "to_one",
+      "target": "Individual",
+      "targetKey": "father_id",
+      "targetStorageType": "sql",
+      "label": "name"
+    },
+    "pools": {
+      "type": "to_many",
+      "target": "BreedingPool",
+      "targetKey": "genotype_id",
+      "targetStorageType": "sql",
+      "label": "name"
+    },
+    "individuals": {
+      "type": "to_many",
+      "target": "Individual",
+      "targetKey": "genotypeId",
+      "targetStorageType": "sql",
+      "label": "name"
+    },
+    "fields_unit": {
+      "type": "to_many",
+      "target": "FieldUnit",
+      "targetKey": "field_unit_id",
+      "sourceKey": "genotype_id",
+      "keysIn": "field_unit_to_genotype",
+      "targetStorageType": "sql",
+      "label": "field_name"
+    }
+  }
+}

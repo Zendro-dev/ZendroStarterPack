@@ -1,0 +1,17 @@
+{
+  "model": "SoilTexture",
+  "storageType": "sql",
+  "attributes": {
+    "value": "String",
+    "accessionId": "Int"
+  },
+  "associations": {
+    "accession": {
+      "type": "to_one",
+      "target": "Accession",
+      "targetKey": "accessionId",
+      "targetStorageType": "sql",
+      "label": "accession_id"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "model": "NucAcidLibraryResult",
+  "storageType": "sql",
+  "attributes": {
+    "lab_code": "String",
+    "file_name": "String",
+    "bucket_uri": "String",
+    "type": "String",
+    "insert_size": "Int",
+    "technical_replicate": "Int",
+    "trimmed": "Boolean",
+    "trimming_method": "String",
+    "demultiplexed": "String",
+    "demultiplexing": "String",
+    "sequencing_experiment_id": "Int"
+  },
+  "associations": {
+    "sequencing_experiment": {
+      "type": "to_one",
+      "target": "SequencingExperiment",
+      "targetKey": "sequencing_experiment_id",
+      "targetStorageType": "sql",
+      "label": "name"
+    }
+  }
+}

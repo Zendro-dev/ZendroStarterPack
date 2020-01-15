@@ -1,0 +1,43 @@
+{
+  "model": "plateWell",
+  "storageType": "sql",
+  "attributes": {
+    "row": "String",
+    "column": "Int",
+    "well": "String",
+    "barcode": "String",
+    "concentration": "Float",
+    "concentration_measurement_method": "String",
+    "library_prep_id": "String",
+    "well_id": "String",
+    "plateId": "Int",
+    "sample_id": "Int"
+  },
+  "associations": {
+    "plate": {
+      "type": "to_one",
+      "target": "Plate",
+      "targetKey": "plateId",
+      "targetStorageType": "sql",
+      "label": "plate_id",
+      "sublabel": "storage"
+    },
+    "sample": {
+      "type": "to_one",
+      "target": "Sample",
+      "targetKey": "sample_id",
+      "targetStorageType": "sql",
+      "label": "name",
+      "sublabel": "sample_type"
+    },
+    "genotyping_data": {
+      "type": "to_many",
+      "target": "GenotypingData",
+      "targetKey": "genotypeDataId",
+      "sourceKey": "wellId",
+      "keysIn": "well_to_genotype_data",
+      "targetStorageType": "sql",
+      "label": "file_name"
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "model": "Sample",
+  "storageType": "sql",
+  "attributes": {
+    "name": "String",
+    "sampling_day": "Int",
+    "sampling_month": "Int",
+    "sampling_year": "Int",
+    "sample_type": "String",
+    "tissue": "String",
+    "compound": "String",
+    "biological_replicate_num": "Int",
+    "treatment": "String",
+    "pool_dna_extracts": "Boolean",
+    "sample_vol_weight": "String"
+  },
+  "associations": {
+    "samples": {
+      "type": "to_many",
+      "target": "Sample",
+      "targetKey": "sample_id",
+      "sourceKey": "source_sample_id",
+      "keysIn": "sample_to_sample",
+      "targetStorageType": "sql",
+      "label": "name",
+      "sublabel": "sample_type"
+    },
+    "wells": {
+      "type": "to_one",
+      "target": "plateWell",
+      "targetKey": "sample_id",
+      "targetStorageType": "sql",
+      "label": "well_id",
+      "sublabel": "barcode"
+    },
+    "individuals": {
+      "type": "to_many",
+      "target": "Individual",
+      "targetKey": "individual_id",
+      "sourceKey": "sample_id",
+      "keysIn": "sample_to_individual",
+      "targetStorageType": "sql",
+      "label": "name"
+    }
+  }
+}

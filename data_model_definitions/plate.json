@@ -1,0 +1,27 @@
+{
+  "model": "Plate",
+  "storageType": "sql",
+  "attributes": {
+    "plate_id": "String",
+    "type": "String",
+    "storage": "String",
+    "experiment_id": "Int"
+  },
+  "associations": {
+    "sequencing_experiment": {
+      "type": "to_one",
+      "target": "SequencingExperiment",
+      "targetKey": "experiment_id",
+      "targetStorageType": "sql",
+      "label": "name"
+    },
+    "wells": {
+      "type": "to_many",
+      "target": "plateWell",
+      "targetKey": "plateId",
+      "targetStorageType": "sql",
+      "label": "well_id",
+      "sublabel": "barcode"
+    }
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "model": "Accession",
+  "storageType": "sql",
+  "attributes": {
+    "accession_id": "String",
+    "collectors_name": "String",
+    "collectors_initials": "String",
+    "sampling_day": "Int",
+    "sampling_month": "Int",
+    "sampling_year": "Int",
+    "sampling_number": "String",
+    "catalog_number": "String",
+    "institution_deposited": "String",
+    "collection_name": "String",
+    "collection_acronym": "String",
+    "country": "String",
+    "state": "String",
+    "municipality": "String",
+    "locality": "String",
+    "latitude": "Float",
+    "longitude": "Float",
+    "altitude": "Float",
+    "identified_by": "String",
+    "identification_date": "String",
+    "abundance": "String",
+    "habitat": "String",
+    "observations": "String",
+    "family": "String",
+    "genus": "String",
+    "species": "String",
+    "subspecies": "String",
+    "variety": "String",
+    "race": "String",
+    "form": "String",
+    "taxon_id": "String",
+    "country": "String",
+    "natural_area": "String",
+    "natural_area_name": "String",
+    "georeference_method": "String",
+    "georeference_source": "String",
+    "datum": "String",
+    "collection_deposit": "String",
+    "collect_number": "String",
+    "collect_source": "String",
+    "collected_seeds": "Int",
+    "collected_plants": "Int",
+    "collected_other": "String",
+    "habit": "String",
+    "local_name": "String",
+    "vegetation": "String",
+    "stoniness": "String",
+    "sewer": "String",
+    "topography": "String",
+    "slope": "Float",
+    "observations": "String"
+  },
+  "associations": {
+    "environmental_data": {
+      "type": "to_many",
+      "target": "EnvironmentalData",
+      "targetKey": "accessionId",
+      "targetStorageType": "sql",
+      "label": "name",
+      "sublabel": "description"
+    },
+    "individuals": {
+      "type": "to_many",
+      "target": "Individual",
+      "targetKey": "accessionId",
+      "targetStorageType": "sql",
+      "label": "name"
+    },
+    "taxon": {
+      "type": "to_one",
+      "target": "Taxon",
+      "targetKey": "taxon_id",
+      "targetStorageType": "webservice",
+      "label": "scientificName",
+      "sublabel": "taxonRank"
+    },
+    "collected_materials": {
+      "type": "to_many",
+      "target": "CollectedMaterial",
+      "targetKey": "accessionId",
+      "targetStorageType": "sql",
+      "label": "value"
+    },
+    "soil_textures": {
+      "type": "to_many",
+      "target": "SoilTexture",
+      "targetKey": "accessionId",
+      "targetStorageType": "sql",
+      "label": "value"
+    },
+    "orientations": {
+      "type": "to_many",
+      "target": "Orientation",
+      "targetKey": "accessionId",
+      "targetStorageType": "sql",
+      "label": "value"
+    },
+    "uses": {
+      "type": "to_many",
+      "target": "AccessionUse",
+      "targetKey": "accessionId",
+      "targetStorageType": "sql",
+      "label": "value"
+    }
+  }
+}

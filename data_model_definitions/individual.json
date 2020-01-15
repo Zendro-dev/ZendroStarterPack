@@ -1,0 +1,77 @@
+{
+  "model": "Individual",
+  "storageType": "sql",
+  "attributes": {
+    "name": "String",
+    "origin": "String",
+    "description": "String",
+    "accessionId": "Int",
+    "genotypeId": "Int",
+    "field_unit_id": "Int"
+  },
+  "associations": {
+    "accession": {
+      "type": "to_one",
+      "target": "Accession",
+      "targetKey": "accessionId",
+      "targetStorageType": "sql",
+      "label": "accession_id",
+      "sublabel": "institution_deposited"
+    },
+    "genotype": {
+      "type": "to_one",
+      "target": "Genotype",
+      "targetKey": "genotypeId",
+      "targetStorageType": "sql",
+      "label": "name"
+    },
+    "samples": {
+      "type": "to_many",
+      "target": "Sample",
+      "targetKey": "sample_id",
+      "sourceKey": "individual_id",
+      "keysIn": "sample_to_individual",
+      "targetStorageType": "sql",
+      "label": "name",
+      "sublabel": "sample_type"
+    },
+    "field_unit": {
+      "type": "to_one",
+      "target": "FieldUnit",
+      "targetKey": "field_unit_id",
+      "targetStorageType": "sql",
+      "label": "field_name",
+      "sublabel": "treatment"
+    },
+    "measurements": {
+      "type": "to_many",
+      "target": "Measurement",
+      "targetKey": "individual_id",
+      "targetStorageType": "sql",
+      "label": "name"
+    },
+    "mother_to": {
+      "type": "to_many",
+      "target": "Genotype",
+      "targetKey": "mother_id",
+      "targetStorageType": "sql",
+      "label": "name"
+    },
+    "father_to": {
+      "type": "to_many",
+      "target": "Genotype",
+      "targetKey": "father_id",
+      "targetStorageType": "sql",
+      "label": "name"
+    },
+    "genotyping_data": {
+      "type": "to_many",
+      "target": "GenotypingData",
+      "targetKey": "genotype_data_id",
+      "sourceKey": "individual_id",
+      "keysIn": "genotyping_to_individual",
+      "targetStorageType": "sql",
+      "label": "file_name"
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "model": "sample_to_sample",
+  "storageType": "SQL",
+  "attributes": {
+    "sample_id": "Int",
+    "source_sample_id": "Int"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "model": "genotyping_to_individual",
+  "storageType": "SQL",
+  "attributes": {
+    "genotype_data_id": "Int",
+    "individual_id": "Int"
+  }
+}

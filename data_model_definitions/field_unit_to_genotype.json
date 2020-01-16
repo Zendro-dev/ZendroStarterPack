@@ -1,0 +1,8 @@
+{
+  "model": "field_unit_to_genotype",
+  "storageType": "SQL",
+  "attributes": {
+    "field_unit_id": "Int",
+    "genotype_id": "Int"
+  }
+}

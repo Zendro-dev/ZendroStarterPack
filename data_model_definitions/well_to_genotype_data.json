@@ -1,0 +1,8 @@
+{
+  "model": "well_to_genotype_data",
+  "storageType": "SQL",
+  "attributes": {
+    "wellId": "Int",
+    "genotypeDataId": "Int"
+  }
+}

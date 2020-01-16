@@ -18,6 +18,7 @@
       "type": "to_one",
       "target": "FieldUnit",
       "targetKey": "field_unit_id",
+      "keyIn" : "Measurement",
       "targetStorageType": "sql",
       "label": "field_name",
       "sublabel": "treatment"
@@ -26,6 +27,7 @@
       "type": "to_one",
       "target": "Individual",
       "targetKey": "individual_id",
+      "keyIn" : "Measurement",
       "targetStorageType": "sql",
       "label": "name"
     }

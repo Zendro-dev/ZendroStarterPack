@@ -32,7 +32,7 @@
     "variety": "String",
     "race": "String",
     "form": "String",
-    "taxon_id": "String",
+    "taxon_id": "Int",
     "country": "String",
     "natural_area": "String",
     "natural_area_name": "String",
@@ -59,6 +59,7 @@
       "type": "to_many",
       "target": "EnvironmentalData",
       "targetKey": "accessionId",
+      "keyIn" : "EnvironmentalData",
       "targetStorageType": "sql",
       "label": "name",
       "sublabel": "description"
@@ -67,6 +68,7 @@
       "type": "to_many",
       "target": "Individual",
       "targetKey": "accessionId",
+      "keyIn" : "Individual",
       "targetStorageType": "sql",
       "label": "name"
     },
@@ -74,6 +76,7 @@
       "type": "to_one",
       "target": "Taxon",
       "targetKey": "taxon_id",
+      "keyIn" : "Accession",
       "targetStorageType": "webservice",
       "label": "scientificName",
       "sublabel": "taxonRank"
@@ -82,6 +85,7 @@
       "type": "to_many",
       "target": "CollectedMaterial",
       "targetKey": "accessionId",
+      "keyIn" : "CollectedMaterial",
       "targetStorageType": "sql",
       "label": "value"
     },
@@ -89,6 +93,7 @@
       "type": "to_many",
       "target": "SoilTexture",
       "targetKey": "accessionId",
+      "keyIn" : "SoilTexture",
       "targetStorageType": "sql",
       "label": "value"
     },
@@ -96,6 +101,7 @@
       "type": "to_many",
       "target": "Orientation",
       "targetKey": "accessionId",
+      "keyIn" : "Orientation",
       "targetStorageType": "sql",
       "label": "value"
     },
@@ -103,6 +109,7 @@
       "type": "to_many",
       "target": "AccessionUse",
       "targetKey": "accessionId",
+      "keyIn" : "AccessionUse",
       "targetStorageType": "sql",
       "label": "value"
     }

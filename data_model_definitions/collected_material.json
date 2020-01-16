@@ -10,6 +10,7 @@
       "type": "to_one",
       "target": "Accession",
       "targetKey": "accessionId",
+      "keyIn" : "CollectedMaterial",
       "targetStorageType": "sql",
       "label": "accession_id"
     }

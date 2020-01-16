@@ -12,6 +12,7 @@
       "type": "to_one",
       "target": "SequencingExperiment",
       "targetKey": "experiment_id",
+      "keyIn" : "Plate",
       "targetStorageType": "sql",
       "label": "name"
     },
@@ -19,6 +20,7 @@
       "type": "to_many",
       "target": "plateWell",
       "targetKey": "plateId",
+      "keyIn" : "plateWell",
       "targetStorageType": "sql",
       "label": "well_id",
       "sublabel": "barcode"

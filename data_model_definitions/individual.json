@@ -14,6 +14,7 @@
       "type": "to_one",
       "target": "Accession",
       "targetKey": "accessionId",
+      "keyIn" : "Individual",
       "targetStorageType": "sql",
       "label": "accession_id",
       "sublabel": "institution_deposited"
@@ -22,6 +23,7 @@
       "type": "to_one",
       "target": "Genotype",
       "targetKey": "genotypeId",
+      "keyIn" : "Individual",
       "targetStorageType": "sql",
       "label": "name"
     },
@@ -39,6 +41,7 @@
       "type": "to_one",
       "target": "FieldUnit",
       "targetKey": "field_unit_id",
+      "keyIn" : "Individual",
       "targetStorageType": "sql",
       "label": "field_name",
       "sublabel": "treatment"
@@ -47,6 +50,7 @@
       "type": "to_many",
       "target": "Measurement",
       "targetKey": "individual_id",
+      "keyIn" : "Measurement",
       "targetStorageType": "sql",
       "label": "name"
     },
@@ -54,6 +58,7 @@
       "type": "to_many",
       "target": "Genotype",
       "targetKey": "mother_id",
+      "keyIn" : "Genotype",
       "targetStorageType": "sql",
       "label": "name"
     },
@@ -61,6 +66,7 @@
       "type": "to_many",
       "target": "Genotype",
       "targetKey": "father_id",
+      "keyIn" : "Genotype",
       "targetStorageType": "sql",
       "label": "name"
     },

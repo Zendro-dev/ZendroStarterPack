@@ -11,6 +11,7 @@
       "type": "to_one",
       "target": "Genotype",
       "targetKey": "genotype_id",
+      "keyIn" : "BreedingPool",
       "targetStorageType": "sql",
       "label": "name"
     }

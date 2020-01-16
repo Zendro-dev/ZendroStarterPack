@@ -16,6 +16,7 @@
       "type": "to_one",
       "target": "Accession",
       "targetKey": "accessionId",
+      "keyIn" : "EnvironmentalData",
       "targetStorageType": "sql",
       "label": "collection_name",
       "sublabel": "accession_id"

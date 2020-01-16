@@ -28,6 +28,7 @@
       "type": "to_many",
       "target": "NucAcidLibraryResult",
       "targetKey": "sequencing_experiment_id",
+      "keyIn" : "NucAcidLibraryResult",
       "targetStorageType": "sql",
       "label": "lab_code",
       "sublabel": "file_name"
@@ -36,6 +37,7 @@
       "type": "to_many",
       "target": "Plate",
       "targetKey": "experiment_id",
+      "keyIn" : "Plate",
       "targetStorageType": "sql",
       "label": "plate_id"
     }

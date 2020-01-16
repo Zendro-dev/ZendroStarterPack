@@ -17,6 +17,7 @@
       "type": "to_many",
       "target": "Individual",
       "targetKey": "field_unit_id",
+      "keyIn" : "Individual",
       "targetStorageType": "sql",
       "label": "name"
     },
@@ -24,6 +25,7 @@
       "type": "to_many",
       "target": "Measurement",
       "targetKey": "field_unit_id",
+      "keyIn" : "Measurement",
       "targetStorageType": "sql",
       "label": "name"
     },

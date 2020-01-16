@@ -19,6 +19,7 @@
       "type": "to_one",
       "target": "SequencingExperiment",
       "targetKey": "sequencing_experiment_id",
+      "keyIn" : "NucAcidLibraryResult",
       "targetStorageType": "sql",
       "label": "name"
     }

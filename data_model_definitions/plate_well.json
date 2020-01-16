@@ -18,6 +18,7 @@
       "type": "to_one",
       "target": "Plate",
       "targetKey": "plateId",
+      "keyIn" : "plateWell",
       "targetStorageType": "sql",
       "label": "plate_id",
       "sublabel": "storage"
@@ -26,6 +27,7 @@
       "type": "to_one",
       "target": "Sample",
       "targetKey": "sample_id",
+      "keyIn" : "plateWell",
       "targetStorageType": "sql",
       "label": "name",
       "sublabel": "sample_type"

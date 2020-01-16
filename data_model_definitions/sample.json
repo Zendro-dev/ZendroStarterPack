@@ -29,6 +29,7 @@
       "type": "to_one",
       "target": "plateWell",
       "targetKey": "sample_id",
+      "keyIn" : "plateWell",
       "targetStorageType": "sql",
       "label": "well_id",
       "sublabel": "barcode"

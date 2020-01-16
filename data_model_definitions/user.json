@@ -11,7 +11,7 @@
       "target": "role",
       "targetKey": "roleId",
       "sourceKey": "userId",
-      "keysIn": "role_to_user",
+      "keysIn": "role_to_users",
       "targetStorageType": "sql",
       "label": "name"
     }

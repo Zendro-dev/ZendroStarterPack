@@ -11,7 +11,7 @@
       "target": "user",
       "targetKey": "userId",
       "sourceKey": "roleId",
-      "keysIn": "role_to_user",
+      "keysIn": "role_to_users",
       "targetStorageType": "sql",
       "label": "email"
     }

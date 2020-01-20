@@ -1,0 +1,21 @@
+{
+  "model": "UserInfo",
+  "storageType": "sql",
+  "attributes": {
+    "userName": "String",
+    "birthday": "Date",
+    "creationTimestamp": "DateTime",
+    "wakeUpTime": "Time",
+    "userId": "Int"
+  },
+  "associations": {
+    "user": {
+      "type": "to_one",
+      "target": "user",
+      "targetKey": "userId",
+      "keyIn" : "UserInfo",
+      "targetStorageType": "sql",
+      "label": "email"
+    }
+  }
+}

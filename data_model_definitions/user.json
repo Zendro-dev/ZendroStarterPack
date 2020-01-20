@@ -14,6 +14,14 @@
       "keysIn": "role_to_users",
       "targetStorageType": "sql",
       "label": "name"
+    },
+    "userInfo": {
+      "type": "to_one",
+      "target": "UserInfo",
+      "targetKey": "userId",
+      "keyIn": "UserInfo",
+      "targetStorageType": "sql",
+      "label": "userName"
     }
   }
 }

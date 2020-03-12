@@ -1,0 +1,28 @@
+{
+  "model": "Location",
+  "storageType": "sql",
+  "attributes" : {
+    "country": "String",
+    "state": "String",
+    "municipality": "String",
+    "locality": "String",
+    "latitude": "Float",
+    "longitude": "Float",
+    "altitude": "Float"
+  },
+
+  "associations" :{
+
+    "accessions": {
+      "type": "to_many",
+      "target": "Accession",
+      "targetKey": "locationId",
+      "keyIn": "Accession",
+      "targetStorageType": "sql",
+      "label": "accession_id",
+      "sublabel": "institution_deposited"
+    }
+
+  }
+
+}

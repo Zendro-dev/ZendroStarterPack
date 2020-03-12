@@ -1,0 +1,27 @@
+{
+  "model": "Measurement",
+  "storageType": "sql",
+  "attributes": {
+    "name": "String",
+    "method": "String",
+    "reference": "String",
+    "reference_link": "String",
+    "value": "Float",
+    "unit": "String",
+    "short_name": "String",
+    "comments": "String",
+    "field_unit_id": "Int",
+    "individual_id": "Int"
+  },
+  "associations": {
+
+    "individual": {
+      "type": "to_one",
+      "target": "Individual",
+      "targetKey": "individual_id",
+      "keyIn" : "Measurement",
+      "targetStorageType": "sql",
+      "label": "name"
+    }
+  }
+}

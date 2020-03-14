@@ -65,6 +65,16 @@
       "targetStorageType": "webservice",
       "label": "scientificName",
       "sublabel": "taxonRank"
+    },
+
+    "location": {
+      "type": "to_one",
+      "target": "Location",
+      "targetKey": "locationId",
+      "keyIn" : "Accession",
+      "targetStorageType": "sql",
+      "label": "country",
+      "sublabel": "state"
     }
   },
 

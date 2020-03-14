@@ -29,5 +29,6 @@
       "targetStorageType": "sql",
       "label": "name"
     }
-  }
+  },
+  "internalId" : "name"
 }

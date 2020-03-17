@@ -23,7 +23,7 @@
     "variety": "String",
     "race": "String",
     "form": "String",
-    "taxon_id": "Int",
+    "taxon_id": "String",
     "natural_area": "String",
     "natural_area_name": "String",
     "georeference_method": "String",
@@ -75,6 +75,15 @@
       "targetStorageType": "sql",
       "label": "country",
       "sublabel": "state"
+    },
+
+    "measurements": {
+      "type": "to_many",
+      "target": "Measurement",
+      "targetKey": "accessionId",
+      "keyIn" : "Measurement",
+      "targetStorageType": "sql",
+      "label": "name"
     }
   },
 

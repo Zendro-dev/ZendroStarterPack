@@ -11,7 +11,8 @@
     "short_name": "String",
     "comments": "String",
     "field_unit_id": "Int",
-    "individual_id": "Int"
+    "individual_id": "String",
+    "accessionId": "String"
   },
   "associations": {
 
@@ -22,6 +23,15 @@
       "keyIn" : "Measurement",
       "targetStorageType": "sql",
       "label": "name"
+    },
+
+    "accession": {
+      "type": "to_one",
+      "target": "Accession",
+      "targetKey": "accessionId",
+      "keyIn" : "Accession",
+      "targetStorageType": "sql",
+      "label": "accession_id"
     }
   }
 }

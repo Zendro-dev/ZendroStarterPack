@@ -187,6 +187,11 @@ For more details see our [manual](https://sciencedb.github.io/) and the
 [single-page-application
 `README`](https://github.com/ScienceDb/single-page-app/blob/master/README.md).
 
+If you want to access the GraphiQL interface (`http://localhost:3000/graphql`) without a login, toggle the associated environment variable:
+```
+REQUIRE_SIGN_IN="false"
+```
+For more details about the graphql-server environment variables see the [graphql-server `README`](https://github.com/ScienceDb/graphql-server/blob/master/README.md)
 
 #### Access Control
 

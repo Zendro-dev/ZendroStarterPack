@@ -42,4 +42,3 @@ services:
 
 volumes:
   sdb_db_data:
-  sdb_minio_data:

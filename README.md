@@ -10,7 +10,7 @@ example sandbox data model definitions have been provided. You find them in
 You should have basic knowledge of the following technology-stack:
 * [`Node.js`](https://nodejs.dev/)
 * [`GraphQL`](https://graphql.org/)
-* [`Vue.js`](https://vuejs.org/)
+* [`React.js`](https://reactjs.org//)
 * [`docker`](https://www.docker.com/)
 * [`git`](https://git-scm.com/), especially "git submodules"
 * [`Linux Shell`](https://en.wikipedia.org/wiki/Bash_(Unix_shell))
@@ -179,9 +179,10 @@ URLs to use for login and to send GraphQL queries to. This is controlled by the
 following environment variables of `sdb_science_db_app_server` in the two
 docker-compose files.
 
-* `VUE_APP_SERVER_URL=http://localhost:3000/graphql`
-* `VUE_APP_LOGIN_URL=http://localhost:3000/login`
-* `VUE_APP_MAX_UPLOAD_SIZE=500`
+* `REACT_APP_CENZ_GRAPHQL_SERVER_URL=http://localhost:3000/graphql`
+* `REACT_APP_CENZ_LOGIN_URL=http://localhost:3000/login`
+* `REACT_APP_CENZ_EXPORT_URL=http://localhost:3000/export`
+* `REACT_APP_CENZ_MAX_UPLOAD_SIZE=500`
 
 For more details see our [manual](https://sciencedb.github.io/) and the
 [single-page-application
@@ -272,7 +273,8 @@ npm run build
 See the `environment` section of the `sdb_nginx` image in `docker-compose.yml`.
 
 * `MY_SERVER_URL` - url where your backend server will be running, default value is http://localhost:3000/graphql
-* `MY_LOGIN_URL` - url where your backend will check authentication, default value is http://localhost:3000/login.
+* `MY_LOGIN_URL` - url where your backend will check authentication, default value is http://localhost:3000/login
+* `MY_EXPORT_URL` - url where your backend will serve the export requests, default value is http://localhost:3000/export
 * `MAX_UPLOAD_SIZE` - maximum size(in MB) of a file intended to be uploaded, default value is 500, which means that user can not upload a file larger than 500MB.
 
 The above is taken from the [single-page-app `README`](https://github.com/ScienceDb/single-page-app/blob/master/README.md)

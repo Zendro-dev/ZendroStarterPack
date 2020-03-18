@@ -20,6 +20,7 @@ services:
       - 3000:3000
     environment:
       - PORT=3000
+      - REQUIRE_SIGN_IN="false"
     volumes:
       - .:/usr/ScienceDbStarterPack
       # Use the Sequelize config adjusted for the Docker setup of ScienceDbStarterPack:

@@ -29,7 +29,7 @@
       "type": "to_one",
       "target": "Accession",
       "targetKey": "accessionId",
-      "keyIn" : "Accession",
+      "keyIn" : "Measurement",
       "targetStorageType": "sql",
       "label": "accession_id"
     }

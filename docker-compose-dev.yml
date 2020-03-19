@@ -7,6 +7,8 @@ services:
       dockerfile: Dockerfile.postgres
     volumes:
       - sdb_db_data:/var/lib/postgresql/data
+    networks:
+      - backend
     ports:
       - 5432:5432
 
@@ -17,7 +19,8 @@ services:
       context: ./graphql-server
       dockerfile: Dockerfile.graphql_server
     ports:
-      - 3000:3000
+      # Remote Cenzontle will be running on this port
+      - 3030:3000
     environment:
       - PORT=3000
       - REQUIRE_SIGN_IN="false"
@@ -25,6 +28,9 @@ services:
       - .:/usr/ScienceDbStarterPack
       # Use the Sequelize config adjusted for the Docker setup of ScienceDbStarterPack:
       - ./graphql-server/config/config_postgres_docker.json:/usr/ScienceDbStarterPack/graphql-server/config/config.json
+    networks:
+      - backend
+      - cenzontle
     # Await POSTGRES role and DB creation, migrate schema, then start web
     # server:
     command:
@@ -42,7 +48,8 @@ services:
       context: ./single-page-app
       dockerfile: Dockerfile.app
     ports:
-      - 8080:8080
+      # Remote cenzontle single-page-app will be accessible under this port
+      - 8090:8080
     environment:
       - PORT=8080
       - REACT_APP_CENZ_GRAPHQL_SERVER_URL=http://localhost:3000/graphql
@@ -51,6 +58,8 @@ services:
       - REACT_APP_CENZ_MAX_UPLOAD_SIZE=500
     volumes:
       - .:/usr/ScienceDbStarterPack
+    networks:
+      - cenzontle
     # Install dependencies and start single-page-app-server in development
     # mode.
     command:
@@ -62,3 +71,8 @@ services:
 
 volumes:
   sdb_db_data:
+
+networks:
+  backend:
+  cenzontle:
+    external: true

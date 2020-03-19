@@ -1,7 +1,7 @@
 [submodule "single-page-app"]
 	path = single-page-app
 	url = https://github.com/ScienceDb/single-page-app.git
-  branch = i25-spa-react
+	branch = i25-spa-react
 [submodule "graphql-server"]
 	path = graphql-server
 	url = https://github.com/ScienceDb/graphql-server.git

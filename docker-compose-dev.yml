@@ -7,8 +7,8 @@ services:
       dockerfile: Dockerfile.postgres
     volumes:
       - sdb_db_data:/var/lib/postgresql/data
-    ports:
-      - 5432:5432
+    networks:
+      - backend
 
   sdb_science_db_graphql_server:
     depends_on:
@@ -25,6 +25,9 @@ services:
       - .:/usr/ScienceDbStarterPack
       # Use the Sequelize config adjusted for the Docker setup of ScienceDbStarterPack:
       - ./graphql-server/config/config_postgres_docker.json:/usr/ScienceDbStarterPack/graphql-server/config/config.json
+    networks:
+      - backend
+      - cenzontle
     # Await POSTGRES role and DB creation, migrate schema, then start web
     # server:
     command:
@@ -51,6 +54,8 @@ services:
       - REACT_APP_CENZ_MAX_UPLOAD_SIZE=500
     volumes:
       - .:/usr/ScienceDbStarterPack
+    networks:
+      - cenzontle
     # Install dependencies and start single-page-app-server in development
     # mode.
     command:
@@ -62,3 +67,8 @@ services:
 
 volumes:
   sdb_db_data:
+
+networks:
+  backend:
+  cenzontle:
+    external: true

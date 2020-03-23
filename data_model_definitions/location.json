@@ -8,7 +8,17 @@
     "locality": "String",
     "latitude": "Float",
     "longitude": "Float",
-    "altitude": "Float"
+    "altitude": "Float",
+    "natural_area": "String",
+    "natural_area_name": "String",
+    "georeference_method": "String",
+    "georeference_source": "String",
+    "datum": "String",
+    "vegetation": "String",
+    "stoniness": "String",
+    "sewer": "String",
+    "topography": "String",
+    "slope": "Float"
   },
 
   "associations" :{

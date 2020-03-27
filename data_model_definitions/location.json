@@ -2,6 +2,7 @@
   "model": "Location",
   "storageType": "sql",
   "attributes" : {
+    "locationId": "String",
     "country": "String",
     "state": "String",
     "municipality": "String",
@@ -33,6 +34,7 @@
       "sublabel": "institution_deposited"
     }
 
-  }
+  },
+  "internalId" : "locationId"
 
 }

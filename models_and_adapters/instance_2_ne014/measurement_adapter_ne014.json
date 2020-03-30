@@ -1,0 +1,43 @@
+{
+  "model": "Measurement",
+  "storageType": "cenzontle-web-service-adapter",
+  "adapterType": "remote",
+  "adapterName": "MEASUREMENT_YOLANDAPROJECT",
+  "regex": "NE014",
+  "url": "http://localhost:4050/graphql",
+  "attributes": {
+    "measurement_id": "String",
+    "name": "String",
+    "method": "String",
+    "reference": "String",
+    "reference_link": "String",
+    "value": "Float",
+    "unit": "String",
+    "short_name": "String",
+    "comments": "String",
+    "field_unit_id": "Int",
+    "individual_id": "String",
+    "accessionId": "String"
+  },
+  "associations": {
+
+    "individual": {
+      "type": "to_one",
+      "target": "Individual",
+      "targetKey": "individual_id",
+      "keyIn" : "Measurement",
+      "targetStorageType": "sql",
+      "label": "name"
+    },
+
+    "accession": {
+      "type": "to_one",
+      "target": "Accession",
+      "targetKey": "accessionId",
+      "keyIn" : "Measurement",
+      "targetStorageType": "sql",
+      "label": "accession_id"
+    }
+  },
+  "internalId" : "measurement_id"
+}

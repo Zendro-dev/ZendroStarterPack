@@ -1,0 +1,35 @@
+{
+  "model": "Individual",
+  "storageType": "distributed-data-model",
+  "registry": ["INDIVIDUAL_YOLANDAPROJECT", "INDIVIDUAL_PGMN"],
+  "attributes": {
+    "name": "String",
+    "origin": "String",
+    "description": "String",
+    "accessionId": "Int",
+    "genotypeId": "Int",
+    "field_unit_id": "Int"
+  },
+
+  "associations":{
+    "accession":{
+      "type": "to_one",
+      "target": "Accession",
+      "targetKey": "accessionId",
+      "keyIn" : "Individual",
+      "targetStorageType": "distributed-data-model",
+      "label": "accession_id",
+      "sublabel": "institution_deposited"
+    },
+
+    "measurements": {
+      "type": "to_many",
+      "target": "Measurement",
+      "targetKey": "individual_id",
+      "keyIn" : "Measurement",
+      "targetStorageType": "distributed-data-model",
+      "label": "name"
+    }
+  },
+  "internalId" : "name"
+}

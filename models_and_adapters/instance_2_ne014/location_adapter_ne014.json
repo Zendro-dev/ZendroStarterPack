@@ -1,0 +1,32 @@
+{
+  "model": "Location",
+  "storageType": "cenzontle-web-service-adapter",
+  "adapterType": "local",
+  "adapterName": "LOCATION_YOLANDAPROJECT",
+  "regex": "NE014",
+  "url": "http://localhost:4050/graphql",
+  "attributes" : {
+    "country": "String",
+    "state": "String",
+    "municipality": "String",
+    "locality": "String",
+    "latitude": "Float",
+    "longitude": "Float",
+    "altitude": "Float"
+  },
+
+  "associations" :{
+
+    "accessions": {
+      "type": "to_many",
+      "target": "Accession",
+      "targetKey": "locationId",
+      "keyIn": "Accession",
+      "targetStorageType": "distributed-data-model",
+      "label": "accession_id",
+      "sublabel": "institution_deposited"
+    }
+
+  }
+
+}

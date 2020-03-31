@@ -33,7 +33,7 @@
     "collected_other": "String",
     "habit": "String",
     "local_name": "String",
-    "locationId": "Int"
+    "locationId": "String"
   },
 
   "associations": {

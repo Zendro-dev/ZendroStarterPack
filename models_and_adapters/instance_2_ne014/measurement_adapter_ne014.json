@@ -1,7 +1,7 @@
 {
   "model": "Measurement",
   "storageType": "cenzontle-web-service-adapter",
-  "adapterType": "remote",
+  "adapterType": "local",
   "adapterName": "MEASUREMENT_YOLANDAPROJECT",
   "regex": "NE014",
   "url": "http://localhost:4050/graphql",

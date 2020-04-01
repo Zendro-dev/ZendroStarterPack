@@ -1,7 +1,6 @@
 {
   "model": "Measurement",
-  "storageType": "cenzontle-web-service-adapter",
-  "adapterType": "remote",
+  "storageType": "cenzontle-webservice-adapter",
   "adapterName": "MEASUREMENT_PGMN",
   "regex": "pgmn",
   "url": "http://localhost:4040/graphql",

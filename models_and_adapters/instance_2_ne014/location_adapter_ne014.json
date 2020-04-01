@@ -1,7 +1,6 @@
 {
   "model": "Location",
-  "storageType": "cenzontle-web-service-adapter",
-  "adapterType": "local",
+  "storageType": "sql-adapter",
   "adapterName": "LOCATION_YOLANDAPROJECT",
   "regex": "NE014",
   "url": "http://localhost:4050/graphql",

@@ -1,15 +1,14 @@
 {
   "model": "Individual",
-  "storageType": "cenzontle-web-service-adapter",
+  "storageType": "sql-adapter",
   "adapterName": "INDIVIDUAL_YOLANDAPROJECT",
-  "adapterType": "local",
   "regex": "NE014",
   "url": "http://localhost:4050/graphql",
   "attributes": {
     "name": "String",
     "origin": "String",
     "description": "String",
-    "accessionId": "Int",
+    "accessionId": "String",
     "genotypeId": "Int",
     "field_unit_id": "Int"
   },

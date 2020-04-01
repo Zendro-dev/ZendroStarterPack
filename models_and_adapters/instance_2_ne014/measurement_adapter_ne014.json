@@ -1,6 +1,6 @@
 {
   "model": "Measurement",
-  "storageType": "cenzontle-web-service-adapter",
+  "storageType": "sql-adapter",
   "adapterType": "local",
   "adapterName": "MEASUREMENT_YOLANDAPROJECT",
   "regex": "NE014",

@@ -6,7 +6,7 @@
     "name": "String",
     "origin": "String",
     "description": "String",
-    "accessionId": "Int",
+    "accessionId": "String",
     "genotypeId": "Int",
     "field_unit_id": "Int"
   },

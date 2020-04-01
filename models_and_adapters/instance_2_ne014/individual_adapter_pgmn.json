@@ -1,7 +1,6 @@
 {
   "model": "Individual",
-  "storageType": "cenzontle-web-service-adapter",
-  "adapterType": "remote",
+  "storageType": "cenzontle-webservice-adapter",
   "adapterName": "INDIVIDUAL_PGMN",
   "regex": "pgmn",
   "url": "http://localhost:4040/graphql",
@@ -9,7 +8,7 @@
     "name": "String",
     "origin": "String",
     "description": "String",
-    "accessionId": "Int",
+    "accessionId": "String",
     "genotypeId": "Int",
     "field_unit_id": "Int"
   },

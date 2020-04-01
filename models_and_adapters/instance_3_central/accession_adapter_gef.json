@@ -1,0 +1,83 @@
+{
+  "model": "Accession",
+  "storageType": "cenzontle-webservice-adapter",
+  "adapterName": "ACCESSION_GEF",
+  "regex": "gef",
+  "url": "http://localhost:3030/graphql",
+  "attributes": {
+    "accession_id": "String",
+    "collectors_name": "String",
+    "collectors_initials": "String",
+    "sampling_date": "Date",
+    "sampling_number": "String",
+    "catalog_number": "String",
+    "institution_deposited": "String",
+    "collection_name": "String",
+    "collection_acronym": "String",
+    "identified_by": "String",
+    "identification_date": "Date",
+    "abundance": "String",
+    "habitat": "String",
+    "observations": "String",
+    "family": "String",
+    "genus": "String",
+    "species": "String",
+    "subspecies": "String",
+    "variety": "String",
+    "race": "String",
+    "form": "String",
+    "taxon_id": "String",
+    "collection_deposit": "String",
+    "collect_number": "String",
+    "collect_source": "String",
+    "collected_seeds": "Int",
+    "collected_plants": "Int",
+    "collected_other": "String",
+    "habit": "String",
+    "local_name": "String",
+    "locationId": "String"
+  },
+
+  "associations": {
+
+    "individuals": {
+      "type": "to_many",
+      "target": "Individual",
+      "targetKey": "accessionId",
+      "keyIn" : "Individual",
+      "targetStorageType": "sql",
+      "label": "name"
+    },
+
+    "taxon": {
+      "type": "to_one",
+      "target": "Taxon",
+      "targetKey": "taxon_id",
+      "keyIn" : "Accession",
+      "targetStorageType": "webservice",
+      "label": "scientificName",
+      "sublabel": "taxonRank"
+    },
+
+    "location": {
+      "type": "to_one",
+      "target": "Location",
+      "targetKey": "locationId",
+      "keyIn" : "Accession",
+      "targetStorageType": "sql",
+      "label": "country",
+      "sublabel": "state"
+    },
+
+    "measurements": {
+      "type": "to_many",
+      "target": "Measurement",
+      "targetKey": "accessionId",
+      "keyIn" : "Measurement",
+      "targetStorageType": "sql",
+      "label": "name"
+    }
+  },
+
+  "internalId" : "accession_id"
+}

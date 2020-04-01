@@ -1,9 +1,7 @@
 {
   "model": "Measurement",
-  "storageType": "sql-adapter",
-  "adapterName": "MEASUREMENT_YOLANDAPROJECT",
-  "regex": "NE014",
-  "url": "http://localhost:4050/graphql",
+  "storageType": "distributed-data-model",
+  "registry": ["MEASUREMENT_YOLANDAPROJECT", "MEASUREMENT_PGMN","MEASUREMENT_GEF"],
   "attributes": {
     "measurement_id": "String",
     "name": "String",

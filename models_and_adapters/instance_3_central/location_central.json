@@ -1,0 +1,41 @@
+{
+  "model": "Location",
+  "storageType": "distributed-data-model",
+  "registry": ["LOCATION_YOLANDAPROJECT", "LOCATION_PGMN","LOCATION_GEF"],
+  "attributes" : {
+    "locationId": "String",
+    "country": "String",
+    "state": "String",
+    "municipality": "String",
+    "locality": "String",
+    "latitude": "Float",
+    "longitude": "Float",
+    "altitude": "Float",
+    "natural_area": "String",
+    "natural_area_name": "String",
+    "georeference_method": "String",
+    "georeference_source": "String",
+    "datum": "String",
+    "vegetation": "String",
+    "stoniness": "String",
+    "sewer": "String",
+    "topography": "String",
+    "slope": "Float"
+  },
+
+  "associations" :{
+
+    "accessions": {
+      "type": "to_many",
+      "target": "Accession",
+      "targetKey": "locationId",
+      "keyIn": "Accession",
+      "targetStorageType": "distributed-data-model",
+      "label": "accession_id",
+      "sublabel": "institution_deposited"
+    }
+
+  },
+  "internalId" : "locationId"
+
+}

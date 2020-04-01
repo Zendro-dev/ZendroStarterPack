@@ -1,9 +1,9 @@
 {
   "model": "Measurement",
-  "storageType": "sql-adapter",
-  "adapterName": "MEASUREMENT_YOLANDAPROJECT",
-  "regex": "NE014",
-  "url": "http://localhost:4050/graphql",
+  "storageType": "cenzontle-webservice-adapter",
+  "adapterName": "MEASUREMENT_PGMN",
+  "regex": "pgmn",
+  "url": "http://localhost:4040/graphql",
   "attributes": {
     "measurement_id": "String",
     "name": "String",

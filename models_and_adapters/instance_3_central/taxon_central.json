@@ -1,0 +1,23 @@
+{
+  "model": "Taxon",
+  "storageType": "webservice",
+  "attributes": {
+    "scientificName": "String",
+    "nameAccordingTo": "String",
+    "namePublishedIn": "String",
+    "namePublishedYear": "String",
+    "taxonRank": "String",
+    "scientificNameAuthorship": "String"
+  },
+  "associations": {
+    "accessions": {
+      "type": "to_many",
+      "target": "Accession",
+      "targetKey": "taxon_id",
+      "keyIn" : "Accession",
+      "targetStorageType": "sql",
+      "label": "collection_name",
+      "sublabel": "accession_id"
+    }
+  }
+}

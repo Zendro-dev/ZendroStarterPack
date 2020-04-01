@@ -3,12 +3,20 @@
   "storageType": "webservice",
   "attributes": {
     "id": "String",
-    "scientificName": "String",
-    "nameAccordingTo": "String",
-    "namePublishedIn": "String",
-    "namePublishedYear": "String",
-    "taxonRank": "String",
-    "scientificNameAuthorship": "String"
+    "taxon": "String",
+    "categoria": "String",
+    "estatus": "String",
+    "nombreAutoridad": "String",
+    "citaNomenclatural": "String",
+    "fuente": "String",
+    "ambiente":"String",
+    "grupoSNIB": "String",
+    "categoriaResidencia": "String",
+    "nom": "String",
+    "cites": "String",
+    "iucn": "String",
+    "prioritarias": "String",
+    "endemismo": "String"
   },
   "associations": {
     "accessions": {

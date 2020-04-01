@@ -2,12 +2,21 @@
   "model": "Taxon",
   "storageType": "webservice",
   "attributes": {
-    "scientificName": "String",
-    "nameAccordingTo": "String",
-    "namePublishedIn": "String",
-    "namePublishedYear": "String",
-    "taxonRank": "String",
-    "scientificNameAuthorship": "String"
+    "id": "String",
+    "taxon": "String",
+    "categoria": "String",
+    "estatus": "String",
+    "nombreAutoridad": "String",
+    "citaNomenclatural": "String",
+    "fuente": "String",
+    "ambiente":"String",
+    "grupoSNIB": "String",
+    "categoriaResidencia": "String",
+    "nom": "String",
+    "cites": "String",
+    "iucn": "String",
+    "prioritarias": "String",
+    "endemismo": "String"
   },
   "associations": {
     "accessions": {
@@ -19,5 +28,7 @@
       "label": "collection_name",
       "sublabel": "accession_id"
     }
-  }
+  },
+
+  "internalId": "id"
 }

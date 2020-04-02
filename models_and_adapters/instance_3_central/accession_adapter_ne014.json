@@ -1,6 +1,6 @@
 {
   "model": "Accession",
-  "storageType": "cenzontle-webservice-adapter",
+  "storageType": "ddm-adapter",
   "adapterName": "ACCESSION_YOLANDAPROJECT",
   "regex": "NE014",
   "url": "http://localhost:5050/graphql",

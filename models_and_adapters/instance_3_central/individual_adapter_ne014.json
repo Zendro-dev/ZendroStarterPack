@@ -1,6 +1,6 @@
 {
   "model": "Individual",
-  "storageType": "cenzontle-webservice-adapter",
+  "storageType": "ddm-adapter",
   "adapterName": "INDIVIDUAL_YOLANDAPROJECT",
   "regex": "NE014",
   "url": "http://localhost:5050/graphql",

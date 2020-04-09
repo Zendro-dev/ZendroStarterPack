@@ -138,24 +138,22 @@ To generate code files from within a Docker container into which external host
 folders are mounted, you need to start the respective Docker container as the
 yourself.
 
-First, find out your user and your group identifiers by running `id` in a terminal.
-Remember your user ID (`uid`) and your group ID (`gid`).
+You have to insert your user ID and your group ID. These are returned by the commands `id -u` (for the user ID) and `id -g` (for the group ID).
+
 
 #### Generate the GraphQL server
 
 ```
-docker run --rm -it -v `pwd`:/opt --user <your_uid>:<your_gid> sciencedb-code-generators:latest 
+docker run --rm -it -v `pwd`:/opt --user $(id -u):$(id -g) sciencedb-code-generators:latest 
 graphql-server-model-codegen --jsonFiles /opt/data_model_definitions -o /opt/graphql-server
 ```
-where `<your_uid>` and `<your_gid>` are your user ID and your group ID, respectively.
 
 #### Generate the Single Page Application (SPA) server
 
 ```
-docker run --rm -it -v `pwd`:/opt --user <your_uid>:<your_gid> sciencedb-code-generators:latest 
+docker run --rm -it -v `pwd`:/opt --user $(id -u):$(id -g) sciencedb-code-generators:latest 
 single-page-app-codegen --jsonFiles /opt/data_model_definitions -o /opt/single-page-app
 ```
-where `<your_uid>` and `<your_gid>` are your user ID and your group ID, respectively.
 
 ### Multiple code generation
 

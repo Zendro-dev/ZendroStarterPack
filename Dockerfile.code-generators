@@ -2,7 +2,7 @@ FROM node:12.13.1-alpine
 
 RUN apk update && \
  apk add git && apk add bash && \
- npm install -g github:ScienceDb/graphql-server-model-codegen.git#issue88-record-limit && \
+ npm install -g github:ScienceDb/graphql-server-model-codegen.git#master && \
  npm install -g github:ScienceDb/single-page-app-codegen.git#i25-spa-codegen-react
 
 ENTRYPOINT ["/bin/bash"]

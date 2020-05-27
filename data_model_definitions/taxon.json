@@ -4,8 +4,6 @@
   "attributes": {
     "name": "String",
     "taxonomic_level": "String",
-    "reference_sequence": "String",
-    "reference_gene": "String",
     "taxon_id": "Int"
   },
   "associations": {

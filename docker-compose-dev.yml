@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile.postgres
     volumes:
-      - sdb_db_data:/var/lib/postgresql/data
+      - /srv/databaseHD/ReconstructDb_Postgres:/var/lib/postgresql/data
     restart: unless-stopped
     networks:
       - backend

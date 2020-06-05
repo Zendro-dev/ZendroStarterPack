@@ -1,4 +1,6 @@
 FROM cassandra:3.11.6
 
-COPY initCassandra.sh /docker-entrypoint-initdb.d/initCassandra.sh
-RUN chmod 755 /docker-entrypoint-initdb.d/initCassandra.sh
+COPY initCassandra.sh /initCassandra.sh
+RUN chmod 755 /initCassandra.sh
+ENTRYPOINT [ "/initCassandra.sh" ]
+CMD ["cassandra", "-f"]

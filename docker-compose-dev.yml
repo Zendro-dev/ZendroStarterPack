@@ -11,13 +11,18 @@ services:
       - 5432:5432
 
   sdb_cassandra:
+    container_name: cassandra
     build:
       context: .
       dockerfile: Dockerfile.cassandra
     volumes: 
-      - sdb_cassandra_data:/var/lib/cassandra/data
+      - sdb_cassandra_data:/var/lib/cassandra
     ports: 
       - 9042:9042
+    environment: 
+      - MAX_HEAP_SIZE=256M
+      - HEAP_NEWSIZE=128M
+    restart: always
 
   sdb_science_db_graphql_server:
     depends_on:

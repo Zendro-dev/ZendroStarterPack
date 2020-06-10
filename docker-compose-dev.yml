@@ -22,7 +22,6 @@ services:
     environment: 
       - MAX_HEAP_SIZE=256M
       - HEAP_NEWSIZE=128M
-    restart: always
 
   sdb_science_db_graphql_server:
     depends_on:

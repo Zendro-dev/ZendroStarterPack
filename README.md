@@ -10,15 +10,15 @@ example sandbox data model definitions have been provided. You find them in
 You should have basic knowledge of the following technology-stack:
 * [`Node.js`](https://nodejs.dev/)
 * [`GraphQL`](https://graphql.org/)
-* [`Vue.js`](https://vuejs.org/)
+* [`REACT.js`](https://reactjs.org/)
 * [`docker`](https://www.docker.com/)
-* [`git`](https://git-scm.com/), especially "git submodules"
+* [`git`](https://git-scm.com/)
 * [`Linux Shell`](https://en.wikipedia.org/wiki/Bash_(Unix_shell))
 
 _Note_, that this project is meant to be used on a `*nix` system, preferably
 Linux.
 
-## Install and init git submodules
+## Install and setup skeleton servers
 
 First you need to `git clone` this project into a local directory on your host
 system:
@@ -26,69 +26,20 @@ system:
 git clone https://github.com/ScienceDb/ScienceDbStarterPack.git
 ```
 
-The skeleton GraphQL server and the single page application server projects are
-managed as `git submodule`s. "Skeleton" means that these projects provide all
-the code needed to start a server, but actually have no code particular to any
+The skeleton [GraphQL server](https://github.com/ScienceDb/graphql-server) and the 
+skeleton [single page application server](https://github.com/ScienceDb/single-page-app) projects are managed as different git repositories.
+"Skeleton" means that these projects provide all the code needed
+to start a server, but actually have no code particular to any
 data model. This "particular" code you will generate with ScienceDb's code
 generators (see below).
 
-_Note_ that using git submodules is a good solution for this Starter-Pack
-project. Nonetheless, as git developers themselves admit "Using submodules
-isn’t without hiccups, however." See [the official git book, chapter
-submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules) for more
-details on git submodules.
-
-Setup the skeleton servers:
+### Setup the skeleton servers
 ```
-git submodule init
-git submodule update --init --recursive
+./setup.sh
 ```
-
-### Update submodules to latest remote repository versions
-
-If you want to update your skeleton server projects managed as git submodules
-to the latest remote repository version, run the following command:
-```
-git submodule foreach git pull origin master
-```
-
-### Start your own branch of the servers 
-
-To correctly manage your code with git you will need to create your own
-branches of the servers. Furthermore, you might have to add your own remote
-repository to which to push your new code.
-
-To achieve this the most recommendable way is to fork the two server projects
-on github:
-* [`graphql-server`](https://github.com/ScienceDb/graphql-server)
-* [`single-page-application`](https://github.com/ScienceDb/single-page-app)
-
-Then update your submodules (the servers) to track your own forked version of
-the two repositories. To update the git URLs simply edit the file `.gitmodules`.
-For example change 
-```
-[submodule "graphql-server"]
-  path = graphql-server
-  url = https://github.com/ScienceDb/graphql-server.git
-```
-to
-```
-[submodule "graphql-server"]
-  path = graphql-server
-  url = https://github.com/MyGitHubName/graphql-server.git
-```
-
-Then run the following commands:
-```
-git submodule sync
-git submodule update --init --recursive --remote
-```
-
-#### Switch to a new feature-branch
-
-```
-git submodule foreach 'git checkout -b featureA'
-```
+Using the `setup.sh` bash skript will add the latest versions of the skeleton 
+projects, tagged as `latest-stable` to the directory. You should now have two 
+folders `graphql-server` and `single-page-app` in your StarterPack root directory.
 
 ## Install the code generators within a dedicated Docker image
 
@@ -177,18 +128,19 @@ URLs to use for login and to send GraphQL queries to. This is controlled by the
 following environment variables of `sdb_science_db_app_server` in the two
 docker-compose files.
 
-* `VUE_APP_SERVER_URL=http://localhost:3000/graphql`
-* `VUE_APP_LOGIN_URL=http://localhost:3000/login`
-* `VUE_APP_MAX_UPLOAD_SIZE=500`
+* `REACT_APP_CENZ_GRAPHQL_SERVER_URL=http://localhost:3000/graphql`
+* `REACT_APP_CENZ_LOGIN_URL=http://localhost:3000/login`
+* `REACT_APP_CENZ_MAX_UPLOAD_SIZE=500`
 
 For more details see our [manual](https://sciencedb.github.io/) and the
 [single-page-application
 `README`](https://github.com/ScienceDb/single-page-app/blob/master/README.md).
 
-If you want to access the GraphiQL interface (`http://localhost:3000/graphql`) without a login, toggle the associated environment variable:
+If you want to access the GraphiQL interface (`http://localhost:3000/graphql`) without a authorization token, toggle the associated environment variable:
 ```
 REQUIRE_SIGN_IN="false"
 ```
+in the docker-compose file.
 For more details about the graphql-server environment variables see the [graphql-server `README`](https://github.com/ScienceDb/graphql-server/blob/master/README.md)
 
 #### Access Control

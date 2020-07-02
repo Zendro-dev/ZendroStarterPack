@@ -1,6 +1,0 @@
-[submodule "single-page-app"]
-	path = single-page-app
-	url = https://github.com/ScienceDb/single-page-app.git
-[submodule "graphql-server"]
-	path = graphql-server
-	url = https://github.com/ScienceDb/graphql-server.git

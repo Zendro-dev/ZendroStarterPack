@@ -2,29 +2,42 @@ version: "3.2"
 
 services:
   sdb_postgres:
+    container_name: zendroStarterPack_postgres
     build:
       context: .
       dockerfile: Dockerfile.postgres
     volumes:
       - sdb_db_data:/var/lib/postgresql/data
-    ports:
-      - 5432:5432
+    networks:
+      - backend
 
   sdb_science_db_graphql_server:
+    container_name: zendroStarterPack_graphql-server
     depends_on:
       - sdb_postgres
     build:
       context: ./graphql-server
       dockerfile: Dockerfile.graphql_server
-    ports:
-      - 3000:3000
     environment:
       - PORT=3000
       - NODE_ENV=production
+      - LIMIT_RECORDS : "${LIMIT_RECORDS}"
+      - ALLOW_ORIGIN: "${ALLOW_ORIGIN}"
+      - REQUIRE_SIGN_IN: "${REQUIRE_SIGN_IN}"
+      - MAX_TIME_OUT: "${MAX_TIME_OUT}"
+      - POST_REQUEST_MAX_BODY_SIZE: "${POST_REQUEST_MAX_BODY_SIZE}"
+      - ERROR_LOG: "${ERROR_LOG}"
+      - MAIL_SERVICE: "${MAIL_SERVICE}" 
+      - MAIL_HOST: "${MAIL_HOST}"
+      - MAIL_ACCOUNT: "${MAIL_ACCOUNT}"
+      - MAIL_PASSWORD: "${MAIL_PASSWORD}"
+      - EXPORT_TIME_OUT: "${EXPORT_TIME_OUT}"
     # Ensure there is enough room to upload large files and store them
     # temporarily in the host system's tempdir:
     volumes:
       - /tmp:/tmp
+    networks:
+      - backend
     # Await POSTGRES role and DB creation, migrate schema, then start web
     # server:
     command:
@@ -37,45 +50,11 @@ services:
     build:
       context: ./single-page-app
       dockerfile: Dockerfile.nginx
-    ports:
-      - 8080:80
-
-  sdb_minio:
-    image: minio/minio:RELEASE.2019-02-20T22-44-29Z
-    volumes:
-      - sdb_minio_data:/data
-    ports:
-      - "9000:9000"
-    environment:
-      MINIO_ACCESS_KEY: minio
-      MINIO_SECRET_KEY: minio123
-    command: server /data
-
-    #sdb_science_db_shiny:
-    #bpbuild:
-    #bp  context: .
-    #bp  dockerfile: Dockerfile.shiny
-    #bpenvironment:
-    #bp  PORT: 3838
-    #bpports:
-    #bp  - "3838:3838"
-    #bpvolumes:
-    #bp  - sdb_shiny_data:/srv/shiny-server
-    #bpcommand:
-    #bp  - /bin/sh
-    #bp  - -c
-    #bp  - |
-    #bp    cp /opt/helloWorld.Rmd /srv/shiny-server 
-    #bp    /usr/bin/shiny-server.sh
-    #labels:
-    #  traefik.enable: "true"
-    #  traefik.backend: "science_db_shiny"
-    #  traefik.frontend.rule: "Host:shiny.reconstructdb.org"
-    #  #traefik.frontend.auth.basic: 'testuser:$$apr1$$QBCuO60R$$pJIFSe2x8L/cTbOBOvoOt1'
-    #  traefik.docker.network: "reverseproxy"
-    #  traefik.port: "3838"
+    #ports:
+    #  - 8080:80
 
 volumes:
   sdb_db_data:
-  sdb_minio_data:
-  #sdb_shiny_data:
+
+networks:
+  backend:

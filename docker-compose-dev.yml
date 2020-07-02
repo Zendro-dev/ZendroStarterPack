@@ -18,19 +18,21 @@ services:
     build:
       context: ./graphql-server
       dockerfile: Dockerfile.graphql_server
+    #ports: 
+    #  3000:3000
     environment:
-      - PORT: '3000'
-      - LIMIT_RECORDS : "${LIMIT_RECORDS}"
-      - ALLOW_ORIGIN: "${ALLOW_ORIGIN}"
-      - REQUIRE_SIGN_IN: "${REQUIRE_SIGN_IN}"
-      - MAX_TIME_OUT: "${MAX_TIME_OUT}"
-      - POST_REQUEST_MAX_BODY_SIZE: "${POST_REQUEST_MAX_BODY_SIZE}"
-      - ERROR_LOG: "${ERROR_LOG}"
-      - MAIL_SERVICE: "${MAIL_SERVICE}" 
-      - MAIL_HOST: "${MAIL_HOST}"
-      - MAIL_ACCOUNT: "${MAIL_ACCOUNT}"
-      - MAIL_PASSWORD: "${MAIL_PASSWORD}"
-      - EXPORT_TIME_OUT: "${EXPORT_TIME_OUT}"
+      PORT: ${PORT:-3000}
+      LIMIT_RECORDS : ${LIMIT_RECORDS:-10000}
+      #- ALLOW_ORIGIN: "${ALLOW_ORIGIN}"
+      #- REQUIRE_SIGN_IN: "${REQUIRE_SIGN_IN}"
+      #- MAX_TIME_OUT: "${MAX_TIME_OUT}"
+      #- POST_REQUEST_MAX_BODY_SIZE: "${POST_REQUEST_MAX_BODY_SIZE}"
+      #- ERROR_LOG: "${ERROR_LOG}"
+      #- MAIL_SERVICE: "${MAIL_SERVICE}" 
+      #- MAIL_HOST: "${MAIL_HOST}"
+      #- MAIL_ACCOUNT: "${MAIL_ACCOUNT}"
+      #- MAIL_PASSWORD: "${MAIL_PASSWORD}"
+      #- EXPORT_TIME_OUT: "${EXPORT_TIME_OUT}"
     volumes:
       - .:/usr/ScienceDbStarterPack
       # Use the Sequelize config adjusted for the Docker setup of ScienceDbStarterPack:

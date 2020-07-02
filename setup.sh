@@ -73,7 +73,7 @@ rm latest-stable.tar.gz
 # Msg
 echo -e "${LGRAY}@@ Adding graphql-server skeleton... ${LGREEN}done${NC}"
 
-## Addsingle-page-app skeleton
+## Add single-page-app skeleton
 #
 # Msg
 echo -e "\n${LGRAY}@@ Adding single-page-app skeleton...${NC}"
@@ -87,3 +87,19 @@ mv single-page-app-latest-stable single-page-app
 rm latest-stable.tar.gz
 # Msg
 echo -e "${LGRAY}@@ Adding single-page-app skeleton... ${LGREEN}done${NC}"
+
+
+## Add single-page-app skeleton
+#
+# Msg
+echo -e "\n${LGRAY}@@ Adding graphqiql-auth...${NC}"
+# get the latest stable archive from github
+wget https://github.com/ScienceDb/graphiql-auth/archive/latest-stable.tar.gz
+# extract the folder from the archive
+tar xzf latest-stable.tar.gz graphiql-auth-latest-stable
+# rename the folder to 'graphql-server'
+mv graphiql-auth-latest-stable graphiql-auth
+# remove the downloaded arvhice
+rm latest-stable.tar.gz
+# Msg
+echo -e "${LGRAY}@@  Adding graphqiql-auth... ${LGREEN}done${NC}"

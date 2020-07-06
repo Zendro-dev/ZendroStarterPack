@@ -18,21 +18,23 @@ services:
     build:
       context: ./graphql-server
       dockerfile: Dockerfile.graphql_server
-    #ports: 
-    #  3000:3000
+    # Using ports in this way is a security concern. Please consider using e.g. a reverseproxy
+    ports: 
+      - 3000:3000
     environment:
-      PORT: ${PORT:-3000}
-      LIMIT_RECORDS : ${LIMIT_RECORDS:-10000}
-      #- ALLOW_ORIGIN: "${ALLOW_ORIGIN}"
-      #- REQUIRE_SIGN_IN: "${REQUIRE_SIGN_IN}"
-      #- MAX_TIME_OUT: "${MAX_TIME_OUT}"
-      #- POST_REQUEST_MAX_BODY_SIZE: "${POST_REQUEST_MAX_BODY_SIZE}"
-      #- ERROR_LOG: "${ERROR_LOG}"
-      #- MAIL_SERVICE: "${MAIL_SERVICE}" 
-      #- MAIL_HOST: "${MAIL_HOST}"
-      #- MAIL_ACCOUNT: "${MAIL_ACCOUNT}"
-      #- MAIL_PASSWORD: "${MAIL_PASSWORD}"
-      #- EXPORT_TIME_OUT: "${EXPORT_TIME_OUT}"
+      PORT: "3000"
+      ## modifiable environment variables. Uncomment and set or export the needed environment settings.
+      # LIMIT_RECORDS : ${LIMIT_RECORDS:-10000}
+      # REQUIRE_SIGN_IN: ${REQUIRE_SIGN_IN:-"false"}  
+      # ALLOW_ORIGIN: ${ALLOW_ORIGIN:-"http://localhost:8080"}   
+      # MAX_TIME_OUT: ${MAX_TIME_OUT:-2000}
+      # POST_REQUEST_MAX_BODY_SIZE: ${POST_REQUEST_MAX_BODY_SIZE:-"1mb"}
+      # ERROR_LOG: ${ERROR_LOG:-"compact"}
+      # MAIL_SERVICE: ${MAIL_SERVICE:-"gmail"}
+      # MAIL_HOST: ${MAIL_HOST:-"smtp.gmail.com"}
+      # MAIL_ACCOUNT: ${MAIL_ACCOUNT:-"sci.db.service@gmail.com"}
+      # MAIL_PASSWORD: ${MAIL_PASSWORD:-"SciDbServiceQAZ"}
+      # EXPORT_TIME_OUT: ${EXPORT_TIME_OUT:-3600}
     volumes:
       - .:/usr/ScienceDbStarterPack
       # Use the Sequelize config adjusted for the Docker setup of ScienceDbStarterPack:
@@ -58,6 +60,9 @@ services:
     build:
       context: ./single-page-app
       dockerfile: Dockerfile.app
+    # Using ports in this way is a security concern. Please consider using e.g. a reverseproxy
+    ports:
+      - 8080:8080
     environment:
       - PORT=8080
       - REACT_APP_CENZ_GRAPHQL_SERVER_URL=http://localhost:3000/graphql
@@ -83,6 +88,9 @@ services:
     build:
       context: ./graphiql-auth
       dockerfile: Dockerfile
+    # Using ports in this way is a security concern. Please consider using e.g. a reverseproxy
+    ports:
+      - 7000:7000
     environment:
       - REACT_APP_SERVER_URL=http://localhost:3000/graphql
       - REACT_APP_LOGIN_URL=http://localhost:3000/login

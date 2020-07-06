@@ -18,20 +18,23 @@ services:
     build:
       context: ./graphql-server
       dockerfile: Dockerfile.graphql_server
+    # Using ports in this way is a security concern. Please consider using e.g. a reverseproxy
+    ports:
+      - 3000:3000
     environment:
-      - PORT=3000
-      - NODE_ENV=production
-      - LIMIT_RECORDS : "${LIMIT_RECORDS}"
-      - ALLOW_ORIGIN: "${ALLOW_ORIGIN}"
-      - REQUIRE_SIGN_IN: "${REQUIRE_SIGN_IN}"
-      - MAX_TIME_OUT: "${MAX_TIME_OUT}"
-      - POST_REQUEST_MAX_BODY_SIZE: "${POST_REQUEST_MAX_BODY_SIZE}"
-      - ERROR_LOG: "${ERROR_LOG}"
-      - MAIL_SERVICE: "${MAIL_SERVICE}" 
-      - MAIL_HOST: "${MAIL_HOST}"
-      - MAIL_ACCOUNT: "${MAIL_ACCOUNT}"
-      - MAIL_PASSWORD: "${MAIL_PASSWORD}"
-      - EXPORT_TIME_OUT: "${EXPORT_TIME_OUT}"
+      PORT: "3000"
+      ## modifiable environment variables. Uncomment and set or export the needed environment settings.
+      # LIMIT_RECORDS : ${LIMIT_RECORDS:-10000}
+      # REQUIRE_SIGN_IN: ${REQUIRE_SIGN_IN:-"true"}  
+      # ALLOW_ORIGIN: ${ALLOW_ORIGIN:-"http://localhost:8080"}   
+      # MAX_TIME_OUT: ${MAX_TIME_OUT:-2000}
+      # POST_REQUEST_MAX_BODY_SIZE: ${POST_REQUEST_MAX_BODY_SIZE:-"1mb"}
+      # ERROR_LOG: ${ERROR_LOG:-"compact"}
+      # MAIL_SERVICE: ${MAIL_SERVICE:-"gmail"}
+      # MAIL_HOST: ${MAIL_HOST:-"smtp.gmail.com"}
+      # MAIL_ACCOUNT: ${MAIL_ACCOUNT:-"sci.db.service@gmail.com"}
+      # MAIL_PASSWORD: ${MAIL_PASSWORD:-"SciDbServiceQAZ"}
+      # EXPORT_TIME_OUT: ${EXPORT_TIME_OUT:-3600}
     # Ensure there is enough room to upload large files and store them
     # temporarily in the host system's tempdir:
     volumes:
@@ -44,14 +47,44 @@ services:
       - ./migrateDbAndStartServer.sh
 
   sdb_nginx:
+    container_name: zendroStarterPack_spa
     depends_on:
       - sdb_postgres
       - sdb_science_db_graphql_server
     build:
       context: ./single-page-app
       dockerfile: Dockerfile.nginx
-    #ports:
-    #  - 8080:80
+    # Using ports in this way is a security concern. Please consider using e.g. a reverseproxy
+    ports:
+      - 8080:80
+    environment:
+      - REACT_APP_CENZ_GRAPHQL_SERVER_URL=http://localhost:3000/graphql
+      - REACT_APP_CENZ_LOGIN_URL=http://localhost:3000/login
+      - REACT_APP_CENZ_MAX_UPLOAD_SIZE=50
+
+  sdb_graphiql:
+    container_name: zendroStarterPack_graphiql-auth
+    depends_on:
+      - sdb_postgres
+      - sdb_science_db_graphql_server
+    build:
+      context: ./graphiql-auth
+      dockerfile: Dockerfile
+    # Using ports in this way is a security concern. Please consider using e.g. a reverseproxy
+    ports:
+      - 7000:7000
+    environment:
+      - REACT_APP_SERVER_URL=http://localhost:3000/graphql
+      - REACT_APP_LOGIN_URL=http://localhost:3000/login
+      - PORT=7000
+    volumes:
+      - .:/usr/ScienceDbStarterPack
+    # Install dependencies and start single-page-app-server in development
+    # mode.
+    networks:
+      - backend
+    command:
+        npm start
 
 volumes:
   sdb_db_data:

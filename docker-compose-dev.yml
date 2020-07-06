@@ -25,7 +25,7 @@ services:
       PORT: "3000"
       ## modifiable environment variables. Uncomment and set or export the needed environment settings.
       # LIMIT_RECORDS : ${LIMIT_RECORDS:-10000}
-      # REQUIRE_SIGN_IN: ${REQUIRE_SIGN_IN:-"false"}  
+      # REQUIRE_SIGN_IN: ${REQUIRE_SIGN_IN:-"true"}  
       # ALLOW_ORIGIN: ${ALLOW_ORIGIN:-"http://localhost:8080"}   
       # MAX_TIME_OUT: ${MAX_TIME_OUT:-2000}
       # POST_REQUEST_MAX_BODY_SIZE: ${POST_REQUEST_MAX_BODY_SIZE:-"1mb"}

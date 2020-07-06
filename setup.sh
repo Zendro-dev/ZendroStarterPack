@@ -89,7 +89,7 @@ rm latest-stable.tar.gz
 echo -e "${LGRAY}@@ Adding single-page-app skeleton... ${LGREEN}done${NC}"
 
 
-## Add single-page-app skeleton
+## Add graphiql-auth server
 #
 # Msg
 echo -e "\n${LGRAY}@@ Adding graphqiql-auth...${NC}"

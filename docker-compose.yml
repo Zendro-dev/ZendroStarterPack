@@ -60,7 +60,7 @@ services:
     environment:
       - REACT_APP_CENZ_GRAPHQL_SERVER_URL=http://localhost:3000/graphql
       - REACT_APP_CENZ_LOGIN_URL=http://localhost:3000/login
-      - REACT_APP_CENZ_MAX_UPLOAD_SIZE=50
+      - REACT_APP_CENZ_MAX_UPLOAD_SIZE=500
 
   sdb_graphiql:
     container_name: zendroStarterPack_graphiql-auth

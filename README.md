@@ -40,6 +40,7 @@ generators (see below).
 Using the `setup.sh` bash skript will add the latest versions of the skeleton 
 projects, tagged as `latest-stable` to the directory. You should now have two 
 folders `graphql-server` and `single-page-app` in your StarterPack root directory.
+Running the command will also automatically add a modified version of the graphql-server `graphiql-auth` into your directory, which offers the graphiql browser interface with a login. See [here](https://github.com/ScienceDb/graphiql-auth) for more information.   
 
 ## Install the code generators within a dedicated Docker image
 
@@ -226,9 +227,9 @@ npm run build
 
 See the `environment` section of the `sdb_nginx` image in `docker-compose.yml`.
 
-* `MY_SERVER_URL` - url where your backend server will be running, default value is http://localhost:3000/graphql
-* `MY_LOGIN_URL` - url where your backend will check authentication, default value is http://localhost:3000/login.
-* `MAX_UPLOAD_SIZE` - maximum size(in MB) of a file intended to be uploaded, default value is 500, which means that user can not upload a file larger than 500MB.
+* `REACT_APP_CENZ_GRAPHQL_SERVER` - url where your backend server will be running, default value is http://localhost:3000/graphql
+* `REACT_APP_CENZ_LOGIN_URL` - url where your backend will check authentication, default value is http://localhost:3000/login.
+* `REACT_APP_CENZ_MAX_UPLOAD_SIZE` - maximum size(in MB) of a file intended to be uploaded, default value is 500, which means that user can not upload a file larger than 500MB.
 
 The above is taken from the [single-page-app `README`](https://github.com/ScienceDb/single-page-app/blob/master/README.md)
 

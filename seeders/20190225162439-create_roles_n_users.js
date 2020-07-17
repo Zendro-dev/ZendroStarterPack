@@ -1,4 +1,6 @@
 'use strict';
+const bcrypt = require('bcrypt');
+const globals = require('../config/globals');
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
@@ -16,10 +18,11 @@ module.exports = {
       }, {
         name: 'guest',
         description: 'A guest is allowed read access to all data models, excluding users and user-roles.'
-      }]).then(function(x) {
+      }]).then(async function(x) {
+        let hashedPassword = await bcrypt.hash('admin', globals.SALT_ROUNDS);
         return queryInterface.bulkInsert('users', [{
           email: 'a.hallab@fz-juelich.de',
-          password: 'admin'
+          password: hashedPassword
         }])
       }).then(function(x) {
         return queryInterface.sequelize.query(

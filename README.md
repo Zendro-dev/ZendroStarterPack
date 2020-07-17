@@ -1,7 +1,7 @@
 # ScienceDBStarterPack
 
 This is a collection of skeleton projects and code generators used to get a new
-user started with ScienceDb. To
+user started with Zendro. To get you started 
 example sandbox data model definitions have been provided. You find them in
 `./data_model_definitions/`.
 
@@ -30,7 +30,7 @@ The skeleton [GraphQL server](https://github.com/ScienceDb/graphql-server) and t
 skeleton [single page application server](https://github.com/ScienceDb/single-page-app) projects are managed as different git repositories.
 "Skeleton" means that these projects provide all the code needed
 to start a server, but actually have no code particular to any
-data model. This "particular" code you will generate with ScienceDb's code
+data model. This "particular" code you will generate with Zendro's code
 generators (see below).
 
 ### Setup the skeleton servers
@@ -44,7 +44,7 @@ Running the command will also automatically add a modified version of the graphq
 
 ## Install the code generators within a dedicated Docker image
 
-To avoid having to install the ScienceDb code-generators on your host system we
+To avoid having to install the Zendro code-generators on your host system we
 provide a dedicated Docker image in which two code generators are installed and
 ready to be used. 
 
@@ -56,7 +56,7 @@ docker build -f Dockerfile.code-generators -t sciencedb-code-generators:latest .
 
 Within the directory `./data_model_definitions` you can place your data model
 definitions in respective `JSON` files. To learn more about how to define data
-models with ScienceDb please see our [manual and
+models with Zendro please see our [manual and
 documentation](https://sciencedb.github.io/).
 
 ### Use default user and roles
@@ -112,7 +112,7 @@ single-page-app-codegen --jsonFiles /opt/data_model_definitions -o /opt/single-p
 Be very carefull when running the code generators multiple times on the same data model definitions. Two nasty things can happen:
 
 1. You might overwrite manual changes you might have made to come of the code that was automatically generated.
-2. In the case of relational databases, ScienceDb code generators also create migrations (using Sequelize). As these are named using the current date, you might have several migrations to create the same tables. This will lead to errors. Make sure you delete the migrations folder content, if you want to run the code generators multiple times on the same model definitions: `rm ./graphql-server/migrations/*`. 
+2. In the case of relational databases, Zendro code generators also create migrations (using Sequelize). As these are named using the current date, you might have several migrations to create the same tables. This will lead to errors. Make sure you delete the migrations folder content, if you want to run the code generators multiple times on the same model definitions: `rm ./graphql-server/migrations/*`. 
 
 ## Start the servers
 
@@ -129,9 +129,9 @@ URLs to use for login and to send GraphQL queries to. This is controlled by the
 following environment variables of `sdb_science_db_app_server` in the two
 docker-compose files.
 
-* `REACT_APP_CENZ_GRAPHQL_SERVER_URL=http://localhost:3000/graphql`
-* `REACT_APP_CENZ_LOGIN_URL=http://localhost:3000/login`
-* `REACT_APP_CENZ_MAX_UPLOAD_SIZE=500`
+* `REACT_APP_ZENDRO_GRAPHQL_SERVER_URL=http://localhost:3000/graphql`
+* `REACT_APP_ZENDRO_LOGIN_URL=http://localhost:3000/login`
+* `REACT_APP_ZENDRO_MAX_UPLOAD_SIZE=500`
 
 For more details see our [manual](https://sciencedb.github.io/) and the
 [single-page-application
@@ -146,7 +146,7 @@ For more details about the graphql-server environment variables see the [graphql
 
 #### Access Control
 
-ScienceDb can be used checking access rights for every single GraphQL query
+Zendro can be used checking access rights for every single GraphQL query
 received by the currently logged in user identified by the respective [JSON Web
 Token](https://jwt.io/) found in the request header. The user is decoded and
 his roles are loaded to check his access rights. This step is carried out by
@@ -154,7 +154,7 @@ the [NPM acl package](https://www.npmjs.com/package/acl). Respective access
 rights can and must be declared in the file
 [`./graphql-server/acl_rules.js`](https://github.com/ScienceDb/graphql-server/blob/master/acl_rules.js).
 
-You can run ScienceDb with or without this access control check. The default is
+You can run Zendro with or without this access control check. The default is
 to run it _without_ checking access rights. 
 
 To switch access right check on, you must uncomment the command line switch
@@ -227,9 +227,9 @@ npm run build
 
 See the `environment` section of the `sdb_nginx` image in `docker-compose.yml`.
 
-* `REACT_APP_CENZ_GRAPHQL_SERVER` - url where your backend server will be running, default value is http://localhost:3000/graphql
-* `REACT_APP_CENZ_LOGIN_URL` - url where your backend will check authentication, default value is http://localhost:3000/login.
-* `REACT_APP_CENZ_MAX_UPLOAD_SIZE` - maximum size(in MB) of a file intended to be uploaded, default value is 500, which means that user can not upload a file larger than 500MB.
+* `REACT_APP_ZENDRO_GRAPHQL_SERVER` - url where your backend server will be running, default value is http://localhost:3000/graphql
+* `REACT_APP_ZENDRO_LOGIN_URL` - url where your backend will check authentication, default value is http://localhost:3000/login.
+* `REACT_APP_ZENDRO_MAX_UPLOAD_SIZE` - maximum size(in MB) of a file intended to be uploaded, default value is 500, which means that user can not upload a file larger than 500MB.
 
 The above is taken from the [single-page-app `README`](https://github.com/ScienceDb/single-page-app/blob/master/README.md)
 

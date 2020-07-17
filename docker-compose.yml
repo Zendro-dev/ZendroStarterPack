@@ -25,8 +25,10 @@ services:
       PORT: "3000"
       ## modifiable environment variables. Uncomment and set or export the needed environment settings.
       # LIMIT_RECORDS : ${LIMIT_RECORDS:-10000}
-      # REQUIRE_SIGN_IN: ${REQUIRE_SIGN_IN:-"true"}  
-      # ALLOW_ORIGIN: ${ALLOW_ORIGIN:-"http://localhost:8080"}   
+      # REQUIRE_SIGN_IN: ${REQUIRE_SIGN_IN:-"true"}
+      # ALLOW_ORIGIN: ${ALLOW_ORIGIN:-"http://localhost:8080"}
+      # JWT_SECRET: ${JWT_SECRET:-"something-secret"}
+      # SALT_ROUNDS: ${SALT_ROUNDS:-10} 
       # MAX_TIME_OUT: ${MAX_TIME_OUT:-2000}
       # POST_REQUEST_MAX_BODY_SIZE: ${POST_REQUEST_MAX_BODY_SIZE:-"1mb"}
       # ERROR_LOG: ${ERROR_LOG:-"compact"}
@@ -58,9 +60,9 @@ services:
     ports:
       - 8080:80
     environment:
-      - REACT_APP_CENZ_GRAPHQL_SERVER_URL=http://localhost:3000/graphql
-      - REACT_APP_CENZ_LOGIN_URL=http://localhost:3000/login
-      - REACT_APP_CENZ_MAX_UPLOAD_SIZE=500
+      - REACT_APP_ZENDRO_GRAPHQL_SERVER_URL=http://localhost:3000/graphql
+      - REACT_APP_ZENDRO_LOGIN_URL=http://localhost:3000/login
+      - REACT_APP_ZENDRO_MAX_UPLOAD_SIZE=500
 
   sdb_graphiql:
     container_name: zendroStarterPack_graphiql-auth

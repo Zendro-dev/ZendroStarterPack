@@ -10,14 +10,14 @@ module.exports = {
     }).catch(function(e) {
       // Database has not been seeded yet.
       return queryInterface.bulkInsert('roles', [{
-        name: 'admin',
+        name: 'administrator',
         description: 'The administrator is allowed to create, read, update, and delete users and their roles.'
       }, {
-        name: 'scientist',
-        description: 'A scientist can create, update, and delete data of the various data models, excluding users and user-roles.'
+        name: 'editor',
+        description: 'An editor can create, update, and delete data of the various data models, excluding users and user-roles.'
       }, {
-        name: 'guest',
-        description: 'A guest is allowed read access to all data models, excluding users and user-roles.'
+        name: 'reader',
+        description: 'A reader is allowed read access to all data models, excluding users and user-roles.'
       }]).then(async function(x) {
         let hashedPassword = await bcrypt.hash('admin', globals.SALT_ROUNDS);
         return queryInterface.bulkInsert('users', [{
@@ -28,11 +28,11 @@ module.exports = {
         return queryInterface.sequelize.query(
           'INSERT INTO role_to_users ("userId", "roleId") VALUES ' +
           '( (SELECT (id) FROM users WHERE email = \'a.hallab@fz-juelich.de\'), ' +
-          '(SELECT (id) FROM roles WHERE name = \'admin\') ), ' +
+          '(SELECT (id) FROM roles WHERE name = \'administrator\') ), ' +
           '( (SELECT (id) FROM users WHERE email = \'a.hallab@fz-juelich.de\'), ' +
-          '(SELECT (id) FROM roles WHERE name = \'scientist\') ), ' +
+          '(SELECT (id) FROM roles WHERE name = \'editor\') ), ' +
           '( (SELECT (id) FROM users WHERE email = \'a.hallab@fz-juelich.de\'), ' +
-          '(SELECT (id) FROM roles WHERE name = \'guest\') )'
+          '(SELECT (id) FROM roles WHERE name = \'reader\') )'
         )
       }).then(function(x) {
         return queryInterface.sequelize.query(

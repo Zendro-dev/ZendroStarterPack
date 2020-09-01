@@ -12,7 +12,8 @@
         "target" : "country",
         "targetKey" : "country_id",
         "keyIn": "capital",
-        "targetStorageType" : "sql"
+        "targetStorageType" : "sql",
+        "label": "name"
       }
     },
     "internalId": "capital_id"

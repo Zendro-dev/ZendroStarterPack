@@ -11,7 +11,8 @@
         "target" : "capital",
         "targetKey" : "country_id",
         "keyIn": "capital",
-        "targetStorageType" : "sql"
+        "targetStorageType" : "sql",
+        "label": "name"
       },
       "rivers": {
         "type" : "to_many_through_sql_cross_table",
@@ -19,7 +20,8 @@
         "sourceKey": "country_id",
         "targetKey": "river_id",
         "keysIn": "country_to_river",
-        "targetStorageType" : "sql"
+        "targetStorageType" : "sql",
+        "label": "name"
       }
     },
     "internalId": "country_id"

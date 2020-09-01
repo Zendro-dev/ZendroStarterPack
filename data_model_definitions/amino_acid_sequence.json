@@ -11,7 +11,8 @@
       "target" : "transcript_count",
       "targetKey" : "aminoacidsequence_id",
       "keyIn": "transcript_count",
-      "targetStorageType" : "sql"
+      "targetStorageType" : "sql",
+      "label": "gene"
     }
   }
 }

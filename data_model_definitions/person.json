@@ -11,14 +11,16 @@
         "target" : "dog",
         "targetKey" : "person_id",
         "keyIn": "dog",
-        "targetStorageType" : "sql"
+        "targetStorageType" : "sql",
+        "label": "name"
       },
       "unique_parrot": {
         "type" : "to_one",
         "target" : "parrot",
         "targetKey" : "person_id",
         "keyIn": "parrot",
-        "targetStorageType" : "sql"
+        "targetStorageType" : "sql",
+        "label": "name"
       }
     },
     "internalId": "person_id"

@@ -13,7 +13,8 @@
       "sourceKey": "river_id",
       "targetKey": "country_id",
       "keysIn": "country_to_river",
-      "targetStorageType" : "sql"
+      "targetStorageType" : "sql",
+      "label": "name"
     }
   },
   "internalId": "river_id"

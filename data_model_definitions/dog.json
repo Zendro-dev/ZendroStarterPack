@@ -12,7 +12,16 @@
         "target" : "person",
         "targetKey" : "person_id",
         "keyIn": "dog",
-        "targetStorageType" : "sql"
+        "targetStorageType" : "sql",
+        "label": "name"
+      },
+      "parrots": {
+        "type" : "to_many",
+        "target" : "parrot",
+        "targetKey" : "dog_id",
+        "keyIn": "parrot",
+        "targetStorageType" : "sql",
+        "label": "name"
       }
     },
     "internalId": "dog_id"

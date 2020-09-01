@@ -15,14 +15,16 @@
       "target" : "individual",
       "targetKey" : "individual_id",
       "keyIn": "transcript_count",
-      "targetStorageType" : "sql"
+      "targetStorageType" : "sql",
+      "label": "name"
     },
     "aminoacidsequence":{
       "type" : "to_one",
       "target" : "aminoacidsequence",
       "targetKey" : "aminoacidsequence_id",
       "keyIn": "transcript_count",
-      "targetStorageType" : "generic"
+      "targetStorageType" : "generic",
+      "label": "accession"
     }
   }
 }

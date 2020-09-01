@@ -5,7 +5,7 @@
     "name" : "String",
     "parrot_id": "String",
     "person_id": "String",
-    "dog_id": "string"
+    "dog_id": "String"
   },
   "associations": {
     "unique_person": {
@@ -13,14 +13,16 @@
       "target" : "person",
       "targetKey" : "person_id",
       "keyIn": "parrot",
-      "targetStorageType" : "sql"
+      "targetStorageType" : "sql",
+      "label": "name"
     },
     "dog":{
       "type" : "to_one",
       "target" : "dog",
       "targetKey" : "dog_id",
       "keyIn": "parrot",
-      "targetStorageType" : "sql"
+      "targetStorageType" : "sql",
+      "label": "name"
     }
   },
   "internalId": "parrot_id"

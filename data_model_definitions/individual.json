@@ -10,7 +10,8 @@
       "target" : "transcript_count",
       "targetKey" : "individual_id",
       "keyIn": "transcript_count",
-      "targetStorageType" : "sql"
+      "targetStorageType" : "sql",
+      "label": "gene"
     }
   }
 }

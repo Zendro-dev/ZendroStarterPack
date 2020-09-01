@@ -1,0 +1,20 @@
+{
+  "model" : "river",
+  "storageType" : "SQL",
+  "attributes" : {
+    "name" : "String",
+    "length" : "Int",
+    "river_id": "String"
+  },
+  "associations": {
+    "countries": {
+      "type" : "to_many_through_sql_cross_table",
+      "target": "country",
+      "sourceKey": "river_id",
+      "targetKey": "country_id",
+      "keysIn": "country_to_river",
+      "targetStorageType" : "sql"
+    }
+  },
+  "internalId": "river_id"
+}

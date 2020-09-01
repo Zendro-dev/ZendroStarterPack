@@ -1,0 +1,28 @@
+{
+  "model" : "transcript_count",
+  "storageType" : "SQL",
+  "attributes" : {
+    "gene" : "String",
+    "variable" : "String",
+    "count" : "Float",
+    "tissue_or_condition": "String",
+    "individual_id": "Int",
+    "aminoacidsequence_id": "Int"
+  },
+  "associations":{
+    "individual":{
+      "type" : "to_one",
+      "target" : "individual",
+      "targetKey" : "individual_id",
+      "keyIn": "transcript_count",
+      "targetStorageType" : "sql"
+    },
+    "aminoacidsequence":{
+      "type" : "to_one",
+      "target" : "aminoacidsequence",
+      "targetKey" : "aminoacidsequence_id",
+      "keyIn": "transcript_count",
+      "targetStorageType" : "generic"
+    }
+  }
+}

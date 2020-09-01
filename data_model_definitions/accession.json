@@ -1,0 +1,35 @@
+{
+  "model": "Accession",
+  "storageType": "sql",
+  "attributes": {
+    "accession_id": "String",
+    "collectors_name": "String",
+    "collectors_initials": "String",
+    "sampling_date": "Date",
+    "locationId": "String"
+  },
+
+  "associations": {
+
+    "location": {
+      "type": "to_one",
+      "target": "Location",
+      "targetKey": "locationId",
+      "keyIn" : "Accession",
+      "targetStorageType": "sql",
+      "label": "country",
+      "sublabel": "state"
+    },
+
+    "measurements": {
+      "type": "to_many",
+      "target": "Measurement",
+      "targetKey": "accessionId",
+      "keyIn" : "Measurement",
+      "targetStorageType": "sql",
+      "label": "name"
+    }
+  },
+
+  "internalId" : "accession_id"
+}

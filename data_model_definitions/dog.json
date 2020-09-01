@@ -1,0 +1,19 @@
+{
+    "model" : "dog",
+    "storageType" : "sql",
+    "attributes" : {
+        "name": "String",
+      "dog_id": "String",
+      "person_id": "String"
+    },
+    "associations": {
+      "person": {
+        "type" : "to_one",
+        "target" : "person",
+        "targetKey" : "person_id",
+        "keyIn": "dog",
+        "targetStorageType" : "sql"
+      }
+    },
+    "internalId": "dog_id"
+  }

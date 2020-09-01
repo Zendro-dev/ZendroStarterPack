@@ -1,0 +1,27 @@
+{
+  "model" : "parrot",
+  "storageType" : "sql",
+  "attributes" : {
+    "name" : "String",
+    "parrot_id": "String",
+    "person_id": "String",
+    "dog_id": "string"
+  },
+  "associations": {
+    "unique_person": {
+      "type" : "to_one",
+      "target" : "person",
+      "targetKey" : "person_id",
+      "keyIn": "parrot",
+      "targetStorageType" : "sql"
+    },
+    "dog":{
+      "type" : "to_one",
+      "target" : "dog",
+      "targetKey" : "dog_id",
+      "keyIn": "parrot",
+      "targetStorageType" : "sql"
+    }
+  },
+  "internalId": "parrot_id"
+}

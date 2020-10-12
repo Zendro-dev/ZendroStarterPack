@@ -1,6 +1,6 @@
 'use strict';
 const bcrypt = require('bcrypt');
-const globals = require('../config/globals');
+const globals = require('../../config/globals');
 
 module.exports = {
   up: (queryInterface, Sequelize) => {

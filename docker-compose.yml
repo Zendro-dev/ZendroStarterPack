@@ -66,6 +66,8 @@ services:
 
   sdb_graphiql:
     container_name: zendroStarterPack_graphiql-auth
+    # Workaround. See https://github.com/facebook/create-react-app/issues/8688
+    stdin_open: true
     depends_on:
       - sdb_postgres
       - sdb_science_db_graphql_server

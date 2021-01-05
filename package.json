@@ -1,6 +1,6 @@
 {
   "name": "sciencedbstarterpack",
-  "version": "1.0.0",
+  "version": "0.5.6",
   "description": "This is a collection of skeleton projects and code generators used to get a new user started with Zendro. To get you started  example sandbox data model definitions have been provided. You find them in `./data_model_definitions/`.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -14,10 +14,5 @@
   "bugs": {
     "url": "https://github.com/Zendro-dev/ScienceDbStarterPack/issues"
   },
-  "dependencies": {
-    "single-page-app": "github:Zendro-dev/single-page-app#latest-stable",
-    "graphql-server": "github:Zendro-dev/graphql-server#latest-stable",
-    "graphiql-auth": "github:Zendro-dev/graphiql-auth#latest-stable"
-  },
   "homepage": "https://github.com/Zendro-dev/ScienceDbStarterPack#readme"
 }

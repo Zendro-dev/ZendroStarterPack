@@ -59,6 +59,7 @@ services:
       - 8080:8080
     environment:
       PORT: "8080"
+      ZENDRO_DATA_MODELS: './data_model_definitions'
     volumes:
       - ./single-page-app:/usr/single-page-app
       - ./data_model_definitions:/usr/single-page-app/data_model_definitions

@@ -1,4 +1,4 @@
-# ScienceDBStarterPack
+# ZendroStarterPack
 
 This is a collection of skeleton projects and code generators used to get a new
 user started with Zendro. To get you started minimal configuration is needed.  
@@ -23,7 +23,7 @@ Linux.
 First you need to `git clone` this project into a local directory on your host
 system:
 ```
-git clone https://github.com/ScienceDb/ScienceDbStarterPack.git
+git clone https://github.com/ScienceDb/ZendroStarterPack.git
 ```
 
 The skeleton [GraphQL server](https://github.com/ScienceDb/graphql-server) and the 
@@ -83,6 +83,7 @@ can invoke them on the data model definitions you placed in the
 ```
 yarn codegen:run
 graphql-server-model-codegen -m -f /opt/data_model_definitions -o /opt/graphql-server
+exit
 ```
 
 Whenever you make changes to your data model definitions you should rerun the above command.
@@ -132,7 +133,8 @@ The single page application has to be aware of the URLs to use for login and to 
 * `NEXT_PUBLIC_ZENDRO_MAX_RECORD_LIMIT=10000`
 * `ZENDRO_DATA_MODELS='./data_model_definitions'`
 
-The recommended way is to create a `.env.development` and `.env.production` inside the `single-page-app` folder for your environment variables.`
+The recommended way is to create a `.env.development` and `.env.production` inside the `single-page-app` folder for your environment variables.`  
+
 **Note** that in case you are running the SPA via a docker container the `ZENDRO_DATA_MODELS` path has to reflect the location inside the container. If you are using the default dev|prod docker-compose files the folder will be mounted inside `single-page-app`.
 
 For more details see our [manual](https://sciencedb.github.io/) and the
@@ -230,7 +232,7 @@ seeder files, are actually persisted on the host file-system.
 ### Get an interactive SQL terminal to the relational database (POSTGRES)
 
 ```
-docker-compose -f docker-compose.yml run --rm sdb_postgres psql -h sdb_postgres -U sciencedb -W sciencedb_development
+docker-compose -f docker-compose.yml run --rm zendro_postgres psql -h zendro_postgres -U zendro -W zendro_development
 ```
 
 ### Get a command line interface to the Minio instance
@@ -288,12 +290,12 @@ The above `[-dev]` has to be used or not, depending on whether you ran the devel
 
 To remove the docker images execute (see above):
 ```
-docker images | grep sciencedbstarterpack_ | awk '{print "docker rmi " $1}' | sh
+docker images | grep zendrostarterpack | awk '{print "docker rmi " $1}' | sh
 ```
 
 To delete the volumes _permanently_ in which your data has been stored execute:
 ```
-docker volume ls | grep sciencedbstarterpack | awk '{print "docker volume rm " $2}' | sh
+docker volume ls | grep zendrostarterpack | awk '{print "docker volume rm " $2}' | sh
 ```
 Be _warned_: All your data will be lost!
 

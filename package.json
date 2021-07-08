@@ -1,5 +1,5 @@
 {
-  "name": "sciencedbstarterpack",
+  "name": "zendrostarterpack",
   "version": "0.5.6",
   "description": "This is a collection of skeleton projects and code generators used to get a new user started with Zendro.",
   "scripts": {
@@ -13,12 +13,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Zendro-dev/ScienceDbStarterPack.git"
+    "url": "git+https://github.com/Zendro-dev/ZendroStarterPack.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Zendro-dev/ScienceDbStarterPack/issues"
+    "url": "https://github.com/Zendro-dev/ZendroStarterPack/issues"
   },
-  "homepage": "https://github.com/Zendro-dev/ScienceDbStarterPack#readme"
+  "homepage": "https://github.com/Zendro-dev/ZendroStarterPack#readme"
 }

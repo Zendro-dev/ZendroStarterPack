@@ -1,0 +1,6 @@
+FROM node:14-stretch-slim
+
+# Create app directory
+WORKDIR /usr/single-page-app
+
+EXPOSE 8080

@@ -1,9 +1,15 @@
 {
   "name": "sciencedbstarterpack",
   "version": "0.5.6",
-  "description": "This is a collection of skeleton projects and code generators used to get a new user started with Zendro. To get you started  example sandbox data model definitions have been provided. You find them in `./data_model_definitions/`.",
+  "description": "This is a collection of skeleton projects and code generators used to get a new user started with Zendro.",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "codegen:build": "bash ./scripts/codegen-build.sh",
+    "codegen:run": "bash ./scripts/codegen-run.sh",
+    "dev": "bash ./scripts/up.sh dev",
+    "restart": "bash ./scripts/restart.sh",
+    "setup": "bash ./setup.sh",
+    "start": "bash ./scripts/up.sh prod",
+    "stop": "bash ./scripts/down.sh"
   },
   "repository": {
     "type": "git",

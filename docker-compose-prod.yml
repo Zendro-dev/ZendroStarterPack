@@ -25,8 +25,8 @@ services:
       PORT: "3000"
       JQ_PATH: /usr/bin/jq
       NODE_JQ_SKIP_INSTALL_BINARY: "true"
-      # default for dev environment. Please change according to your needs.
-      REQUIRE_SIGN_IN: "false"
+      REQUIRE_SIGN_IN: "true"
+    # Using ports in this way is a security concern. Please consider using e.g. a reverseproxy
     ports:
       - 3000:3000
     volumes:
@@ -58,7 +58,9 @@ services:
     ports:
       - 8080:8080
     environment:
+      # Set your production environment variables here or in ./single-page-app/.env.production
       PORT: "8080"
+      ZENDRO_DATA_MODELS: './data_model_definitions'
     volumes:
       - ./single-page-app:/usr/single-page-app
       - ./data_model_definitions:/usr/single-page-app/data_model_definitions
@@ -69,8 +71,11 @@ services:
       - -c
       - |
         rm -rf .next
+        rm -rf out
         yarn install
-        yarn dev
+        yarn build
+        yarn export
+        yarn serve
 
   zendro_graphiql:
     container_name: zendroStarterPack_graphiql-auth
@@ -86,6 +91,7 @@ services:
     ports:
       - 7000:7000
     environment:
+      # Set your production environment variables here
       PORT: "7000"
       REACT_APP_SERVER_URL: "http://localhost:3000/graphql"
       REACT_APP_LOGIN_URL: "http://localhost:3000/login"

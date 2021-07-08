@@ -1,0 +1,10 @@
+FROM node:14-stretch-slim
+
+# Create app directory
+WORKDIR /usr/graphql-server
+
+# Install and setup dependencies
+RUN apt-get update && apt-get install -y autoconf libtool make python3 g++ jq \
+	&& ln -s /usr/bin/python3 /usr/bin/python
+
+EXPOSE 3000

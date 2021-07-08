@@ -1,9 +1,9 @@
 # ScienceDBStarterPack
 
 This is a collection of skeleton projects and code generators used to get a new
-user started with Zendro. To get you started 
-example sandbox data model definitions have been provided. You find them in
-`./data_model_definitions/`.
+user started with Zendro. To get you started minimal configuration is needed.  
+Be aware that this StarterPack provides a minimal working example using a single postgres database. To run Zendro in a real production environment and support other storageTypes more configuration is needed.
+
 
 ## Prerequisites
 
@@ -18,7 +18,7 @@ You should have basic knowledge of the following technology-stack:
 _Note_, that this project is meant to be used on a `*nix` system, preferably
 Linux.
 
-## Install and setup skeleton servers
+## Install and setup skeleton projects
 
 First you need to `git clone` this project into a local directory on your host
 system:
@@ -30,26 +30,26 @@ The skeleton [GraphQL server](https://github.com/ScienceDb/graphql-server) and t
 skeleton [single page application server](https://github.com/ScienceDb/single-page-app) projects are managed as different git repositories.
 "Skeleton" means that these projects provide all the code needed
 to start a server, but actually have no code particular to any
-data model. This "particular" code you will generate with Zendro's code
-generators (see below).
+data model.
 
-### Setup the skeleton servers
+### Setup the skeleton projects
+To download the skeleton projects as well as a zendro specific version of [graphiql](https://github.com/Zendro-dev/graphiql-auth) you can run
 ```
-./setup.sh
+yarn setup
+# -g: graphql-server branch | default: master
+# -s: single-page-app branch |  default: develop
+# -i: graphiql-auth branch | default: master
 ```
-Using the `setup.sh` bash skript will add the latest versions of the skeleton 
-projects, tagged as `latest-stable` to the directory. You should now have two 
-folders `graphql-server` and `single-page-app` in your StarterPack root directory.
-Running the command will also automatically add a modified version of the graphql-server `graphiql-auth` into your directory, which offers the graphiql browser interface with a login. See [here](https://github.com/ScienceDb/graphiql-auth) for more information.   
+This will add the desired versions of the skeleton projects to the directory. You should now have three folders `graphql-server`, `single-page-app` and `graphiql-auth` in your StarterPack root directory.  
 
-## Install the code generators within a dedicated Docker image
+## Install the graphql code generator within a dedicated Docker image
 
-To avoid having to install the Zendro code-generators on your host system we
+To avoid having to install the Zendro graphql-server code-generator on your host system we
 provide a dedicated Docker image in which two code generators are installed and
-ready to be used. 
+ready to be used. Run
 
 ```
-docker build -f Dockerfile.code-generators -t sciencedb-code-generators:latest .
+yarn codegen:build
 ```
 
 ## Define your data models
@@ -68,74 +68,52 @@ If you choose to follow the recommendation, you should edit the Sequelize
 seeder `./seeders/20190225162439-create_roles_n_users.js` to create your
 default admin-user and default roles.
 
-It is _most important_ that you then copy the seeder into the graphql-server
+If modified it is _most important_ that you then copy the seeder into the graphql-server
 code dir:
 ```
 cp -r ./seeders ./graphql-server
 ```
 
-### Generate the code
+### Generate the graphql-server code
 
 Using the dedicated Docker image in which the code generators are installed you
 can invoke them on the data model definitions you placed in the
 `data_model_definitions` directory.
 
-Whenever you make changes to your data model definitions or update the code
-generators and/or skeleton server projects `graphql-server` or
-`single-page-app`, you should repeat the following code generation.
-
-#### Create files as current user
-
-To generate code files from within a Docker container into which external host
-folders are mounted, you need to start the respective Docker container as the
-yourself.
-
-You have to insert your user ID and your group ID. These are returned by the commands `id -u` (for the user ID) and `id -g` (for the group ID).
-
-
-#### Generate the GraphQL server
-
 ```
-docker run --rm -it -v `pwd`:/opt --user $(id -u):$(id -g) sciencedb-code-generators:latest 
-graphql-server-model-codegen --jsonFiles /opt/data_model_definitions -o /opt/graphql-server
+yarn codegen:run
+graphql-server-model-codegen -m -f /opt/data_model_definitions -o /opt/graphql-server
 ```
+
+Whenever you make changes to your data model definitions you should rerun the above command.
 
 #### Generate the Single Page Application (SPA) server
-
-```
-docker run --rm -it -v `pwd`:/opt --user $(id -u):$(id -g) sciencedb-code-generators:latest 
-single-page-app-codegen --jsonFiles /opt/data_model_definitions -o /opt/single-page-app
-```
+The SPA will automatically read from your data_model_definitions folder and generate the needed code. See SPA [README](https://github.com/Zendro-dev/single-page-app/blob/develop/README.md) for more information.
 
 ### Multiple code generation
 
 Be very carefull when running the code generators multiple times on the same data model definitions. Two nasty things can happen:
 
 1. You might overwrite manual changes you might have made to come of the code that was automatically generated.
-2. In the case of relational databases, Zendro code generators also create migrations (using Sequelize). As these are named using the current date, you might have several migrations to create the same tables. This will lead to errors. Make sure you delete the migrations folder content, if you want to run the code generators multiple times on the same model definitions: `rm ./graphql-server/migrations/*`. 
+2. In the case of relational databases, Zendro code generators also create migrations (using Sequelize). As these are named using the current date, you might have several migrations to create the same tables. This will lead to errors. Make sure you delete the migrations folder content, if you want to run the code generators multiple times on the same model definitions: `rm ./graphql-server/migrations/*` or run the codegen without the `-m` flag. 
 
 ## Start the servers
 
 Upon starting the servers in any mode development or production any pending
 database migrations and seeding is automatically triggered. See file
 `./graphql-server/migrateDbAndStartServer.sh`, and the two docker-compose files
-`docker-compose-dev.yml` (development) and `docker-compose.yml` (production).
+`docker-compose-dev.yml` (development) and `docker-compose-prod.yml` (production).
 
-### Setup
+### Configuration
 
-If you do not run the development, and definitely later the production
-environment, on `localhost`, you need to tell the single page application which
-URLs to use for login and to send GraphQL queries to. This is controlled by the
-following environment variables of `sdb_science_db_app_server` in the two
-docker-compose files.
+#### Graphql Server
+To configure the graphql-server create a `.env` inside the `graphql-server` folder (recommended) or set the variables via the docker-compose files.
 
-* `REACT_APP_ZENDRO_GRAPHQL_SERVER_URL=http://localhost:3000/graphql`
-* `REACT_APP_ZENDRO_LOGIN_URL=http://localhost:3000/login`
-* `REACT_APP_ZENDRO_MAX_UPLOAD_SIZE=500`
+It is mandatory to set the `ALLOW_ORIGIN` and `JWT_SECRET` environment variables depending on the users needs. For example
+* `ALLOW_ORIGIN="*"`
+* `JWT_SECRET="my secret"`  
 
-For more details see our [manual](https://sciencedb.github.io/) and the
-[single-page-application
-`README`](https://github.com/ScienceDb/single-page-app/blob/master/README.md).
+`ALLOW_ORIGIN` sets the `Access-Control-Allow-Origin` header and `JWT_SECRET` is needed to define a secret for decoding the Bearer token.
 
 If you want to access the GraphiQL interface (`http://localhost:3000/graphql`) without a authorization token, toggle the associated environment variable:
 ```
@@ -143,6 +121,22 @@ REQUIRE_SIGN_IN="false"
 ```
 in the docker-compose file.
 For more details about the graphql-server environment variables see the [graphql-server `README`](https://github.com/ScienceDb/graphql-server/blob/master/README.md)
+#### Single Page App
+The single page application has to be aware of the URLs to use for login and to send GraphQL queries to. This is controlled by the following environment variables.
+
+* `NEXT_PUBLIC_ZENDRO_GRAPHQL_URL='http://localhost:3000/graphql'`
+* `NEXT_PUBLIC_ZENDRO_LOGIN_URL='http://localhost:3000/login'`
+* `NEXT_PUBLIC_ZENDRO_EXPORT_URL='http://localhost:3000/export'`
+* `NEXT_PUBLIC_ZENDRO_METAQUERY_URL='http://localhost:3000/meta_query'`
+* `NEXT_PUBLIC_ZENDRO_MAX_UPLOAD_SIZE=500`
+* `NEXT_PUBLIC_ZENDRO_MAX_RECORD_LIMIT=10000`
+* `ZENDRO_DATA_MODELS='./data_model_definitions'`
+
+The recommended way is to create a `.env.development` and `.env.production` inside the `single-page-app` folder for your environment variables.`
+**Note** that in case you are running the SPA via a docker container the `ZENDRO_DATA_MODELS` path has to reflect the location inside the container. If you are using the default dev|prod docker-compose files the folder will be mounted inside `single-page-app`.
+
+For more details see our [manual](https://sciencedb.github.io/) and the
+[single-page-application`README`](https://github.com/ScienceDb/single-page-app/blob/develop/README.md).
 
 #### Access Control
 
@@ -204,48 +198,16 @@ environment, the single-page-application is served through a dedicated server
 and not compiled with `webpack` to be served statically. 
 
 ```
-docker-compose -f docker-compose-dev.yml up --force-recreate --remove-orphans
+yarn dev
 ```
 
 ### Production environment
 
 Basically we now switch to production environment. The single-page-application
-will be compiled with `webpack` and served statically with an `nginx` server.
-The `graphql-server` will no longer be using the mounted local code but be
-serving the code as present within the respective Docker image.
-
-_Note_, that you may have to delete the graphql-server and/or nginx image and
-rebuild them to have them using it your latest code!
-
-#### Compile the single-page-application to be served statically
-```
-docker-compose -f docker-compose-dev.yml run --user 1000:1000 sdb_science_db_app_server bash
-npm run build
-```
-
-#### Set the URL to the GraphQL-Server and your login-server
-
-See the `environment` section of the `sdb_nginx` image in `docker-compose.yml`.
-
-* `REACT_APP_ZENDRO_GRAPHQL_SERVER` - url where your backend server will be running, default value is http://localhost:3000/graphql
-* `REACT_APP_ZENDRO_LOGIN_URL` - url where your backend will check authentication, default value is http://localhost:3000/login.
-* `REACT_APP_ZENDRO_MAX_UPLOAD_SIZE` - maximum size(in MB) of a file intended to be uploaded, default value is 500, which means that user can not upload a file larger than 500MB.
-
-The above is taken from the [single-page-app `README`](https://github.com/ScienceDb/single-page-app/blob/master/README.md)
-
-#### Build the Docker images
+will be compiled with `webpack` and served statically.
 
 ```
-# Optionally remove 'old' images:
-docker images | grep sciencedbstarterpack_ | awk '{print "docker rmi " $1}' | sh
-# Build the images:
-docker-compose -f docker-compose.yml build
-```
-
-#### Run the production stack
-
-```
-docker-compose -f docker-compose.yml up -d --force-recreate --remove-orphans
+yarn start
 ```
 
 ## Execute commands within a selected Docker container
@@ -318,7 +280,7 @@ Have fun!
 
 If you have started your docker-compose with `-d` or if you just want to delete the created containers, execute:
 ```
-docker-compose -f docker-compose[-dev].yml down
+yarn stop dev|prod
 ```
 The above `[-dev]` has to be used or not, depending on whether you ran the development or production environment.
 

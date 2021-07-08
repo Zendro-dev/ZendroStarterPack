@@ -21,17 +21,17 @@ module.exports = {
       }]).then(async function(x) {
         let hashedPassword = await bcrypt.hash('admin', globals.SALT_ROUNDS);
         return queryInterface.bulkInsert('users', [{
-          email: 'a.hallab@fz-juelich.de',
+          email: 'admin@zen.dro',
           password: hashedPassword
         }])
       }).then(function(x) {
         return queryInterface.sequelize.query(
           'INSERT INTO role_to_users ("userId", "roleId") VALUES ' +
-          '( (SELECT (id) FROM users WHERE email = \'a.hallab@fz-juelich.de\'), ' +
+          '( (SELECT (id) FROM users WHERE email = \'admin@zen.dro\'), ' +
           '(SELECT (id) FROM roles WHERE name = \'administrator\') ), ' +
-          '( (SELECT (id) FROM users WHERE email = \'a.hallab@fz-juelich.de\'), ' +
+          '( (SELECT (id) FROM users WHERE email = \'admin@zen.dro\'), ' +
           '(SELECT (id) FROM roles WHERE name = \'editor\') ), ' +
-          '( (SELECT (id) FROM users WHERE email = \'a.hallab@fz-juelich.de\'), ' +
+          '( (SELECT (id) FROM users WHERE email = \'admin@zen.dro\'), ' +
           '(SELECT (id) FROM roles WHERE name = \'reader\') )'
         )
       }).then(function(x) {

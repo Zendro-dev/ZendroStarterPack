@@ -1,7 +1,8 @@
 gitted_sub_projs.tar.bz2
 *-bak
 
-graphql-server
+graphql-server/node_modules
+graphql-server/.env
 single-page-app
 graphiql-auth
 node_modules

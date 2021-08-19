@@ -1,0 +1,16 @@
+FROM node:14.3.0-stretch-slim
+
+# Create app directory
+WORKDIR /usr/ScienceDbStarterPack/graphql-server
+
+# Copy generated code into the skeleton GraphQL-Server
+COPY . .
+
+# Clone the skeleton project and install dependencies
+RUN apt-get update && apt-get install -y autoconf libtool make && \	
+  rm -rf .git* && \
+  chmod u+x ./migrateDbAndStartServer.sh && \
+  mv ./config/config_postgres_docker.json ./config/config.json && \
+  npm install 
+
+EXPOSE 3000

@@ -1,0 +1,14 @@
+{
+    "model": "attachment",
+    "storageType": "sql",
+    "attributes":{
+        "id": "String",
+        "fileName": "String",
+        "fileURL": "String",
+        "mimeType": "String",
+        "fileSize": "Int",
+        "identifierName": "String"
+    },
+
+    "internalId": "id"
+}

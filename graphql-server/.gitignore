@@ -1,0 +1,9 @@
+# NPM package manager temporary files and folders
+node_modules
+npm-debug.log
+
+# ModelGen output folders
+seeders
+
+# User secret env vars
+.env

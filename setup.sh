@@ -23,7 +23,7 @@ RED='\033[0;31m'
 # Arguments
 ## defaults
 graphql_server_branch="master"
-spa_server_branch="develop"
+spa_server_branch="main"
 graphiql_branch="master"
 while getopts g:s:i: flag
 do

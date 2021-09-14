@@ -13,12 +13,12 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const uuidv4 = require('uuidv4').uuid;
+const isImagePackage = require('is-image');
 const helper = require('../../utils/helper');
 const models = require(path.join(__dirname, '..', 'index.js'));
 const moment = require('moment');
 const errorHelper = require('../../utils/errors');
 const minioClient = require('../../utils/minio-connection');
-
 // An exact copy of the the model definition that comes from the .json file
 const definition = {
     model: 'attachment',
@@ -39,6 +39,9 @@ const definition = {
 };
 const DataLoader = require("dataloader");
 
+const URL_IMG_PROXY = "http://localhost:8082/"
+const IMG_BUCKET_NAME = "images";
+const FILES_BUCKET_NAME = "test";
 /**
  * module - Creates a sequelize model
  *
@@ -162,10 +165,11 @@ module.exports = class attachment extends Sequelize.Model {
             const {filename, mimetype, createReadStream} =  await input.file.file;
             const stream = createReadStream();
             input['fileName'] = input.fileName ?? filename;
-            const exists = await minioClient.fileExists(input.fileName);
+            const bucket_name = isImagePackage(input.fileName) ?  IMG_BUCKET_NAME : FILES_BUCKET_NAME;
+            const exists = await minioClient.fileExists(input.fileName, bucket_name);
             console.log("EXISTS: ", exists);
             if( !exists) {
-                const upload = await minioClient.uploadFile(stream, input.fileName);
+                const upload = await minioClient.uploadFile(stream, input.fileName, bucket_name);
                 if(! upload.success){
                     throw upload.error;
                     
@@ -178,6 +182,18 @@ module.exports = class attachment extends Sequelize.Model {
 
         }
         return await this.addOne(input);
+    }
+
+    urlThumbnail({width, height, format}){
+        if(this.isImage() ){
+            let url = `${URL_IMG_PROXY}unsafe/fit/${width}/${height}/sm/0/plain/s3://images/${this.fileName}@${format}`;
+            return url;
+        }
+        return "This file attachment is not an image";
+    }
+
+    isImage(){
+        return isImagePackage(this.fileName);
     }
 
     static async readAll(search, order, pagination, benignErrorReporter) {
@@ -248,8 +264,8 @@ module.exports = class attachment extends Sequelize.Model {
         if (attachment === null) {
             throw new Error(`Record with ID = "${id}" does not exist`);
         }
-        
-        let deleted = await minioClient.deleteFile(attachment.fileName);
+        const bucket_name = isImagePackage(attachment.fileName) ?  IMG_BUCKET_NAME : FILES_BUCKET_NAME;
+        let deleted = await minioClient.deleteFile(attachment.fileName, bucket_name);
         if(!deleted.success){
           throw deleted.error;
         }

@@ -34,7 +34,7 @@ module.exports = `
     """
     identifierName: String
 
-      
+    urlThumbnail(width: Int!, height: Int!, format:String! ): String!  
     }
 type AttachmentConnection{
   edges: [AttachmentEdge]

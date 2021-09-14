@@ -1,19 +1,17 @@
 const Minio = require('minio');
 
 const minioClient = new Minio.Client({
-  endPoint: "172.21.0.2",
+  endPoint: "192.168.240.2",
   port: 9000,
-  accessKey: "sciencedb",
-  secretKey: "sciencedb",
+  accessKey: "minio",
+  secretKey: "miniominio",
   useSSL: false,
   
 });
 
-const bucket_name = "test";
-
 module.exports = {
 
-   uploadFile: async function(stream, file_name ){
+   uploadFile: async function(stream, file_name, bucket_name ){
     try{
         await minioClient.putObject(bucket_name, file_name, stream);
         const url = await minioClient.presignedGetObject(bucket_name, file_name);
@@ -32,7 +30,7 @@ module.exports = {
     }
    },
 
-   fileExists: async function(file_name){
+   fileExists: async function(file_name, bucket_name){
     try{
         const result = await minioClient.statObject(bucket_name, file_name);
         if(result) return true;
@@ -49,7 +47,7 @@ module.exports = {
 
    },
 
-   deleteFile: async function(file_name){
+   deleteFile: async function(file_name, bucket_name){
        try{
          await minioClient.removeObject(bucket_name, file_name);
          console.log("OBJECT REMOVED: ", file_name);

@@ -108,8 +108,9 @@ services:
     image: minio/minio
     container_name: minio1
     environment:
-      MINIO_ROOT_USER: sciencedb
-      MINIO_ROOT_PASSWORD: sciencedb
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: miniominio
+      MINIO_REGION: us-east-1
     volumes:
       - datastore:/data
     ports:
@@ -118,6 +119,23 @@ services:
     command: server --console-address ":9001" /data 
     networks:
       - backend   
+
+  imgproxy:
+    image: darthsim/imgproxy
+    container_name: imgproxy1
+    restart: always
+    environment:
+      IMGPROXY_USE_S3: "true"
+      IMGPROXY_S3_ENDPOINT: http://gql_minio1:9000
+      AWS_ACCESS_KEY_ID: minio
+      AWS_SECRET_ACCESS_KEY: miniominio
+      AWS_REGION: us-east-1
+      IMGPROXY_BIND: ":8082"
+    ports:
+      - 8082:8082
+    networks:
+     - backend
+    
 
 
 volumes:

@@ -60,10 +60,9 @@ services:
     environment:
       # Set your production environment variables here or in ./single-page-app/.env.production
       PORT: "8080"
-      ZENDRO_DATA_MODELS: './data_model_definitions'
     volumes:
       - ./single-page-app:/usr/single-page-app
-      - ./data_model_definitions:/usr/single-page-app/data_model_definitions
+      - ./data_model_definitions:/usr/data_model_definitions
     # Install dependencies and start single-page-app-server in development
     # mode.
     command:

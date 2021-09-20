@@ -37,7 +37,7 @@ To download the skeleton projects as well as a zendro specific version of [graph
 ```
 yarn setup
 # -g: graphql-server branch | default: master
-# -s: single-page-app branch |  default: develop
+# -s: single-page-app branch |  default: main
 # -i: graphiql-auth branch | default: master
 ```
 This will add the desired versions of the skeleton projects to the directory. You should now have three folders `graphql-server`, `single-page-app` and `graphiql-auth` in your StarterPack root directory.  
@@ -131,7 +131,7 @@ The single page application has to be aware of the URLs to use for login and to 
 * `NEXT_PUBLIC_ZENDRO_METAQUERY_URL='http://localhost:3000/meta_query'`
 * `NEXT_PUBLIC_ZENDRO_MAX_UPLOAD_SIZE=500`
 * `NEXT_PUBLIC_ZENDRO_MAX_RECORD_LIMIT=10000`
-* `ZENDRO_DATA_MODELS='./data_model_definitions'`
+* `ZENDRO_DATA_MODELS='../data_model_definitions'`
 
 The recommended way is to create a `.env.development` and `.env.production` inside the `single-page-app` folder for your environment variables.`  
 

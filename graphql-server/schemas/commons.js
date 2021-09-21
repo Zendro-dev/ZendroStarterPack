@@ -10,43 +10,33 @@ module.exports = `
     Time
     DateTime
   }
-
-  enum Operator{
-    like
-    notLike
-    or
-    and
-    eq
-    between
-    notBetween
-    in
-    notIn
-    gt
-    gte
-    lt
-    lte
-    ne
-    regexp
-    notRegexp
-    contains
-    contained
-    not
-    all
-  }
   
-  enum CassandraOperator{
-    eq
-    lt
-    gt
-    lte
-    gte
-    in
-    contains   # CONTAINS
-    ctk    # CONTAINS KEY
-    tgt    # Token > Token
-    tget   # Token >= Token
-    and
-  }
+  enum GenericPrestoSqlOperator {
+		like notLike iLike notILike regexp notRegexp iRegexp notIRegexp
+		eq gt gte lt lte ne between notBetween
+		in notIn contains notContains
+		or and not
+	}	
+
+	enum MongodbNeo4jOperator {
+		like notLike iLike notILike regexp notRegexp iRegexp notIRegexp
+		eq gt gte lt lte ne
+		in notIn contains notContains
+		or and not
+	}	
+
+	enum CassandraOperator {
+		eq gt gte lt lte ne
+		in contains
+		and
+	}	
+
+  enum AmazonS3Operator {
+    like notLike iLike notILike
+    eq gt gte lt lte ne between notBetween
+    in notIn contains notContains
+    or and not
+  }	
 
   enum Order{
     DESC

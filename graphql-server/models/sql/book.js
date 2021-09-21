@@ -13,31 +13,26 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const uuidv4 = require('uuidv4').uuid;
-const isImagePackage = require('is-image');
 const helper = require('../../utils/helper');
 const models = require(path.join(__dirname, '..', 'index.js'));
 const moment = require('moment');
 const errorHelper = require('../../utils/errors');
-const minioClient = require('../../utils/minio-connection');
 // An exact copy of the the model definition that comes from the .json file
 const definition = {
-    model: 'attachment',
+    model: 'book',
     storageType: 'sql',
     attributes: {
         id: 'String',
-        fileName: 'String',
-        fileURL: 'String',
-        mimeType: 'String',
-        fileSize: 'Int',
-        identifierName: 'String',
-        book_id: 'String'
+        title: 'String',
+        pages: 'Int',
+        genre: 'String'
     },
     associations: {
-        book: {
-            type: 'many_to_one',
+        attachments: {
+            type: 'one_to_many',
             implementation: 'foreignkeys',
-            reverseAssociation: 'attachments',
-            target: 'book',
+            reverseAssociation: 'book',
+            target: 'attachment',
             targetKey: 'book_id',
             keysIn: 'attachment',
             targetStorageType: 'sql'
@@ -51,9 +46,6 @@ const definition = {
 };
 const DataLoader = require("dataloader");
 
-const URL_IMG_PROXY = "http://localhost:8082/"
-const IMG_BUCKET_NAME = "images";
-const FILES_BUCKET_NAME = "test";
 /**
  * module - Creates a sequelize model
  *
@@ -62,7 +54,7 @@ const FILES_BUCKET_NAME = "test";
  * @return {object}           Sequelize model with associations defined
  */
 
-module.exports = class attachment extends Sequelize.Model {
+module.exports = class book extends Sequelize.Model {
 
     static init(sequelize, DataTypes) {
         return super.init({
@@ -71,29 +63,20 @@ module.exports = class attachment extends Sequelize.Model {
                 type: Sequelize[dict['String']],
                 primaryKey: true
             },
-            fileName: {
+            title: {
                 type: Sequelize[dict['String']]
             },
-            fileURL: {
-                type: Sequelize[dict['String']]
-            },
-            mimeType: {
-                type: Sequelize[dict['String']]
-            },
-            fileSize: {
+            pages: {
                 type: Sequelize[dict['Int']]
             },
-            identifierName: {
-                type: Sequelize[dict['String']]
-            },
-            book_id: {
+            genre: {
                 type: Sequelize[dict['String']]
             }
 
 
         }, {
-            modelName: "attachment",
-            tableName: "attachments",
+            modelName: "book",
+            tableName: "books",
             sequelize
         });
     }
@@ -137,8 +120,8 @@ module.exports = class attachment extends Sequelize.Model {
     }
 
     static associate(models) {
-        attachment.belongsTo(models.book, {
-            as: 'book',
+        book.hasMany(models.attachment, {
+            as: 'attachments',
             foreignKey: 'book_id'
         });
     }
@@ -151,13 +134,13 @@ module.exports = class attachment extends Sequelize.Model {
     static async batchReadById(keys) {
         let queryArg = {
             operator: "in",
-            field: attachment.idAttribute(),
+            field: book.idAttribute(),
             value: keys.join(),
             valueType: "Array",
         };
-        let cursorRes = await attachment.readAllCursor(queryArg);
-        cursorRes = cursorRes.attachments.reduce(
-            (map, obj) => ((map[obj[attachment.idAttribute()]] = obj), map), {}
+        let cursorRes = await book.readAllCursor(queryArg);
+        cursorRes = cursorRes.books.reduce(
+            (map, obj) => ((map[obj[book.idAttribute()]] = obj), map), {}
         );
         return keys.map(
             (key) =>
@@ -165,64 +148,26 @@ module.exports = class attachment extends Sequelize.Model {
         );
     }
 
-    static readByIdLoader = new DataLoader(attachment.batchReadById, {
+    static readByIdLoader = new DataLoader(book.batchReadById, {
         cache: false,
     });
 
     static async readById(id) {
-        return await attachment.readByIdLoader.load(id);
+        return await book.readByIdLoader.load(id);
     }
     static async countRecords(search) {
         let options = {}
-        options['where'] = helper.searchConditionsToSequelize(search, attachment.definition.attributes);
+        options['where'] = helper.searchConditionsToSequelize(search, book.definition.attributes);
         return super.count(options);
-    }
-
-    static async uploadAttachment(input){
-
-        if(input.file){
-            console.log("FILE: ", input.file);
-            const {filename, mimetype, createReadStream} =  await input.file.file;
-            const stream = createReadStream();
-            input['fileName'] = input.fileName ?? filename;
-            const bucket_name = isImagePackage(input.fileName) ?  IMG_BUCKET_NAME : FILES_BUCKET_NAME;
-            const exists = await minioClient.fileExists(input.fileName, bucket_name);
-            console.log("EXISTS: ", exists);
-            if( !exists) {
-                const upload = await minioClient.uploadFile(stream, input.fileName, bucket_name);
-                if(! upload.success){
-                    throw upload.error;
-                    
-                }
-                input['mimeType'] = mimetype;
-                input['fileURL'] = upload.url;
-            }else{
-                throw new Error(`File with name ${input.fileName} already exists.`)
-            }
-
-        }
-        return await this.addOne(input);
-    }
-
-    urlThumbnail({width, height, format}){
-        if(this.isImage() ){
-            let url = `${URL_IMG_PROXY}unsafe/fit/${width}/${height}/sm/0/plain/s3://images/${this.fileName}@${format}`;
-            return url;
-        }
-        return "This file attachment is not an image";
-    }
-
-    isImage(){
-        return isImagePackage(this.fileName);
     }
 
     static async readAll(search, order, pagination, benignErrorReporter) {
         //use default BenignErrorReporter if no BenignErrorReporter defined
         benignErrorReporter = errorHelper.getDefaultBenignErrorReporterIfUndef(benignErrorReporter);
         // build the sequelize options object for limit-offset-based pagination
-        let options = helper.buildLimitOffsetSequelizeOptions(search, order, pagination, this.idAttribute(), attachment.definition.attributes);
+        let options = helper.buildLimitOffsetSequelizeOptions(search, order, pagination, this.idAttribute(), book.definition.attributes);
         let records = await super.findAll(options);
-        records = records.map(x => attachment.postReadCast(x))
+        records = records.map(x => book.postReadCast(x))
         // validationCheck after read
         return validatorUtil.bulkValidateData('validateAfterRead', this, records, benignErrorReporter);
     }
@@ -232,10 +177,10 @@ module.exports = class attachment extends Sequelize.Model {
         benignErrorReporter = errorHelper.getDefaultBenignErrorReporterIfUndef(benignErrorReporter);
 
         // build the sequelize options object for cursor-based pagination
-        let options = helper.buildCursorBasedSequelizeOptions(search, order, pagination, this.idAttribute(), attachment.definition.attributes);
+        let options = helper.buildCursorBasedSequelizeOptions(search, order, pagination, this.idAttribute(), book.definition.attributes);
         let records = await super.findAll(options);
 
-        records = records.map(x => attachment.postReadCast(x))
+        records = records.map(x => book.postReadCast(x))
 
         // validationCheck after read
         records = await validatorUtil.bulkValidateData('validateAfterRead', this, records, benignErrorReporter);
@@ -246,7 +191,7 @@ module.exports = class attachment extends Sequelize.Model {
             let oppOptions = helper.buildOppositeSearchSequelize(search, order, {
                 ...pagination,
                 includeCursor: false
-            }, this.idAttribute(), attachment.definition.attributes);
+            }, this.idAttribute(), book.definition.attributes);
             oppRecords = await super.findAll(oppOptions);
         }
         // build the graphql Connection Object
@@ -255,14 +200,14 @@ module.exports = class attachment extends Sequelize.Model {
         return {
             edges,
             pageInfo,
-            attachments: edges.map((edge) => edge.node)
+            books: edges.map((edge) => edge.node)
         };
     }
 
     static async addOne(input) {
         //validate input
         await validatorUtil.validateData('validateForCreate', this, input);
-        input = attachment.preWriteCast(input)
+        input = book.preWriteCast(input)
         try {
             const result = await this.sequelize.transaction(async (t) => {
                 let item = await super.create(input, {
@@ -270,26 +215,13 @@ module.exports = class attachment extends Sequelize.Model {
                 });
                 return item;
             });
-            attachment.postReadCast(result.dataValues)
-            attachment.postReadCast(result._previousDataValues)
+            book.postReadCast(result.dataValues)
+            book.postReadCast(result._previousDataValues)
             return result;
         } catch (error) {
             throw error;
         }
 
-    }
-
-    static async deleteAttachment(id){
-        let attachment = await super.findByPk(id);
-        if (attachment === null) {
-            throw new Error(`Record with ID = "${id}" does not exist`);
-        }
-        const bucket_name = isImagePackage(attachment.fileName) ?  IMG_BUCKET_NAME : FILES_BUCKET_NAME;
-        let deleted = await minioClient.deleteFile(attachment.fileName, bucket_name);
-        if(!deleted.success){
-          throw deleted.error;
-        }
-        return  this.deleteOne(id);
     }
 
     static async deleteOne(id) {
@@ -310,7 +242,7 @@ module.exports = class attachment extends Sequelize.Model {
     static async updateOne(input) {
         //validate input
         await validatorUtil.validateData('validateForUpdate', this, input);
-        input = attachment.preWriteCast(input)
+        input = book.preWriteCast(input)
         try {
             let result = await this.sequelize.transaction(async (t) => {
                 let to_update = await super.findByPk(input[this.idAttribute()]);
@@ -323,8 +255,8 @@ module.exports = class attachment extends Sequelize.Model {
                 });
                 return updated;
             });
-            attachment.postReadCast(result.dataValues)
-            attachment.postReadCast(result._previousDataValues)
+            book.postReadCast(result.dataValues)
+            book.postReadCast(result._previousDataValues)
             return result;
         } catch (error) {
             throw error;
@@ -382,7 +314,7 @@ module.exports = class attachment extends Sequelize.Model {
             throw new Error(error);
         });
 
-        return `Bulk import of attachment records started. You will be send an email to ${helpersAcl.getTokenFromContext(context).email} informing you about success or errors`;
+        return `Bulk import of book records started. You will be send an email to ${helpersAcl.getTokenFromContext(context).email} informing you about success or errors`;
     }
 
     /**
@@ -400,98 +332,12 @@ module.exports = class attachment extends Sequelize.Model {
 
 
 
-    /**
-     * add_book_id - field Mutation (model-layer) for to_one associationsArguments to add
-     *
-     * @param {Id}   id   IdAttribute of the root model to be updated
-     * @param {Id}   book_id Foreign Key (stored in "Me") of the Association to be updated.
-     */
-    static async add_book_id(id, book_id) {
-        let updated = await attachment.update({
-            book_id: book_id
-        }, {
-            where: {
-                id: id
-            }
-        });
-        return updated;
-    }
-
-    /**
-     * remove_book_id - field Mutation (model-layer) for to_one associationsArguments to remove
-     *
-     * @param {Id}   id   IdAttribute of the root model to be updated
-     * @param {Id}   book_id Foreign Key (stored in "Me") of the Association to be updated.
-     */
-    static async remove_book_id(id, book_id) {
-        let updated = await attachment.update({
-            book_id: null
-        }, {
-            where: {
-                id: id,
-                book_id: book_id
-            }
-        });
-        return updated;
-    }
 
 
 
 
 
-    /**
-     * bulkAssociateAttachmentWithBook_id - bulkAssociaton of given ids
-     *
-     * @param  {array} bulkAssociationInput Array of associations to add
-     * @param  {BenignErrorReporter} benignErrorReporter Error Reporter used for reporting Errors from remote zendro services
-     * @return {string} returns message on success
-     */
-    static async bulkAssociateAttachmentWithBook_id(bulkAssociationInput) {
-        let mappedForeignKeys = helper.mapForeignKeysToPrimaryKeyArray(bulkAssociationInput, "id", "book_id");
-        var promises = [];
-        mappedForeignKeys.forEach(({
-            book_id,
-            id
-        }) => {
-            promises.push(super.update({
-                book_id: book_id
-            }, {
-                where: {
-                    id: id
-                }
-            }));
-        })
-        await Promise.all(promises);
-        return "Records successfully updated!"
-    }
 
-
-    /**
-     * bulkDisAssociateAttachmentWithBook_id - bulkDisAssociaton of given ids
-     *
-     * @param  {array} bulkAssociationInput Array of associations to remove
-     * @param  {BenignErrorReporter} benignErrorReporter Error Reporter used for reporting Errors from remote zendro services
-     * @return {string} returns message on success
-     */
-    static async bulkDisAssociateAttachmentWithBook_id(bulkAssociationInput) {
-        let mappedForeignKeys = helper.mapForeignKeysToPrimaryKeyArray(bulkAssociationInput, "id", "book_id");
-        var promises = [];
-        mappedForeignKeys.forEach(({
-            book_id,
-            id
-        }) => {
-            promises.push(super.update({
-                book_id: null
-            }, {
-                where: {
-                    id: id,
-                    book_id: book_id
-                }
-            }));
-        })
-        await Promise.all(promises);
-        return "Records successfully updated!"
-    }
 
 
 
@@ -501,7 +347,7 @@ module.exports = class attachment extends Sequelize.Model {
      * @return {type} Name of the attribute that functions as an internalId
      */
     static idAttribute() {
-        return attachment.definition.id.name;
+        return book.definition.id.name;
     }
 
     /**
@@ -510,16 +356,16 @@ module.exports = class attachment extends Sequelize.Model {
      * @return {type} Type given in the JSON model
      */
     static idAttributeType() {
-        return attachment.definition.id.type;
+        return book.definition.id.type;
     }
 
     /**
-     * getIdValue - Get the value of the idAttribute ("id", or "internalId") for an instance of attachment.
+     * getIdValue - Get the value of the idAttribute ("id", or "internalId") for an instance of book.
      *
      * @return {type} id value
      */
     getIdValue() {
-        return this[attachment.idAttribute()]
+        return this[book.idAttribute()]
     }
 
     static get definition() {
@@ -535,7 +381,7 @@ module.exports = class attachment extends Sequelize.Model {
     }
 
     stripAssociations() {
-        let attributes = Object.keys(attachment.definition.attributes);
+        let attributes = Object.keys(book.definition.attributes);
         let data_values = _.pick(this, attributes);
         return data_values;
     }

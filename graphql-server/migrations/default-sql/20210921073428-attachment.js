@@ -43,6 +43,9 @@ module.exports = {
             },
             identifierName: {
                 type: Sequelize[dict['String']]
+            },
+            book_id: {
+                type: Sequelize[dict['String']]
             }
 
         });

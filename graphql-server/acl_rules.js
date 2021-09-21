@@ -19,6 +19,7 @@ module.exports = {
             allows: [{
                 resources: [
                     'attachment',
+                    'book',
                 ],
                 permissions: ['create', 'update', 'delete', 'search']
             }]
@@ -29,6 +30,7 @@ module.exports = {
             allows: [{
                 resources: [
                     'attachment',
+                    'book',
                 ],
                 permissions: ['read']
             }]

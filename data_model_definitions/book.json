@@ -1,0 +1,23 @@
+{
+	"model": "book",
+	"storageType": "sql",
+	"attributes":{
+			"id": "String",
+			"title": "String",
+			"pages": "Int",
+			"genre": "String"
+	}, 
+	"associations": {
+		"attachments": {
+      "type" : "one_to_many",
+      "implementation": "foreignkeys",
+      "reverseAssociation": "book",
+      "target": "attachment",
+      "targetKey": "book_id",
+      "keysIn": "attachment",
+      "targetStorageType" : "sql"
+    }
+	},
+
+	"internalId": "id"
+}

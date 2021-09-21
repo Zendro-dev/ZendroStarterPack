@@ -34,7 +34,16 @@ module.exports = `
     """
     identifierName: String
 
-    urlThumbnail(width: Int!, height: Int!, format:String! ): String!  
+    urlThumbnail(width: Int!, height: Int!, format:String! ): String!
+
+    """
+    @original-field
+    
+    """
+    book_id: String
+
+    book(search: searchBookInput): book
+    
     }
 type AttachmentConnection{
   edges: [AttachmentEdge]
@@ -65,12 +74,14 @@ type AttachmentEdge{
     mimeType
     fileSize
     identifierName
+    book_id
   }
+  
   input searchAttachmentInput {
     field: attachmentField
     value: String
     valueType: InputType
-    operator: Operator
+    operator: GenericPrestoSqlOperator 
     search: [searchAttachmentInput]
   }
 
@@ -79,7 +90,10 @@ type AttachmentEdge{
     order: Order
   }
 
-
+  input bulkAssociationAttachmentWithBook_idInput{
+    id: ID!
+    book_id: ID!
+  }
 
   type Query {
     attachments(search: searchAttachmentInput, order: [ orderAttachmentInput ], pagination: paginationInput! ): [attachment]
@@ -92,10 +106,11 @@ type AttachmentEdge{
 
   type Mutation {
     uploadAttachment(file: Upload): attachment
-
-    addAttachment(id: ID!,file: Upload ,fileName: String!, fileURL: String, mimeType: String, fileSize: Int, identifierName: String    , skipAssociationsExistenceChecks:Boolean = false): attachment!
-    updateAttachment(id: ID!, fileName: String, fileURL: String, mimeType: String, fileSize: Int, identifierName: String    , skipAssociationsExistenceChecks:Boolean = false): attachment!
+    addAttachment(id: ID!, file: Upload, fileName: String, fileURL: String, mimeType: String, fileSize: Int, identifierName: String , addBook:ID   , skipAssociationsExistenceChecks:Boolean = false): attachment!
+    updateAttachment(id: ID!, fileName: String, fileURL: String, mimeType: String, fileSize: Int, identifierName: String , addBook:ID, removeBook:ID    , skipAssociationsExistenceChecks:Boolean = false): attachment!
     deleteAttachment(id: ID!): String!
     bulkAddAttachmentCsv: String!
-      }
+    bulkAssociateAttachmentWithBook_id(bulkAssociationInput: [bulkAssociationAttachmentWithBook_idInput], skipAssociationsExistenceChecks:Boolean = false): String!
+    bulkDisAssociateAttachmentWithBook_id(bulkAssociationInput: [bulkAssociationAttachmentWithBook_idInput], skipAssociationsExistenceChecks:Boolean = false): String!
+  }
 `;

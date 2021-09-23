@@ -44,34 +44,33 @@ services:
         npm install
         ./migrateDbAndStartServer.sh
 
-  # zendro_spa:
-  #   container_name: zendroStarterPack_spa
-  #   # Workaround. See https://github.com/facebook/create-react-app/issues/8688
-  #   stdin_open: true
-  #   depends_on:
-  #     - zendro_postgres
-  #     - zendro_graphql_server
-  #   build:
-  #     context: ./contexts
-  #     dockerfile: Dockerfile.spa
-  #   # Using ports in this way is a security concern. Please consider using e.g. a reverseproxy
-  #   ports:
-  #     - 8080:8080
-  #   environment:
-  #     PORT: "8080"
-  #     ZENDRO_DATA_MODELS: './data_model_definitions'
-  #   volumes:
-  #     - ./single-page-app:/usr/single-page-app
-  #     - ./data_model_definitions:/usr/single-page-app/data_model_definitions
-  #   # Install dependencies and start single-page-app-server in development
-  #   # mode.
-  #   command:
-  #     - /bin/sh
-  #     - -c
-  #     - |
-  #       rm -rf .next
-  #       yarn install
-  #       yarn dev
+  zendro_spa:
+    container_name: zendroStarterPack_spa
+    # Workaround. See https://github.com/facebook/create-react-app/issues/8688
+    stdin_open: true
+    depends_on:
+      - zendro_postgres
+      - zendro_graphql_server
+    build:
+      context: ./contexts
+      dockerfile: Dockerfile.spa
+    # Using ports in this way is a security concern. Please consider using e.g. a reverseproxy
+    ports:
+      - 8080:8080
+    environment:
+      PORT: "8080"
+    volumes:
+      - ./single-page-app:/usr/single-page-app
+      - ./data_model_definitions:/usr/single-page-app/data_model_definitions
+    # Install dependencies and start single-page-app-server in development
+    # mode.
+    command:
+      - /bin/sh
+      - -c
+      - |
+        rm -rf .next
+        yarn install
+        yarn dev
 
   zendro_graphiql:
     container_name: zendroStarterPack_graphiql-auth

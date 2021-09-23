@@ -192,10 +192,10 @@ module.exports = class attachment extends Sequelize.Model {
                 const upload = await minioClient.uploadFile(stream, input.fileName, bucket_name);
                 if(! upload.success){
                     throw upload.error;
-                    
                 }
                 input['mimeType'] = mimetype;
                 input['fileURL'] = upload.url;
+                input['fileSize'] = upload.fileSize;
             }else{
                 throw new Error(`File with name ${input.fileName} already exists.`)
             }

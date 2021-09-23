@@ -15,10 +15,12 @@ module.exports = {
     try{
         await minioClient.putObject(bucket_name, file_name, stream);
         const url = await minioClient.presignedGetObject(bucket_name, file_name);
+        const fileSize = (await minioClient.statObject(bucket_name, file_name)).size;
         console.log("SUCCESS UPLOADING ", url);
         return{
             success: true,
-            url: url
+            fileSize,
+            url
         }
 
     }catch(error){

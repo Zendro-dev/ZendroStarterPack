@@ -309,16 +309,26 @@ const Record: PageWithLayout<RecordUrlQuery> = () => {
                 ></img>
               </div>
               <Dialog open={open} onClose={handleClose} maxWidth="xl">
-                <img alt="Not Found" src={recordData.fileURL as string}></img>
+                <a
+                  href={recordData.fileURL as string}
+                  download={recordData.fileName}
+                >
+                  <img alt="Not Found" src={recordData.fileURL as string}></img>
+                </a>
               </Dialog>
             </>
           ) : (
-            <Box maxWidth="3rem">
-              <FileIcon
-                extension={fileExtension}
-                {...defaultStyles[fileExtension]}
-              />
-            </Box>
+            <a
+              href={recordData.fileURL as string}
+              download={recordData.fileName}
+            >
+              <Box maxWidth="3rem">
+                <FileIcon
+                  extension={fileExtension}
+                  {...defaultStyles[fileExtension]}
+                />
+              </Box>
+            </a>
           ))
         }
       />

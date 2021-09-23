@@ -187,8 +187,6 @@ const Record: PageWithLayout<RecordUrlQuery> = () => {
                 <img
                   alt="Not Found"
                   src={recordData.urlThumbnail as string}
-                  // width="180"
-                  // height="180"
                 ></img>
               </div>
               <Dialog open={open} onClose={handleClose} maxWidth="xl">

@@ -14,6 +14,7 @@ import {
   RepeatOne as ToOneIcon,
   Replay as ReloadIcon,
   Save as SaveIcon,
+  VisibilityTwoTone as DetailsIcon,
 } from '@mui/icons-material';
 
 import IconButton from '@/components/icon-button';
@@ -405,6 +406,10 @@ const Association: PageWithLayout<AssociationUrlQuery> = () => {
     setRecordsFilter(filter as AssociationFilter);
   };
 
+  const handleOnRead = (primaryKey: string | number): void => {
+    router.push(`/models/${targetModel.model}/details?id=${primaryKey}`);
+  };
+
   return (
     <ModelBouncer
       object={urlQuery.model}
@@ -529,7 +534,7 @@ const Association: PageWithLayout<AssociationUrlQuery> = () => {
             isEmpty={assocTable.data.length === 0}
           >
             <AttachmentTableHeader
-              actionsColSpan={urlQuery.request !== 'details' ? 1 : 0}
+              actionsColSpan={urlQuery.request !== 'details' ? 2 : 1}
               attributes={filteredAttributes}
               onSortLabelClick={(field) =>
                 setOrder((state) => ({
@@ -571,7 +576,18 @@ const Association: PageWithLayout<AssociationUrlQuery> = () => {
                     hover
                     attributes={filteredAttributes}
                     record={record.data}
+                    onDoubleClick={() => handleOnRead(recordId)}
                   >
+                    <MuiTableCell padding="checkbox">
+                      <IconButton
+                        tooltip={t('model-table.view', { recordId })}
+                        onClick={() => handleOnRead(recordId)}
+                        className={classes.rowActionPrimary}
+                        data-cy={`model-table-view-${recordId}`}
+                      >
+                        <DetailsIcon fontSize="small" />
+                      </IconButton>
+                    </MuiTableCell>
                     {urlQuery.request !== 'details' && (
                       <MuiTableCell align="center">
                         <IconButton
@@ -709,6 +725,12 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     iconLinkOffMarked: {
       color: 'red',
+    },
+    rowActionPrimary: {
+      '&:hover': {
+        backgroundColor: 'transparent',
+        color: theme.palette.primary.main,
+      },
     },
   })
 );

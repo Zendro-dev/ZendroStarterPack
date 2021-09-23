@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { createStyles, makeStyles } from '@mui/styles';
-import { Button, IconButton, TextField, Tooltip } from '@mui/material';
+import { IconButton, TextField, Tooltip } from '@mui/material';
 import { Theme } from '@mui/material/styles';
 import { AttachFile } from '@mui/icons-material';
 
@@ -48,8 +48,6 @@ const Record: PageWithLayout<RecordUrlQuery> = () => {
 
   const [selectedFile, setSelectedFile] = useState<File | undefined>();
   const [ajvErrors, setAjvErrors] = useState<Record<string, string[]>>();
-
-  const [showFile, setShowFile] = useState('');
 
   /* AUXILIARY */
 

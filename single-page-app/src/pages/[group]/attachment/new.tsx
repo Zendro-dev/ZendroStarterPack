@@ -1,7 +1,11 @@
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+
 import { createStyles, makeStyles } from '@mui/styles';
+import { Button, IconButton, TextField, Tooltip } from '@mui/material';
+import { Theme } from '@mui/material/styles';
+import { AttachFile } from '@mui/icons-material';
 
 import { useDialog } from '@/components/dialog-popup';
 import NavTabs from '@/components/nav-tabs';
@@ -33,13 +37,19 @@ const Record: PageWithLayout<RecordUrlQuery> = () => {
   const { t } = useTranslation();
 
   const filteredAttributes = model.attributes.filter(
-    (x) => x.name !== 'fileURL'
+    (x) =>
+      x.name !== 'fileURL' &&
+      x.name !== 'mimeType' &&
+      x.name !== 'fileSize' &&
+      x.name !== 'fileName'
   );
 
   /* STATE */
 
   const [selectedFile, setSelectedFile] = useState<File | undefined>();
   const [ajvErrors, setAjvErrors] = useState<Record<string, string[]>>();
+
+  const [showFile, setShowFile] = useState('');
 
   /* AUXILIARY */
 
@@ -82,6 +92,8 @@ const Record: PageWithLayout<RecordUrlQuery> = () => {
     };
     if (formStats.unset < formData.length) {
       confirmAbandonChanges();
+    } else {
+      router.push(`/models/attachment`);
     }
   };
 
@@ -95,6 +107,11 @@ const Record: PageWithLayout<RecordUrlQuery> = () => {
     );
 
     dataRecord['file'] = selectedFile;
+
+    if (!selectedFile) {
+      showSnackbar(t('record-form.no-file'), 'error');
+      return;
+    }
 
     const submit = async (): Promise<void> => {
       try {
@@ -168,19 +185,36 @@ const Record: PageWithLayout<RecordUrlQuery> = () => {
               : undefined,
         }}
         info={
-          <div>
-            <input
-              type="file"
-              id="file"
-              // value={selectedFile}
-              onChange={(e) =>
-                setSelectedFile(
-                  e.target.files && e.target.files?.length > 0
-                    ? e.target.files[0]
-                    : undefined
-                )
-              }
-            ></input>
+          <div className={classes.fileUpload}>
+            <Tooltip
+              title={`${t('record-form.upload-file')}`}
+              disableInteractive
+            >
+              <IconButton
+                className={classes.fileUploadButton}
+                component="label"
+              >
+                <input
+                  style={{ display: 'none' }}
+                  type="file"
+                  onChange={(e) =>
+                    setSelectedFile(
+                      e.target.files && e.target.files?.length > 0
+                        ? e.target.files[0]
+                        : undefined
+                    )
+                  }
+                />
+                <AttachFile />
+              </IconButton>
+            </Tooltip>
+            {selectedFile && (
+              <TextField
+                disabled
+                variant="standard"
+                label={selectedFile.name}
+              />
+            )}
           </div>
         }
       />
@@ -188,13 +222,28 @@ const Record: PageWithLayout<RecordUrlQuery> = () => {
   );
 };
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       display: 'flex',
       flexDirection: 'column',
       flexGrow: 1,
       overflowY: 'auto',
+    },
+    fileUploadButton: {
+      marginRight: '1rem',
+      boxShadow: theme.shadows[4],
+      backgroundColor: theme.palette.grey[300],
+      // color: theme.palette.primary.dark,
+      '&:hover': {
+        backgroundColor: theme.palette.primary.background,
+        color: theme.palette.primary.main,
+      },
+    },
+    fileUpload: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
     },
   })
 );

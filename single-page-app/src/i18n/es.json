@@ -106,7 +106,9 @@
     "read-only": "El formulario está en modo de solo lectura",
     "tab-associations": "Asociaciones",
     "tab-attributes": "Atributos",
-    "update": "Editar"
+    "update": "Editar",
+    "upload-file": "Seleccione un archivo",
+    "no-file": "Por favor, seleccione un archivo"
   },
   "restricted": {
     "not-logged-header": "Usuario no identificado",

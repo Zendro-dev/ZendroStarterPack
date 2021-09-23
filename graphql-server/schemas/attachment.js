@@ -106,8 +106,8 @@ type AttachmentEdge{
 
   type Mutation {
     uploadAttachment(file: Upload): attachment
-    addAttachment(id: ID!, file: Upload, fileName: String, fileURL: String, mimeType: String, fileSize: Int, identifierName: String , addBook:ID   , skipAssociationsExistenceChecks:Boolean = false): attachment!
-    updateAttachment(id: ID!, fileName: String, fileURL: String, mimeType: String, fileSize: Int, identifierName: String , addBook:ID, removeBook:ID    , skipAssociationsExistenceChecks:Boolean = false): attachment!
+    addAttachment(id: ID!, file: Upload, identifierName: String , addBook:ID   , skipAssociationsExistenceChecks:Boolean = false): attachment!
+    updateAttachment(id: ID!, identifierName: String , addBook:ID, removeBook:ID    , skipAssociationsExistenceChecks:Boolean = false): attachment!
     deleteAttachment(id: ID!): String!
     bulkAddAttachmentCsv: String!
     bulkAssociateAttachmentWithBook_id(bulkAssociationInput: [bulkAssociationAttachmentWithBook_idInput], skipAssociationsExistenceChecks:Boolean = false): String!

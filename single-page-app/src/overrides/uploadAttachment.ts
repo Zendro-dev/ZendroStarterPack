@@ -3,24 +3,8 @@ import { gql } from 'graphql-request';
 export const name = 'uploadAttachment';
 
 export const query = gql`
-  mutation uploadAttachment(
-    $file: Upload
-    $id: ID!
-    $fileName: String!
-    $fileURL: String
-    $mimeType: String
-    $fileSize: Int
-    $identifierName: String
-  ) {
-    addAttachment(
-      file: $file
-      id: $id
-      fileName: $fileName
-      fileURL: $fileURL
-      mimeType: $mimeType
-      fileSize: $fileSize
-      identifierName: $identifierName
-    ) {
+  mutation uploadAttachment($file: Upload, $id: ID!, $identifierName: String) {
+    addAttachment(file: $file, id: $id, identifierName: $identifierName) {
       id
       fileName
       fileURL

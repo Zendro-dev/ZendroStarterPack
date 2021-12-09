@@ -42,7 +42,7 @@ services:
       - -c
       - |
         npm install
-        ./migrateDbAndStartServer.sh
+        ./migrateDbAndStartServer-prod.sh
 
   zendro_spa:
     container_name: zendroStarterPack_spa

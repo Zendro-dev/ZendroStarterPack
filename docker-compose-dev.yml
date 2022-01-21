@@ -1,6 +1,39 @@
 version: "3.7"
 
 services:
+
+  zendro_keycloak_postgres:
+  container_name: pgdb_keycloak
+  image: postgres
+  volumes:
+    - keycloak_pg_data:/var/lib/postgresql/data
+  environment:
+    POSTGRES_DB: keycloak
+    POSTGRES_USER: keycloak
+    POSTGRES_PASSWORD: password
+  networks:
+    - backend
+
+  zendro_keycloak:
+    container_name: keycloak
+    image: quay.io/keycloak/keycloak:15.0.2
+    command: ["-Djboss.http.port=8081"]
+    ports:
+      - 8081:8081
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres_keycloak
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_SCHEMA: public
+      DB_PASSWORD: password
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+    networks:
+      - backend
+    depends_on:
+      - postgres_keycloak
+
   zendro_postgres:
     container_name: zendroStarterPack_postgres
     build:
@@ -18,6 +51,7 @@ services:
     container_name: zendroStarterPack_graphql-server
     depends_on:
       - zendro_postgres
+      - zendro_keycloak 
     build:
       context: ./contexts
       dockerfile: Dockerfile.graphql_server

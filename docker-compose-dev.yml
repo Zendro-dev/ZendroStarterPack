@@ -32,7 +32,7 @@ services:
     networks:
       - backend
     depends_on:
-      - postgres_keycloak
+      - zendro_keycloak_postgres
 
   zendro_postgres:
     container_name: zendroStarterPack_postgres
@@ -140,6 +140,7 @@ services:
 
 volumes:
   zendro_db_data:
+  keycloak_pg_data:
 
 networks:
   backend:

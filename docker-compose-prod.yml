@@ -12,27 +12,29 @@ services:
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: password
     networks:
-      - backend
+      oauthkc:
 
   zendro_keycloak:
-    container_name: keycloak
+    container_name: zendro_keycloak
     image: quay.io/keycloak/keycloak:15.0.2
     command: ["-Djboss.http.port=8081"]
     ports:
       - 8081:8081
     environment:
       DB_VENDOR: POSTGRES
-      DB_ADDR: postgres_keycloak
+      DB_ADDR: zendro_keycloak_postgres
       DB_DATABASE: keycloak
       DB_USER: keycloak
       DB_SCHEMA: public
       DB_PASSWORD: password
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
-    networks:
-      - backend
     depends_on:
       - zendro_keycloak_postgres
+    networks:
+      oauthkc:
+      zendro:
+        ipv4_address: 10.5.0.11
 
   zendro_postgres:
     container_name: zendroStarterPack_postgres
@@ -45,7 +47,7 @@ services:
     volumes:
       - zendro_db_data:/var/lib/postgresql/data
     networks:
-      - backend
+      datastores:
 
   zendro_graphql_server:
     container_name: zendroStarterPack_graphql-server
@@ -67,18 +69,23 @@ services:
       - ./graphql-server:/usr/graphql-server
       # override default default config with Starterpack config
       - ./config/data_models_storage_config.json:/usr/graphql-server/config/data_models_storage_config.json
-    networks:
-      - backend
+      - ./graphiql-auth/.env.development:/usr/graphiql-auth/.env.development
+      - ./graphiql-auth/.env.production:/usr/graphiql-auth/.env.production
+      - ./single-page-app/.env.development:/usr/single-page-app/.env.development
+      - ./single-page-app/.env.production:/usr/single-page-app/.env.production
     # Await POSTGRES role and DB creation, migrate schema, then start web
     # server:
+    networks:
+      zendro:
+      datastores:
     command:
       - /bin/sh
       - -c
       - |
         npm install
-        chmod u+x ./migrateDbAndStartServer-prod.sh
-        ./migrateDbAndStartServer-prod.sh
-
+        chmod u+x ./migrateDbAndStartServer.sh
+        ./migrateDbAndStartServer.sh
+        
   zendro_spa:
     container_name: zendroStarterPack_spa
     # Workaround. See https://github.com/facebook/create-react-app/issues/8688
@@ -108,8 +115,9 @@ services:
         rm -rf out
         yarn install
         yarn build
-        yarn export
-        yarn serve
+        yarn start
+    networks:
+      zendro:
 
   zendro_graphiql:
     container_name: zendroStarterPack_graphiql-auth
@@ -127,26 +135,31 @@ services:
     environment:
       # Set your production environment variables here
       PORT: "7000"
-      REACT_APP_SERVER_URL: "http://localhost:3000/graphql"
-      REACT_APP_LOGIN_URL: "http://localhost:3000/login"
-      REACT_APP_SERVER_METAQUERY_URL: "http://localhost:3000/meta_query"
     volumes:
       - ./graphiql-auth:/usr/graphiql-auth
     # Install dependencies and start single-page-app-server in development
     # mode.
     networks:
-      - backend
+      zendro:
     command:
       - /bin/sh
       - -c
       - |
-        npm install
-        npm start
-   
-
+        rm -rf .next
+        rm -rf out
+        yarn install
+        yarn build
+        yarn start
+        
 volumes:
   zendro_db_data:
   keycloak_pg_data:
 
 networks:
-  backend:
+  zendro:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.5.0.0/24
+  datastores:
+  oauthkc:

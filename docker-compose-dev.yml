@@ -48,7 +48,7 @@ services:
       PORT: "3000"
       JQ_PATH: /usr/bin/jq
       NODE_JQ_SKIP_INSTALL_BINARY: "true"
-      REQUIRE_SIGN_IN: "true"
+      REQUIRE_SIGN_IN: "false"
     # Using ports in this way is a security concern. Please consider using e.g. a reverseproxy
     ports:
       - 3000:3000

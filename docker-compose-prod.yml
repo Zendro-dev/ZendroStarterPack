@@ -48,6 +48,8 @@ services:
       - zendro_db_data:/var/lib/postgresql/data
     networks:
       datastores:
+    ports:
+      - 1234:5432
 
   zendro_graphql_server:
     container_name: zendroStarterPack_graphql-server

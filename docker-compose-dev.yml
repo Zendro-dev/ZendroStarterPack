@@ -99,6 +99,7 @@ services:
       - -c
       - |
         rm -rf .next
+        yarn install
         yarn dev
     networks:
       zendro:

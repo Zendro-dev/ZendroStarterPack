@@ -36,6 +36,19 @@ services:
       zendro:
         ipv4_address: 10.5.0.11
 
+  zendro_postgres:
+    container_name: zendroStarterPack_postgres
+    build:
+      context: ./contexts
+      dockerfile: Dockerfile.postgres
+    environment: 
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - zendro_db_data:/var/lib/postgresql/data
+    networks:
+      datastores:
+
   zendro_graphql_server:
     container_name: zendroStarterPack_graphql-server
     depends_on:

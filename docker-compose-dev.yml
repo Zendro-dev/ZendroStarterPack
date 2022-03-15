@@ -39,7 +39,6 @@ services:
   zendro_graphql_server:
     container_name: zendroStarterPack_graphql-server
     depends_on:
-      - zendro_postgres
       - zendro_keycloak 
     build:
       context: ./contexts
@@ -78,7 +77,6 @@ services:
     # Workaround. See https://github.com/facebook/create-react-app/issues/8688
     stdin_open: true
     depends_on:
-      - zendro_postgres
       - zendro_graphql_server
     build:
       context: ./contexts
@@ -109,7 +107,6 @@ services:
     # Workaround. See https://github.com/facebook/create-react-app/issues/8688
     stdin_open: true
     depends_on:
-      - zendro_postgres
       - zendro_graphql_server
     build:
       context: ./contexts

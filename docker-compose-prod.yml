@@ -36,25 +36,9 @@ services:
       zendro:
         ipv4_address: 10.5.0.11
 
-  zendro_postgres:
-    container_name: zendroStarterPack_postgres
-    build:
-      context: ./contexts
-      dockerfile: Dockerfile.postgres
-    environment: 
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    volumes:
-      - zendro_db_data:/var/lib/postgresql/data
-    networks:
-      datastores:
-    ports:
-      - 1234:5432
-
   zendro_graphql_server:
     container_name: zendroStarterPack_graphql-server
     depends_on:
-      - zendro_postgres
       - zendro_keycloak 
     build:
       context: ./contexts
@@ -93,7 +77,6 @@ services:
     # Workaround. See https://github.com/facebook/create-react-app/issues/8688
     stdin_open: true
     depends_on:
-      - zendro_postgres
       - zendro_graphql_server
     build:
       context: ./contexts
@@ -126,7 +109,6 @@ services:
     # Workaround. See https://github.com/facebook/create-react-app/issues/8688
     stdin_open: true
     depends_on:
-      - zendro_postgres
       - zendro_graphql_server
     build:
       context: ./contexts

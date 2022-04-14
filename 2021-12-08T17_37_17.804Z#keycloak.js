@@ -50,7 +50,7 @@ module.exports = {
 
     try {
       // wait for keycloak service to be available
-      await waitOn({ resources: [KEYCLOAK_BASEURL] });
+      await waitOn({ resources: [KEYCLOAK_BASEURL], timeout: 120000 });
       // setup default keycloak instance
       const {
         KEYCLOAK_PUBLIC_KEY,

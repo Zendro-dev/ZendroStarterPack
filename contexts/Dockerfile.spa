@@ -3,4 +3,7 @@ FROM node:14-stretch-slim
 # Create app directory
 WORKDIR /usr/single-page-app
 
+# Install git to fetch Zendro bulk-create module
+RUN apt-get update && apt-get install -y git
+
 EXPOSE 8080

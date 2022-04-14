@@ -40,7 +40,7 @@ module.exports = {
   up: async (zendro) => {
     function writeEnvFile(file, env) {
       const parsedEnvString = Object.entries(env)
-        .map((entry) => `${entry[0]}='${entry[1]}'`)
+        .map((entry) => `${entry[0]}="${entry[1]}"`)
         .reduce((a, c) => {
           a += c + "\n";
           return a;
@@ -62,14 +62,14 @@ module.exports = {
           A default user "zendro-admin" with password "admin" was created to login to the
           zendro services. Please delete that user before publically deploying zendro.
           To login to the keycloak admin console use credentials user: "admin"
-          pw: "admin" at "${KEYCLOAK_BASEURL}/auth". Change that user / password to your liking.
+          pw: "admin" at "${KEYCLOAK_BASEURL}". Change that user / password to your liking.
           `);
 
       // graphql-server
       let envPath = path.resolve(__dirname, "../.env");
       let parsedEnv = GQL_ENV.parsed;
       parsedEnv.OAUTH2_PUBLIC_KEY = KEYCLOAK_PUBLIC_KEY;
-      parsedEnv.KEYCLOAK_GQL_CLIENT = KEYCLOAK_GQL_CLIENT;
+      parsedEnv.OAUTH2_CLIENT_ID = KEYCLOAK_GQL_CLIENT;
       writeEnvFile(envPath, parsedEnv);
 
       // graphiql-auth

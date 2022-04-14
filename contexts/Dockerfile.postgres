@@ -1,3 +1,0 @@
-FROM postgres:13-alpine
-
-COPY initUserDb.sql /docker-entrypoint-initdb.d/initUserDb.sql

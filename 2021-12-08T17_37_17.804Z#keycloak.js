@@ -3,6 +3,22 @@ const { DOWN_MIGRATION } = require("../config/globals");
 const waitOn = require("wait-on");
 const path = require("path");
 
+const GQL_ENV = require("dotenv").config({
+  path: path.resolve(__dirname, "../.env"),
+});
+const SPA_PRD_ENV = require("dotenv").config({
+  path: path.resolve(__dirname, "../../single-page-app/.env.production"),
+});
+const GIQL_PRD_ENV = require("dotenv").config({
+  path: path.resolve(__dirname, "../../graphiql-auth/.env.production"),
+});
+const SPA_DEV_ENV = require("dotenv").config({
+  path: path.resolve(__dirname, "../../single-page-app/.env.production"),
+});
+const GIQL_DEV_ENV = require("dotenv").config({
+  path: path.resolve(__dirname, "../../graphiql-auth/.env.production"),
+});
+
 const {
   setupKeyCloak,
   cleanupKeyCloak,
@@ -13,7 +29,7 @@ const {
 } = require("../utils/setup-keycloak");
 const axios = require("axios");
 /**
- * @module - Migrations to create or to drop a table correpondant to a sequelize model.
+ * @module - Migrations to create or to drop a table correspondent to a sequelize model.
  */
 module.exports = {
   /**
@@ -22,10 +38,20 @@ module.exports = {
    * @param  {object} zendro initialized zendro object
    */
   up: async (zendro) => {
-    // wait for keycloak service to be available
-    await waitOn({ resources: [KEYCLOAK_BASEURL] });
-    // setup default keycloak instance
+    function writeEnvFile(file, env) {
+      const parsedEnvString = Object.entries(env)
+        .map((entry) => `${entry[0]}='${entry[1]}'`)
+        .reduce((a, c) => {
+          a += c + "\n";
+          return a;
+        }, "");
+      fs.writeFileSync(file, parsedEnvString);
+    }
+
     try {
+      // wait for keycloak service to be available
+      await waitOn({ resources: [KEYCLOAK_BASEURL], timeout: 120000 });
+      // setup default keycloak instance
       const {
         KEYCLOAK_PUBLIC_KEY,
         KEYCLOAK_GIQL_CLIENT_SECRET,
@@ -39,40 +65,64 @@ module.exports = {
           pw: "admin" at "${KEYCLOAK_BASEURL}/auth". Change that user / password to your liking.
           `);
 
-      // write ENV variables
       // graphql-server
-      fs.appendFileSync(
-        path.resolve(__dirname, "../.env"),
-        `\nOAUTH2_PUBLIC_KEY="${KEYCLOAK_PUBLIC_KEY}"\nOAUTH2_CLIENT_ID=${KEYCLOAK_GQL_CLIENT}`
-      );
+      let envPath = path.resolve(__dirname, "../.env");
+      let parsedEnv = GQL_ENV.parsed;
+      parsedEnv.OAUTH2_PUBLIC_KEY = KEYCLOAK_PUBLIC_KEY;
+      parsedEnv.KEYCLOAK_GQL_CLIENT = KEYCLOAK_GQL_CLIENT;
+      writeEnvFile(envPath, parsedEnv);
 
       // graphiql-auth
-      fs.appendFileSync(
-        path.resolve(__dirname, "../../graphiql-auth/.env.development"),
-        `\nOAUTH2_CLIENT_SECRET=${KEYCLOAK_GIQL_CLIENT_SECRET}\nOAUTH2_CLIENT_ID=${KEYCLOAK_GIQL_CLIENT}`
-      );
+      if (GIQL_PRD_ENV.parsed) {
+        envPath = path.resolve(
+          __dirname,
+          "../../graphiql-auth/.env.production"
+        );
+        parsedEnv = GIQL_PRD_ENV.parsed;
+        parsedEnv.OAUTH2_CLIENT_ID = KEYCLOAK_GIQL_CLIENT;
+        parsedEnv.OAUTH2_CLIENT_SECRET = KEYCLOAK_GIQL_CLIENT_SECRET;
+        writeEnvFile(envPath, parsedEnv);
+      }
 
-      fs.appendFileSync(
-        path.resolve(__dirname, "../../graphiql-auth/.env.production"),
-        `\nOAUTH2_CLIENT_SECRET=${KEYCLOAK_GIQL_CLIENT_SECRET}\nOAUTH2_CLIENT_ID=${KEYCLOAK_GIQL_CLIENT}`
-      );
+      if (GIQL_DEV_ENV.parsed) {
+        envPath = path.resolve(
+          __dirname,
+          "../../graphiql-auth/.env.development"
+        );
+        parsedEnv = GIQL_DEV_ENV.parsed;
+        parsedEnv.OAUTH2_CLIENT_ID = KEYCLOAK_GIQL_CLIENT;
+        parsedEnv.OAUTH2_CLIENT_SECRET = KEYCLOAK_GIQL_CLIENT_SECRET;
+        writeEnvFile(envPath, parsedEnv);
+      }
 
       // single-page-app
-      fs.appendFileSync(
-        path.resolve(__dirname, "../../single-page-app/.env.development"),
-        `\nOAUTH2_CLIENT_SECRET=${KEYCLOAK_SPA_CLIENT_SECRET}\nOAUTH2_CLIENT_ID=${KEYCLOAK_SPA_CLIENT}`
-      );
+      if (SPA_PRD_ENV.parsed) {
+        envPath = path.resolve(
+          __dirname,
+          "../../single-page-app/.env.production"
+        );
+        parsedEnv = SPA_PRD_ENV.parsed;
+        parsedEnv.OAUTH2_CLIENT_ID = KEYCLOAK_SPA_CLIENT;
+        parsedEnv.OAUTH2_CLIENT_SECRET = KEYCLOAK_SPA_CLIENT_SECRET;
+        writeEnvFile(envPath, parsedEnv);
+      }
 
-      fs.appendFileSync(
-        path.resolve(__dirname, "../../single-page-app/.env.production"),
-        `\nOAUTH2_CLIENT_SECRET=${KEYCLOAK_SPA_CLIENT_SECRET}\nOAUTH2_CLIENT_ID=${KEYCLOAK_SPA_CLIENT}`
-      );
+      if (SPA_DEV_ENV.parsed) {
+        envPath = path.resolve(
+          __dirname,
+          "../../single-page-app/.env.development"
+        );
+        parsedEnv = SPA_DEV_ENV.parsed;
+        parsedEnv.OAUTH2_CLIENT_ID = KEYCLOAK_SPA_CLIENT;
+        parsedEnv.OAUTH2_CLIENT_SECRET = KEYCLOAK_SPA_CLIENT_SECRET;
+        writeEnvFile(envPath, parsedEnv);
+      }
 
       console.log(
         "Successfully added OAuth2 keycloak PUBLIC_KEY, CLIENT_ID and CLIENT_SECRET environment variables."
       );
     } catch (error) {
-      throw new Error(error);
+      console.error(error);
     }
   },
 

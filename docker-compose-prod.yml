@@ -12,7 +12,7 @@ services:
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: password
     networks:
-      oauthkc:
+      zendro:
 
   zendro_keycloak:
     container_name: zendro_keycloak
@@ -32,7 +32,6 @@ services:
     depends_on:
       - zendro_keycloak_postgres
     networks:
-      oauthkc:
       zendro:
         ipv4_address: 10.5.0.11
 
@@ -146,4 +145,3 @@ networks:
       config:
         - subnet: 10.5.0.0/24
   datastores:
-  oauthkc:

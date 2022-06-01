@@ -2,6 +2,21 @@ version: "3.7"
 
 services:
 
+  reverse_proxy:
+    # The official v2 Traefik docker image
+    image: traefik:latest
+    # Enables the web UI and tells Traefik to listen to docker
+    command: --providers.docker
+    ports:
+      # The HTTP port
+      - 80:80
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      zendro:
+      datastores:
+
   zendro_keycloak_postgres:
     container_name: pgdb_keycloak
     image: postgres
@@ -17,9 +32,6 @@ services:
   zendro_keycloak:
     container_name: zendro_keycloak
     image: quay.io/keycloak/keycloak:15.0.2
-    command: ["-Djboss.http.port=8081"]
-    ports:
-      - 8081:8081
     environment:
       DB_VENDOR: POSTGRES
       DB_ADDR: zendro_keycloak_postgres
@@ -33,7 +45,8 @@ services:
       - zendro_keycloak_postgres
     networks:
       zendro:
-        ipv4_address: 10.5.0.11
+    labels:
+      - traefik.http.routers.zendro_keycloak.rule=Host(`localhost`)
 
   zendro_graphql_server:
     container_name: zendroStarterPack_graphql-server
@@ -47,9 +60,6 @@ services:
       JQ_PATH: /usr/bin/jq
       NODE_JQ_SKIP_INSTALL_BINARY: "true"
       REQUIRE_SIGN_IN: "true"
-    # Using ports in this way is a security concern. Please consider using e.g. a reverseproxy
-    ports:
-      - 3000:3000
     volumes:
       - ./graphql-server:/usr/graphql-server
       # override default default config with Starterpack config
@@ -63,10 +73,17 @@ services:
     networks:
       zendro:
       datastores:
+    labels:
+      - traefik.http.routers.zendro_graphql_server.rule=Host(`localhost`) && PathPrefix(`/api/`)
+      - traefik.http.routers.zendro_graphql_server.middlewares=strip-api@docker
+      - traefik.http.middlewares.strip-api.stripprefix.prefixes=/api/
+    extra_hosts:
+      - "localhost:host-gateway"
     command:
       - /bin/sh
       - -c
       - |
+        sed -e '/127.0.0.1\tlocalhost/d' -e 's/^::1\tlocalhost/::1\t/' /etc/hosts > /etc/hosts2 && cp /etc/hosts2 /etc/hosts && rm /etc/hosts2
         npm install
         chmod u+x ./migrateDbAndStartServer.sh
         ./migrateDbAndStartServer.sh
@@ -80,28 +97,31 @@ services:
     build:
       context: ./contexts
       dockerfile: Dockerfile.spa
-    # Using ports in this way is a security concern. Please consider using e.g. a reverseproxy
-    ports:
-      - 8080:8080
     environment:
       # Set your production environment variables here or in ./single-page-app/.env.production
       PORT: "8080"
     volumes:
       - ./single-page-app:/usr/single-page-app
       - ./data_model_definitions:/usr/data_model_definitions
-    # Install dependencies and start single-page-app-server in development
-    # mode.
+    networks:
+      zendro:
+    labels:
+      - traefik.http.routers.zendro_spa.rule=Host(`localhost`) && PathPrefix(`/spa`)
+    # Workaround for local development and Sandbox setups. Can be remove in production deployment
+    extra_hosts:
+      - "localhost:host-gateway"
+    # workaround "sed" command to enable a development / production-Sandbox mode in a local environment
+    # can be removed in a production deployment
     command:
       - /bin/sh
       - -c
       - |
+        sed -e '/127.0.0.1\tlocalhost/d' -e 's/^::1\tlocalhost/::1\t/' /etc/hosts > /etc/hosts2 && cp /etc/hosts2 /etc/hosts && rm /etc/hosts2
         rm -rf .next
         rm -rf out
         yarn install
         yarn build
         yarn start
-    networks:
-      zendro:
 
   zendro_graphiql:
     container_name: zendroStarterPack_graphiql-auth
@@ -112,9 +132,6 @@ services:
     build:
       context: ./contexts
       dockerfile: Dockerfile.graphiql
-    # Using ports in this way is a security concern. Please consider using e.g. a reverseproxy
-    ports:
-      - 7000:7000
     environment:
       # Set your production environment variables here
       PORT: "7000"
@@ -124,10 +141,18 @@ services:
     # mode.
     networks:
       zendro:
+    labels:
+      - traefik.http.routers.zendro_graphiql.rule=Host(`localhost`) && PathPrefix(`/graphiql`)
+    # Workaround for local development and Sandbox setups. Can be remove in production deployment
+    extra_hosts:
+      - "localhost:host-gateway"
+    # workaround "sed" command to enable a development / production-Sandbox mode in a local environment
+    # can be removed in a production deployment
     command:
       - /bin/sh
       - -c
       - |
+        sed -e '/127.0.0.1\tlocalhost/d' -e 's/^::1\tlocalhost/::1\t/' /etc/hosts > /etc/hosts2 && cp /etc/hosts2 /etc/hosts && rm /etc/hosts2
         rm -rf .next
         rm -rf out
         yarn install
@@ -140,8 +165,4 @@ volumes:
 
 networks:
   zendro:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 10.5.0.0/24
   datastores:

@@ -61,6 +61,8 @@ services:
     networks:
       zendro:
       datastores:
+    # workaround "sed" command to enable a development / production-Sandbox mode in a local environment
+    # can be removed in a production deployment
     command:
       - /bin/sh
       - -c
@@ -93,8 +95,8 @@ services:
     # Workaround for local development and Sandbox setups. Can be remove in production deployment
     extra_hosts:
       - "localhost:host-gateway"
-    # Install dependencies and start single-page-app-server in development
-    # mode.
+    # workaround "sed" command to enable a development / production-Sandbox mode in a local environment
+    # can be removed in a production deployment
     command:
       - /bin/sh
       - -c
@@ -128,6 +130,8 @@ services:
     # Workaround for local development and Sandbox setups. Can be remove in production deployment
     extra_hosts:
       - "localhost:host-gateway"
+    # workaround "sed" command to enable a development / production-Sandbox mode in a local environment
+    # can be removed in a production deployment
     command:
       - /bin/sh
       - -c

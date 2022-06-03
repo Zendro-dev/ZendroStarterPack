@@ -77,8 +77,11 @@ services:
       - traefik.http.routers.zendro_graphql_server.rule=Host(`localhost`) && PathPrefix(`/api/`)
       - traefik.http.routers.zendro_graphql_server.middlewares=strip-api@docker
       - traefik.http.middlewares.strip-api.stripprefix.prefixes=/api/
+    # Workaround for local development and Sandbox setups. Can be remove in production deployment
     extra_hosts:
       - "localhost:host-gateway"
+    # workaround "sed" command to enable a development / production-Sandbox mode in a local environment
+    # can be removed in a production deployment
     command:
       - /bin/sh
       - -c

@@ -13,10 +13,10 @@ const GIQL_PRD_ENV = require("dotenv").config({
   path: path.resolve(__dirname, "../../graphiql-auth/.env.production"),
 });
 const SPA_DEV_ENV = require("dotenv").config({
-  path: path.resolve(__dirname, "../../single-page-app/.env.production"),
+  path: path.resolve(__dirname, "../../single-page-app/.env.development"),
 });
 const GIQL_DEV_ENV = require("dotenv").config({
-  path: path.resolve(__dirname, "../../graphiql-auth/.env.production"),
+  path: path.resolve(__dirname, "../../graphiql-auth/.env.development"),
 });
 
 const {

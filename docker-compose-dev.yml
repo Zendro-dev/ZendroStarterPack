@@ -17,9 +17,8 @@ services:
   zendro_keycloak:
     container_name: zendro_keycloak
     image: quay.io/keycloak/keycloak:15.0.2
-    command: ["-Djboss.http.port=8081"]
     ports:
-      - 8081:8081
+      - 8081:8080
     environment:
       DB_VENDOR: POSTGRES
       DB_ADDR: zendro_keycloak_postgres
@@ -33,7 +32,6 @@ services:
       - zendro_keycloak_postgres
     networks:
       zendro:
-        ipv4_address: 10.5.0.11
 
   zendro_graphql_server:
     container_name: zendroStarterPack_graphql-server
@@ -63,10 +61,13 @@ services:
     networks:
       zendro:
       datastores:
+    # workaround "sed" command to enable a development / production-Sandbox mode in a local environment
+    # can be removed in a production deployment
     command:
       - /bin/sh
       - -c
       - |
+        sed -e '/127.0.0.1\tlocalhost/d' -e 's/^::1\tlocalhost/::1\t/' /etc/hosts > /etc/hosts2 && cp /etc/hosts2 /etc/hosts && rm /etc/hosts2
         npm install
         chmod u+x ./migrateDbAndStartServer.sh
         ./migrateDbAndStartServer.sh dev
@@ -89,17 +90,21 @@ services:
     volumes:
       - ./single-page-app:/usr/single-page-app
       - ./data_model_definitions:/usr/data_model_definitions
-    # Install dependencies and start single-page-app-server in development
-    # mode.
+    networks:
+      zendro:
+    # Workaround for local development and Sandbox setups. Can be remove in production deployment
+    extra_hosts:
+      - "localhost:host-gateway"
+    # workaround "sed" command to enable a development / production-Sandbox mode in a local environment
+    # can be removed in a production deployment
     command:
       - /bin/sh
       - -c
       - |
+        sed -e '/127.0.0.1\tlocalhost/d' -e 's/^::1\tlocalhost/::1\t/' /etc/hosts > /etc/hosts2 && cp /etc/hosts2 /etc/hosts && rm /etc/hosts2
         rm -rf .next
         yarn install
         yarn dev
-    networks:
-      zendro:
 
   zendro_graphiql:
     container_name: zendroStarterPack_graphiql-auth
@@ -122,11 +127,18 @@ services:
     # mode.
     networks:
       zendro:
+    # Workaround for local development and Sandbox setups. Can be remove in production deployment
+    extra_hosts:
+      - "localhost:host-gateway"
+    # workaround "sed" command to enable a development / production-Sandbox mode in a local environment
+    # can be removed in a production deployment
     command:
       - /bin/sh
       - -c
       - |
+        sed -e '/127.0.0.1\tlocalhost/d' -e 's/^::1\tlocalhost/::1\t/' /etc/hosts > /etc/hosts2 && cp /etc/hosts2 /etc/hosts && rm /etc/hosts2
         rm -rf .next
+        yarn install
         yarn dev
         
 volumes:
@@ -135,8 +147,4 @@ volumes:
 
 networks:
   zendro:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 10.5.0.0/24
   datastores:

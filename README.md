@@ -23,7 +23,7 @@ Linux.
 First you need to `git clone` this project into a local directory on your host
 system:
 ```
-git clone https://github.com/ScienceDb/ZendroStarterPack.git
+git clone https://github.com/Zendro-dev/ZendroStarterPack.git
 ```
 
 The skeleton [GraphQL server](https://github.com/ScienceDb/graphql-server) and the 

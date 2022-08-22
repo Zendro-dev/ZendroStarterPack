@@ -2,6 +2,7 @@
 const { DOWN_MIGRATION } = require("../config/globals");
 const waitOn = require("wait-on");
 const path = require("path");
+const fs = require("fs");
 
 const GQL_ENV = require("dotenv").config({
   path: path.resolve(__dirname, "../.env"),

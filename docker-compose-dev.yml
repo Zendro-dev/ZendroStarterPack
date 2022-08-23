@@ -44,10 +44,6 @@ services:
     build:
       context: ./contexts
       dockerfile: Dockerfile.graphql_server
-    environment:
-      JQ_PATH: /usr/bin/jq
-      NODE_JQ_SKIP_INSTALL_BINARY: "true"
-    # Using ports in this way is a security concern. Please consider using e.g. a reverseproxy
     ports:
       - 3000:3000
     volumes:
@@ -80,7 +76,6 @@ services:
     build:
       context: ./contexts
       dockerfile: Dockerfile.spa
-    # Using ports in this way is a security concern. Please consider using e.g. a reverseproxy
     ports:
       - 8080:8080
     volumes:
@@ -107,7 +102,6 @@ services:
     build:
       context: ./contexts
       dockerfile: Dockerfile.graphiql
-    # Using ports in this way is a security concern. Please consider using e.g. a reverseproxy
     ports:
       - 7000:7000
     volumes:

@@ -99,6 +99,10 @@ services:
       - /bin/sh
       - -c
       - |
+        rm -rf .next
+        rm -rf out
+        yarn install
+        yarn build
         yarn start
 
   zendro-graphiql:

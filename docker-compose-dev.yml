@@ -2,50 +2,48 @@ version: "3.7"
 
 services:
 
-  zendro_keycloak_postgres:
-    container_name: pgdb_keycloak
+  zendro-keycloak-postgres:
+    container_name: zendro-keycloak-postgres
     image: postgres
     volumes:
       - keycloak_pg_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: keycloak
-      POSTGRES_USER: keycloak
-      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ${KEYCLOAK_DATABASE_NAME}
+      POSTGRES_USER: ${KEYCLOAK_DATABASE_USER}
+      POSTGRES_PASSWORD: ${KEYCLOAK_DATABASE_PASSWORD}
     networks:
       zendro:
 
-  zendro_keycloak:
-    container_name: zendro_keycloak
-    image: quay.io/keycloak/keycloak:15.0.2
+  zendro-keycloak:
+    container_name: zendro-keycloak
+    image: quay.io/keycloak/keycloak:19.0.1
+    entrypoint: ["/opt/keycloak/bin/kc.sh", "start-dev"]
     ports:
       - 8081:8080
     environment:
-      DB_VENDOR: POSTGRES
-      DB_ADDR: zendro_keycloak_postgres
-      DB_DATABASE: keycloak
-      DB_USER: keycloak
-      DB_SCHEMA: public
-      DB_PASSWORD: password
-      KEYCLOAK_USER: admin
-      KEYCLOAK_PASSWORD: admin
+      KC_DB: ${KEYCLOAK_DATABASE_VENDOR}
+      KC_DB_URL_HOST: ${KEYCLOAK_DATABASE_HOST}
+      KC_DB_URL_DATABASE: ${KEYCLOAK_DATABASE_NAME}
+      KC_DB_USERNAME: ${KEYCLOAK_DATABASE_USER}
+      KC_DB_SCHEMA: ${KEYCLOAK_DATABASE_SCHEMA}
+      KC_DB_PASSWORD: ${KEYCLOAK_DATABASE_PASSWORD}
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN_USER}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KC_HTTP_RELATIVE_PATH: ${KEYCLOAK_HTTP_RELATIVE_PATH}
+      KC_HOSTNAME: ${KEYCLOAK_HOSTNAME}
+      KC_HOSTNAME_PORT: ${KEYCLOAK_HOSTNAME_PORT}
     depends_on:
-      - zendro_keycloak_postgres
+      - zendro-keycloak-postgres
     networks:
       zendro:
 
-  zendro_graphql_server:
-    container_name: zendroStarterPack_graphql-server
+  zendro-graphql-server:
+    container_name: zendro-graphql-server
     depends_on:
-      - zendro_keycloak 
+      - zendro-keycloak 
     build:
       context: ./contexts
       dockerfile: Dockerfile.graphql_server
-    environment:
-      PORT: "3000"
-      JQ_PATH: /usr/bin/jq
-      NODE_JQ_SKIP_INSTALL_BINARY: "true"
-      REQUIRE_SIGN_IN: "false"
-    # Using ports in this way is a security concern. Please consider using e.g. a reverseproxy
     ports:
       - 3000:3000
     volumes:
@@ -61,82 +59,61 @@ services:
     networks:
       zendro:
       datastores:
-    # workaround "sed" command to enable a development / production-Sandbox mode in a local environment
-    # can be removed in a production deployment
     command:
       - /bin/sh
       - -c
       - |
-        sed -e '/127.0.0.1\tlocalhost/d' -e 's/^::1\tlocalhost/::1\t/' /etc/hosts > /etc/hosts2 && cp /etc/hosts2 /etc/hosts && rm /etc/hosts2
         npm install
         chmod u+x ./migrateDbAndStartServer.sh
         ./migrateDbAndStartServer.sh dev
         
-  zendro_spa:
-    container_name: zendroStarterPack_spa
+  zendro-spa:
+    container_name: zendro-spa
     # Workaround. See https://github.com/facebook/create-react-app/issues/8688
     stdin_open: true
     depends_on:
-      - zendro_graphql_server
+      - zendro-graphql-server
     build:
       context: ./contexts
       dockerfile: Dockerfile.spa
-    # Using ports in this way is a security concern. Please consider using e.g. a reverseproxy
     ports:
       - 8080:8080
-    environment:
-      # Set your production environment variables here or in ./single-page-app/.env.production
-      PORT: "8080"
     volumes:
       - ./single-page-app:/usr/single-page-app
       - ./data_model_definitions:/usr/data_model_definitions
     networks:
       zendro:
-    # Workaround for local development and Sandbox setups. Can be remove in production deployment
-    extra_hosts:
-      - "localhost:host-gateway"
-    # workaround "sed" command to enable a development / production-Sandbox mode in a local environment
-    # can be removed in a production deployment
+    # Install dependencies and start single-page-app-server in development
+    # mode.
     command:
       - /bin/sh
       - -c
       - |
-        sed -e '/127.0.0.1\tlocalhost/d' -e 's/^::1\tlocalhost/::1\t/' /etc/hosts > /etc/hosts2 && cp /etc/hosts2 /etc/hosts && rm /etc/hosts2
         rm -rf .next
         yarn install
         yarn dev
 
-  zendro_graphiql:
-    container_name: zendroStarterPack_graphiql-auth
+  zendro-graphiql:
+    container_name: zendro-graphiql
     # Workaround. See https://github.com/facebook/create-react-app/issues/8688
     stdin_open: true
     depends_on:
-      - zendro_graphql_server
+      - zendro-graphql-server
     build:
       context: ./contexts
       dockerfile: Dockerfile.graphiql
-    # Using ports in this way is a security concern. Please consider using e.g. a reverseproxy
     ports:
       - 7000:7000
-    environment:
-      # Set your production environment variables here
-      PORT: "7000"
     volumes:
       - ./graphiql-auth:/usr/graphiql-auth
     # Install dependencies and start single-page-app-server in development
     # mode.
     networks:
       zendro:
-    # Workaround for local development and Sandbox setups. Can be remove in production deployment
-    extra_hosts:
-      - "localhost:host-gateway"
-    # workaround "sed" command to enable a development / production-Sandbox mode in a local environment
-    # can be removed in a production deployment
     command:
       - /bin/sh
       - -c
       - |
-        sed -e '/127.0.0.1\tlocalhost/d' -e 's/^::1\tlocalhost/::1\t/' /etc/hosts > /etc/hosts2 && cp /etc/hosts2 /etc/hosts && rm /etc/hosts2
         rm -rf .next
         yarn install
         yarn dev

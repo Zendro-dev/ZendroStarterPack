@@ -5,3 +5,5 @@ graphql-server
 single-page-app
 graphiql-auth
 node_modules
+.env
+.env.local

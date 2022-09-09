@@ -123,7 +123,7 @@ module.exports = {
         "Successfully added OAuth2 keycloak PUBLIC_KEY, CLIENT_ID and CLIENT_SECRET environment variables."
       );
     } catch (error) {
-      console.error(error);
+      throw new Error(error);
     }
   },
 

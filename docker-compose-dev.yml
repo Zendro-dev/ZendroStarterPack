@@ -64,8 +64,7 @@ services:
       - -c
       - |
         npm install
-        chmod u+x ./migrateDbAndStartServer.sh
-        ./migrateDbAndStartServer.sh dev
+        ./migrateDbAndStartServer.js dev
         
   zendro-spa:
     container_name: zendro-spa

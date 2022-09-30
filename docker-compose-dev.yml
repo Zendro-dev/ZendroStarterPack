@@ -64,7 +64,7 @@ services:
       - -c
       - |
         npm install
-        ./migrateDbAndStartServer.js dev
+        node migrateDbAndStartServer.js dev
         
   zendro-spa:
     container_name: zendro-spa

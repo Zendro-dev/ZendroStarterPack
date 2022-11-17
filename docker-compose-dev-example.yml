@@ -1,0 +1,227 @@
+version: "3.7"
+
+services:
+
+  zendro-keycloak-postgres:
+    container_name: zendro-keycloak-postgres
+    image: postgres
+    volumes:
+      - keycloak_pg_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${KEYCLOAK_DATABASE_NAME}
+      POSTGRES_USER: ${KEYCLOAK_DATABASE_USER}
+      POSTGRES_PASSWORD: ${KEYCLOAK_DATABASE_PASSWORD}
+    networks:
+      zendro:
+
+  zendro-keycloak:
+    container_name: zendro-keycloak
+    image: quay.io/keycloak/keycloak:19.0.1
+    entrypoint: ["/opt/keycloak/bin/kc.sh", "start-dev"]
+    ports:
+      - 8081:8080
+    environment:
+      KC_DB: ${KEYCLOAK_DATABASE_VENDOR}
+      KC_DB_URL_HOST: ${KEYCLOAK_DATABASE_HOST}
+      KC_DB_URL_DATABASE: ${KEYCLOAK_DATABASE_NAME}
+      KC_DB_USERNAME: ${KEYCLOAK_DATABASE_USER}
+      KC_DB_SCHEMA: ${KEYCLOAK_DATABASE_SCHEMA}
+      KC_DB_PASSWORD: ${KEYCLOAK_DATABASE_PASSWORD}
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN_USER}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KC_HTTP_RELATIVE_PATH: ${KEYCLOAK_HTTP_RELATIVE_PATH}
+      KC_HOSTNAME: ${KEYCLOAK_HOSTNAME}
+      KC_HOSTNAME_PORT: ${KEYCLOAK_HOSTNAME_PORT}
+    depends_on:
+      - zendro-keycloak-postgres
+    networks:
+      zendro:
+
+  zendro-postgres:
+    container_name: zendro-postgres
+    image: postgres
+    environment:
+      POSTGRES_DB : zendro_development
+      POSTGRES_USER: zendro
+      POSTGRES_PASSWORD: zendro
+    volumes:
+      - zendro_db_data:/var/lib/postgresql/data
+    networks:
+      datastores:
+    ports:
+      - 1234:5432
+
+  zendro-mongodb:
+    image: mongo
+    container_name: zendro-mongodb
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=sciencedb
+      - MONGO_INITDB_ROOT_PASSWORD=sciencedb
+      - MONGO_INITDB_DATABASE=sciencedb_development
+    volumes:
+      - ./contexts/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+    ports:
+      - 27017:27017
+    networks:
+      datastores:
+
+  zendro-cassandra:
+    container_name: zendro-cassandra
+    build:
+      context: ./contexts
+      dockerfile: Dockerfile.cassandra
+    volumes: 
+      - ./contexts/docker-entrypoint.sh.cassandra:/docker-entrypoint.sh
+      - ./contexts/cassandra-keyspace.cql:/docker-entrypoint-initdb.d/cassandra-keyspace.cql
+    ports: 
+      - 9042:9042
+    environment: 
+      - MAX_HEAP_SIZE=256M
+      - HEAP_NEWSIZE=128M
+    networks: 
+      datastores:
+      
+  zendro-minio:
+    image: minio/minio
+    container_name: zendro-minio
+    environment:
+      MINIO_ROOT_USER: sciencedb
+      MINIO_ROOT_PASSWORD: sciencedb
+    ports:
+      - 9000:9000
+    command: server /data
+    networks:
+      datastores:
+
+  zendro-presto:
+    image: ahanaio/prestodb-sandbox
+    container_name: zendro-presto
+    depends_on:
+      - zendro-postgres
+    volumes: 
+      - ./contexts/postgresql.properties:/opt/presto-server/etc/catalog/postgresql.properties
+    ports:
+      - 8081:8080
+    networks:
+      datastores:
+
+  zendro-trino:
+    image: trinodb/trino 
+    container_name: zendro-trino
+    depends_on:
+      - zendro-postgres
+    volumes: 
+      - ./contexts/postgresql.properties:/etc/trino/catalog/postgresql.properties
+    ports:
+      - 8080:8080
+    networks:
+      datastores:
+
+  zendro-neo4j:
+    image: neo4j
+    container_name: zendro-neo4j
+    user: ${UID_GID}
+    ports:
+      - 7474:7474
+      - 7687:7687
+    volumes:
+      - ./import:/var/lib/neo4j/import
+    environment:
+      NEO4J_AUTH: neo4j/sciencedb
+    networks:
+      datastores:
+
+  zendro-graphql-server:
+    container_name: zendro-graphql-server
+    depends_on:
+      - zendro-keycloak
+      - zendro-postgres
+      - zendro-mongodb
+      - zendro-cassandra
+      - zendro-minio
+      - zendro-presto
+      - zendro-trino
+      - zendro-neo4j
+    build:
+      context: ./contexts
+      dockerfile: Dockerfile.graphql_server
+    ports:
+      - 3000:3000
+    volumes:
+      - ./graphql-server:/usr/graphql-server
+      # override default default config with Starterpack config
+      - ./config/data_models_storage_config.json:/usr/graphql-server/config/data_models_storage_config.json
+      - ./graphiql-auth/.env.development:/usr/graphiql-auth/.env.development
+      - ./graphiql-auth/.env.production:/usr/graphiql-auth/.env.production
+      - ./single-page-app/.env.development:/usr/single-page-app/.env.development
+      - ./single-page-app/.env.production:/usr/single-page-app/.env.production
+    # Await POSTGRES role and DB creation, migrate schema, then start web
+    # server:
+    networks:
+      zendro:
+      datastores:
+    command:
+      - /bin/sh
+      - -c
+      - |
+        npm install
+        node migrateDbAndStartServer.js dev
+        
+  zendro-spa:
+    container_name: zendro-spa
+    # Workaround. See https://github.com/facebook/create-react-app/issues/8688
+    stdin_open: true
+    depends_on:
+      - zendro-graphql-server
+    build:
+      context: ./contexts
+      dockerfile: Dockerfile.spa
+    ports:
+      - 8080:8080
+    volumes:
+      - ./single-page-app:/usr/single-page-app
+      - ./data_model_definitions:/usr/data_model_definitions
+    networks:
+      zendro:
+    # Install dependencies and start single-page-app-server in development
+    # mode.
+    command:
+      - /bin/sh
+      - -c
+      - |
+        rm -rf .next
+        yarn install
+        yarn dev
+
+  zendro-graphiql:
+    container_name: zendro-graphiql
+    # Workaround. See https://github.com/facebook/create-react-app/issues/8688
+    stdin_open: true
+    depends_on:
+      - zendro-graphql-server
+    build:
+      context: ./contexts
+      dockerfile: Dockerfile.graphiql
+    ports:
+      - 7000:7000
+    volumes:
+      - ./graphiql-auth:/usr/graphiql-auth
+    # Install dependencies and start single-page-app-server in development
+    # mode.
+    networks:
+      zendro:
+    command:
+      - /bin/sh
+      - -c
+      - |
+        rm -rf .next
+        yarn install
+        yarn dev
+        
+volumes:
+  zendro_db_data:
+  keycloak_pg_data:
+
+networks:
+  zendro:
+  datastores:

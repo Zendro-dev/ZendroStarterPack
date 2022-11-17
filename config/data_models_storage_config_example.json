@@ -1,0 +1,62 @@
+{
+    "default-sql": {
+      "storageType": "sql",
+      "username": "zendro",
+      "password": "zendro",
+      "database": "zendro_development",
+      "host": "zendro-postgres",
+      "dialect": "postgres"
+    },
+    "default-mongodb": {
+      "storageType": "mongodb",
+      "username": "sciencedb",
+      "password": "sciencedb",
+      "database": "sciencedb_development",
+      "host": "zendro-mongodb",
+      "port": "27017"
+    },
+    "default-cassandra": {
+      "storageType": "cassandra",
+      "username": "cassandra",
+      "password": "cassandra",
+      "keyspace": "sciencedb",
+      "host": "zendro-cassandra",
+      "port": "9042"
+    },
+    "default-amazonS3": {
+      "storageType": "amazon-s3",
+      "username": "sciencedb",
+      "password": "sciencedb",
+      "bucket": "sciencedb-development",
+      "host": "zendro-minio",
+      "port": "9000",
+      "fileHeaderInfo": "USE",
+      "recordDelimiter": "\n",
+      "fieldDelimiter": ",",
+      "arrayDelimiter": ";"
+    },
+    "default-trino": {
+      "storageType": "trino",
+      "catalog":"postgresql",
+      "schema":"public",
+      "trino_host": "zendro-trino",
+      "trino_port": "8080"
+    },
+    "default-presto": {
+      "storageType": "presto",
+      "catalog":"postgresql",
+      "schema":"public",
+      "presto_host": "zendro-presto",
+      "presto_port": "8080"
+    },
+    "default-neo4j": {
+      "storageType": "neo4j",
+      "username": "neo4j",
+      "password": "sciencedb",
+      "database": "neo4j",
+      "host": "zendro-neo4j",
+      "port": "7687"
+    }
+    
+}
+  

@@ -1,4 +1,4 @@
-FROM node:18-bullseye-slim
+FROM node:16-bullseye-slim
 
 # Create app directory
 WORKDIR /usr/single-page-app

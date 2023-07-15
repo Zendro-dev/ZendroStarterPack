@@ -115,7 +115,7 @@ services:
       dockerfile: Dockerfile.graphiql
     # Using ports in this way is a security concern. Please consider using e.g. a reverseproxy
     ports:
-      - 7000:7000
+      - 7070:7070
     volumes:
       - ./graphiql-auth:/usr/graphiql-auth
     # Install dependencies and start single-page-app-server in development

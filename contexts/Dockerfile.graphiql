@@ -3,4 +3,4 @@ FROM node:18-bullseye-slim
 # Create app directory
 WORKDIR /usr/graphiql-auth
 
-EXPOSE 7000
+EXPOSE 7070

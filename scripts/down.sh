@@ -2,4 +2,4 @@
 
 # 1=dev|prod
 # 2=-v
-docker-compose -f docker-compose-$1.yml down $2
+docker compose -f docker-compose-$1.yml down $2

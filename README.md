@@ -222,7 +222,7 @@ If you want to generate a new Sequelize migration or seeder you need to do that
 from within a Docker container created from the respective
 `sdb_science_db_graphql_server` Docker image:
 ```
-docker-compose -f docker-compose-dev.yml run --rm sdb_science_db_graphql_server bash
+docker compose -f docker-compose-dev.yml run --rm sdb_science_db_graphql_server bash
 ./node_modules/.bin/sequelize seed:generate --name my_new_seeder
 ```
 _Note_ how we use `docker-compose-dev.yml` to have the local directory mounted
@@ -232,7 +232,7 @@ seeder files, are actually persisted on the host file-system.
 ### Get an interactive SQL terminal to the relational database (POSTGRES)
 
 ```
-docker-compose -f docker-compose.yml run --rm zendro_postgres psql -h zendro_postgres -U zendro -W zendro_development
+docker compose -f docker-compose.yml run --rm zendro_postgres psql -h zendro_postgres -U zendro -W zendro_development
 ```
 
 ### Get a command line interface to the Minio instance

@@ -1,5 +1,3 @@
-version: "3.7"
-
 services:
 
   zendro-keycloak-postgres:
@@ -16,10 +14,10 @@ services:
 
   zendro-keycloak:
     container_name: zendro-keycloak
-    image: quay.io/keycloak/keycloak:19.0.1
+    image: quay.io/keycloak/keycloak:26.2.0
     entrypoint: ["/opt/keycloak/bin/kc.sh", "start-dev"]
     ports:
-      - 8081:8080
+      - ${KEYCLOAK_HOSTNAME_PORT}:${KEYCLOAK_HOSTNAME_PORT}
     environment:
       KC_DB: ${KEYCLOAK_DATABASE_VENDOR}
       KC_DB_URL_HOST: ${KEYCLOAK_DATABASE_HOST}
@@ -27,11 +25,12 @@ services:
       KC_DB_USERNAME: ${KEYCLOAK_DATABASE_USER}
       KC_DB_SCHEMA: ${KEYCLOAK_DATABASE_SCHEMA}
       KC_DB_PASSWORD: ${KEYCLOAK_DATABASE_PASSWORD}
-      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN_USER}
-      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN_USER}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
       KC_HTTP_RELATIVE_PATH: ${KEYCLOAK_HTTP_RELATIVE_PATH}
-      KC_HOSTNAME: ${KEYCLOAK_HOSTNAME}
-      KC_HOSTNAME_PORT: ${KEYCLOAK_HOSTNAME_PORT}
+      KC_HTTP_PORT: ${KEYCLOAK_HOSTNAME_PORT}
+      KC_HOSTNAME: http://${KEYCLOAK_HOSTNAME}:${KEYCLOAK_HOSTNAME_PORT}${KEYCLOAK_HTTP_RELATIVE_PATH}
+      KC_HOSTNAME_BACKCHANNEL_DYNAMIC: true
     depends_on:
       - zendro-keycloak-postgres
     networks:

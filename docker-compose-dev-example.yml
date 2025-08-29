@@ -94,7 +94,7 @@ services:
       datastores:
 
   zendro-presto:
-    image: ahanaio/prestodb-sandbox
+    image: prestodb/presto
     container_name: zendro-presto
     depends_on:
       - zendro-postgres

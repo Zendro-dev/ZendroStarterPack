@@ -102,7 +102,7 @@ Be very carefull when running the code generators multiple times on the same dat
 
 Upon starting the servers in any mode development or production any pending
 database migrations and seeding is automatically triggered. See file
-`./graphql-server/migrateDbAndStartServer.sh`, and the two docker-compose files
+`./graphql-server/migrateDb.js`, `./graphql-server/startServer.js` and the two docker-compose files
 `docker-compose-dev.yml` (development) and `docker-compose-prod.yml` (production).
 
 ### Configuration
@@ -154,16 +154,8 @@ You can run Zendro with or without this access control check. The default is
 to run it _without_ checking access rights. 
 
 To switch access right check on, you must uncomment the command line switch
-`acl` and change the following line in
-[`./graphql-server/migrateDbAndStartServer.sh`](https://github.com/ScienceDb/graphql-server/blob/master/migrateDbAndStartServer.sh)
-
-```
-npm start # acl
-```
-to
-```
-npm start acl
-```
+`acl` and uncomment the lines with `//,'acl'` in
+[`./graphql-server/startServer.sh`](https://github.com/ScienceDb/graphql-server/blob/master/startServer.sh)
 
 If you decide _not_ to use access control, we strongly recommend to restrict
 access to the GraphiQL interface through the `graphql-server`. Switch off the

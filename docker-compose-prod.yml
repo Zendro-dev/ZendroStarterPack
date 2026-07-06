@@ -4,7 +4,7 @@ services:
     container_name: zendro-keycloak-postgres
     image: postgres
     volumes:
-      - keycloak_pg_data:/var/lib/postgresql/data
+      - keycloak_pg_data:/var/lib/postgresql
     environment:
       POSTGRES_DB: ${KEYCLOAK_DATABASE_NAME}
       POSTGRES_USER: ${KEYCLOAK_DATABASE_USER}
@@ -15,7 +15,7 @@ services:
   zendro-keycloak:
     container_name: zendro-keycloak
     image: quay.io/keycloak/keycloak:26.2.0
-    entrypoint: ["/opt/keycloak/bin/kc.sh", "start"]
+    entrypoint: ["/opt/keycloak/bin/kc.sh", "start-dev"]
     ports:
       - ${KEYCLOAK_HOSTNAME_PORT}:${KEYCLOAK_HOSTNAME_PORT}
     environment:
@@ -44,17 +44,14 @@ services:
     networks:
       zendro:
 
-  zendro-graphql-server:
-    container_name: zendro-graphql-server
+  zendro-graphql-server-migrations:
+    container_name: zendro-graphql-server-migrations
     depends_on:
-      - zendro-keycloak 
-    build:
+      - zendro-keycloak
+    build: &gql-server-build
       context: ./contexts
       dockerfile: Dockerfile.graphql_server
-    # Using ports in this way is a security concern. Please consider using e.g. a reverseproxy
-    ports:
-      - 3000:3000
-    volumes:
+    volumes: &gql-server-volumes
       - ./graphql-server:/usr/graphql-server
       # override default default config with Starterpack config
       - ./config/data_models_storage_config.json:/usr/graphql-server/config/data_models_storage_config.json
@@ -64,7 +61,7 @@ services:
       - ./single-page-app/.env.production:/usr/single-page-app/.env.production
     # Await POSTGRES role and DB creation, migrate schema, then start web
     # server:
-    networks:
+    networks: &gql-server-networks
       zendro:
       datastores:
     command:
@@ -72,23 +69,59 @@ services:
       - -c
       - |
         npm install
-        node migrateDbAndStartServer.js 
-        
+        node migrateDb.js up
+
+  zendro-graphql-server:
+    container_name: zendro-graphql-server
+    depends_on: &migrations
+      zendro-graphql-server-migrations:
+        condition: service_completed_successfully
+        restart: true
+    build: *gql-server-build
+    ports:
+      - 3000:3000
+    volumes: *gql-server-volumes
+
+    # Await POSTGRES role and DB creation, migrate schema, then start web
+    # server:
+    networks: *gql-server-networks
+    command:
+      - /bin/sh
+      - -c
+      - |
+        node startServer.js
+
+  zendro-spa-install:
+    container_name: zendro-spa-install
+    # Workaround. See https://github.com/facebook/create-react-app/issues/8688
+    depends_on: *migrations
+    build: &spa-build
+      context: ./contexts
+      dockerfile: Dockerfile.spa
+    volumes: &spa-volumes
+      - ./single-page-app:/usr/single-page-app
+      - ./data_model_definitions:/usr/data_model_definitions
+    command:
+      - /bin/sh
+      - -c
+      - |
+        yarn install
+        rm -rf .next
+        rm -rf out
+        yarn build
+
   zendro-spa:
     container_name: zendro-spa
     # Workaround. See https://github.com/facebook/create-react-app/issues/8688
     stdin_open: true
     depends_on:
-      - zendro-graphql-server
-    build:
-      context: ./contexts
-      dockerfile: Dockerfile.spa
-    # Using ports in this way is a security concern. Please consider using e.g. a reverseproxy
+      zendro-spa-install:
+        condition: service_completed_successfully
+        restart: true
+    build: *spa-build
     ports:
       - 8080:8080
-    volumes:
-      - ./single-page-app:/usr/single-page-app
-      - ./data_model_definitions:/usr/data_model_definitions
+    volumes: *spa-volumes
     networks:
       zendro:
     # Install dependencies and start single-page-app-server in development
@@ -97,26 +130,37 @@ services:
       - /bin/sh
       - -c
       - |
+        yarn start
+
+  zendro-graphiql-install:
+    container_name: zendro-graphiql-install
+    depends_on: *migrations
+    build: &giql-build
+      context: ./contexts
+      dockerfile: Dockerfile.graphiql
+    volumes: &giql-volumes
+      - ./graphiql-auth:/usr/graphiql-auth
+    command:
+      - /bin/sh
+      - -c
+      - |
+        yarn install
         rm -rf .next
         rm -rf out
-        yarn install
         yarn build
-        yarn start
 
   zendro-graphiql:
     container_name: zendro-graphiql
     # Workaround. See https://github.com/facebook/create-react-app/issues/8688
     stdin_open: true
     depends_on:
-      - zendro-graphql-server
-    build:
-      context: ./contexts
-      dockerfile: Dockerfile.graphiql
-    # Using ports in this way is a security concern. Please consider using e.g. a reverseproxy
+      zendro-graphiql-install:
+        condition: service_completed_successfully
+        restart: true
+    build: *giql-build
     ports:
       - 7070:7070
-    volumes:
-      - ./graphiql-auth:/usr/graphiql-auth
+    volumes: *giql-volumes
     # Install dependencies and start single-page-app-server in development
     # mode.
     networks:
@@ -125,10 +169,6 @@ services:
       - /bin/sh
       - -c
       - |
-        rm -rf .next
-        rm -rf out
-        yarn install
-        yarn build
         yarn start
         
 volumes:

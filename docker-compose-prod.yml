@@ -15,7 +15,7 @@ services:
   zendro-keycloak:
     container_name: zendro-keycloak
     image: quay.io/keycloak/keycloak:26.2.0
-    entrypoint: ["/opt/keycloak/bin/kc.sh", "start-dev"]
+    entrypoint: ["/opt/keycloak/bin/kc.sh", "start"]
     ports:
       - ${KEYCLOAK_HOSTNAME_PORT}:${KEYCLOAK_HOSTNAME_PORT}
     environment:

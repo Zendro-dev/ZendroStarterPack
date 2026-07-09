@@ -59,6 +59,11 @@ services:
       - ./graphiql-auth/.env.production:/usr/graphiql-auth/.env.production
       - ./single-page-app/.env.development:/usr/single-page-app/.env.development
       - ./single-page-app/.env.production:/usr/single-page-app/.env.production
+    # Run as the host user so files written to the bind-mounted volumes above
+    # (e.g. node_modules) are not owned by root on the host.
+    user: &host-user "${UID_GID}"
+    environment: &host-user-env
+      HOME: /tmp
     # Await POSTGRES role and DB creation, migrate schema, then start web
     # server:
     networks: &gql-server-networks
@@ -81,6 +86,8 @@ services:
     ports:
       - 3000:3000
     volumes: *gql-server-volumes
+    user: *host-user
+    environment: *host-user-env
 
     # Await POSTGRES role and DB creation, migrate schema, then start web
     # server:
@@ -101,6 +108,8 @@ services:
     volumes: &spa-volumes
       - ./single-page-app:/usr/single-page-app
       - ./data_model_definitions:/usr/data_model_definitions
+    user: *host-user
+    environment: *host-user-env
     command:
       - /bin/sh
       - -c
@@ -122,6 +131,8 @@ services:
     ports:
       - 8080:8080
     volumes: *spa-volumes
+    user: *host-user
+    environment: *host-user-env
     networks:
       zendro:
     # Install dependencies and start single-page-app-server in development
@@ -140,6 +151,8 @@ services:
       dockerfile: Dockerfile.graphiql
     volumes: &giql-volumes
       - ./graphiql-auth:/usr/graphiql-auth
+    user: *host-user
+    environment: *host-user-env
     command:
       - /bin/sh
       - -c
@@ -161,6 +174,8 @@ services:
     ports:
       - 7070:7070
     volumes: *giql-volumes
+    user: *host-user
+    environment: *host-user-env
     # Install dependencies and start single-page-app-server in development
     # mode.
     networks:

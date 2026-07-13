@@ -28,7 +28,7 @@ const {
   KEYCLOAK_SPA_CLIENT,
   KEYCLOAK_GQL_CLIENT,
 } = require("../utils/setup-keycloak");
-const axios = require("axios");
+
 /**
  * @module - Migrations to create or to drop a table correspondent to a sequelize model.
  */

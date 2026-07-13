@@ -66,6 +66,7 @@ services:
       - -c
       - |
         npm install
+        npm run build:graphiql
         node migrateDb.js up
 
   zendro-graphql-server:
@@ -147,8 +148,8 @@ services:
       - /bin/sh
       - -c
       - |
-        yarn install
-        rm -rf .next
+        npm install
+        npm run build:graphiql
 
   zendro-graphiql:
     container_name: zendro-graphiql
@@ -172,7 +173,7 @@ services:
       - /bin/sh
       - -c
       - |
-        yarn dev
+        npm run dev
         
 volumes:
   zendro_db_data:

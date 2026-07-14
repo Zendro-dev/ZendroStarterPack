@@ -55,8 +55,7 @@ services:
       - ./graphql-server:/usr/graphql-server
       # override default default config with Starterpack config
       - ./config/data_models_storage_config.json:/usr/graphql-server/config/data_models_storage_config.json
-      - ./graphiql-auth/.env.development:/usr/graphiql-auth/.env.development
-      - ./graphiql-auth/.env.production:/usr/graphiql-auth/.env.production
+      - ./graphiql-auth/.env:/usr/graphiql-auth/.env
       - ./single-page-app/.env.development:/usr/single-page-app/.env.development
       - ./single-page-app/.env.production:/usr/single-page-app/.env.production
     # Run as the host user so files written to the bind-mounted volumes above

@@ -23,17 +23,17 @@ Linux.
 First you need to `git clone` this project into a local directory on your host
 system:
 ```
-git clone https://github.com/ScienceDb/ZendroStarterPack.git
+git clone https://github.com/Zendro-dev/ZendroStarterPack.git
 ```
 
-The skeleton [GraphQL server](https://github.com/ScienceDb/graphql-server) and the 
-skeleton [single page application server](https://github.com/ScienceDb/single-page-app) projects are managed as different git repositories.
+The skeleton [GraphQL server](https://github.com/Zendro-dev/graphql-server) and the 
+skeleton [single page application server](https://github.com/Zendro-dev/single-page-app) projects are managed as different git repositories.
 "Skeleton" means that these projects provide all the code needed
 to start a server, but actually have no code particular to any
 data model.
 
 ### Setup the skeleton projects
-To download the skeleton projects as well as a zendro specific version of [graphiql](https://github.com/Zendro-dev/graphiql-auth) you can run
+To download the skeleton projects as well as [graphiql-auth](https://github.com/Zendro-dev/graphiql-auth), a standalone GraphiQL deployment, you can run
 ```
 yarn setup
 # -g: graphql-server branch | default: master
@@ -110,18 +110,10 @@ database migrations and seeding is automatically triggered. See file
 #### Graphql Server
 To configure the graphql-server create a `.env` inside the `graphql-server` folder (recommended) or set the variables via the docker-compose files.
 
-It is mandatory to set the `ALLOW_ORIGIN` and `JWT_SECRET` environment variables depending on the users needs. For example
+It is mandatory to set the `ALLOW_ORIGIN` environment variable, which sets the `Access-Control-Allow-Origin` header, e.g.
 * `ALLOW_ORIGIN="*"`
-* `JWT_SECRET="my secret"`  
 
-`ALLOW_ORIGIN` sets the `Access-Control-Allow-Origin` header and `JWT_SECRET` is needed to define a secret for decoding the Bearer token.
-
-If you want to access the GraphiQL interface (`http://localhost:3000/graphql`) without a authorization token, toggle the associated environment variable:
-```
-REQUIRE_SIGN_IN="false"
-```
-in the docker-compose file.
-For more details about the graphql-server environment variables see the [graphql-server `README`](https://github.com/ScienceDb/graphql-server/blob/master/README.md)
+For more details about the graphql-server environment variables, including the Keycloak/GraphiQL login setup below, see the [graphql-server `README`](https://github.com/Zendro-dev/graphql-server/blob/master/README.md)
 
 ##### GraphiQL login (Keycloak)
 
@@ -143,50 +135,34 @@ The recommended way is to create a `.env.development` and `.env.production` insi
 **Note** that in case you are running the SPA via a docker container the `ZENDRO_DATA_MODELS` path has to reflect the location inside the container. If you are using the default dev|prod docker-compose files the folder will be mounted inside `single-page-app`.
 
 For more details see our [manual](https://sciencedb.github.io/) and the
-[single-page-application`README`](https://github.com/ScienceDb/single-page-app/blob/develop/README.md).
+[single-page-application`README`](https://github.com/Zendro-dev/single-page-app/blob/develop/README.md).
 
 #### Access Control
 
 Zendro can be used checking access rights for every single GraphQL query
-received by the currently logged in user identified by the respective [JSON Web
-Token](https://jwt.io/) found in the request header. The user is decoded and
-his roles are loaded to check his access rights. This step is carried out by
-the [NPM acl package](https://www.npmjs.com/package/acl). Respective access
-rights can and must be declared in the file
-[`./graphql-server/acl_rules.js`](https://github.com/ScienceDb/graphql-server/blob/master/acl_rules.js).
+received by the currently logged in user, identified by the Bearer token
+(issued by Keycloak) found in the request header. The token is verified
+against Keycloak's public key (`OAUTH2_PUBLIC_KEY`, set automatically by the
+keycloak migration - see "GraphiQL login (Keycloak)" above) and the user's
+roles are loaded from it to check access rights. This step is carried out by
+the [`acl2` npm package](https://www.npmjs.com/package/acl2). Respective
+access rights can and must be declared in the file
+[`./graphql-server/acl_rules.js`](https://github.com/Zendro-dev/graphql-server-model-codegen)
+(generated from your data model definitions by the code generator).
 
 You can run Zendro with or without this access control check. The default is
-to run it _without_ checking access rights. 
+to run it _without_ checking access rights.
 
-To switch access right check on, you must uncomment the command line switch
-`acl` and uncomment the lines with `//,'acl'` in
-[`./graphql-server/startServer.sh`](https://github.com/ScienceDb/graphql-server/blob/master/startServer.sh)
+To switch access right checking on, pass the `acl` command line argument
+when starting the server (`node server.js acl`), or uncomment the
+`//,'acl'` line in
+[`./graphql-server/startServer.js`](https://github.com/Zendro-dev/graphql-server/blob/master/startServer.js)
+if you're starting it via `npm start`/`npm run dev`.
 
-If you decide _not_ to use access control, we strongly recommend to restrict
-access to the GraphiQL interface through the `graphql-server`. Switch off the
-support for GraphiQL in [`./graphql-server/server.js`]():
-
-```
-// Excerpt from server.js
-
-app.use('/graphql', cors(), graphqlHTTP((req) => ({
-   schema: Schema,
-   rootValue: resolvers,
-   pretty: true,
-   graphiql: false, // SWITCH OFF SUPPORT FOR GraphiQL by setting this to 'false'
-   context: {
-     request: req,
-     acl: acl
-   },
-   formatError(error){
-     return {
-       message: error.message,
-       details: error.originalError && error.originalError.errors ? error.originalError.errors : "",
-       path: error.path
-     };
-   }
- })));
-```
+Without access control, anyone able to reach `/graphql` can query and
+mutate freely - GraphiQL itself doesn't need to be switched off separately
+to restrict this (there's no such toggle in the current `server.js`); the
+access control check above is what actually gates requests.
 
 
 ### Development environment
@@ -217,63 +193,26 @@ Have a look at the following examples, please.
 
 If you want to generate a new Sequelize migration or seeder you need to do that
 from within a Docker container created from the respective
-`sdb_science_db_graphql_server` Docker image:
+`zendro-graphql-server` Docker image:
 ```
-docker compose -f docker-compose-dev.yml run --rm sdb_science_db_graphql_server bash
+docker compose -f docker-compose-dev.yml run --rm zendro-graphql-server bash
 ./node_modules/.bin/sequelize seed:generate --name my_new_seeder
 ```
 _Note_ how we use `docker-compose-dev.yml` to have the local directory mounted
 inside the Docker container, so that newly created files, like migrations or
 seeder files, are actually persisted on the host file-system.
 
-### Get an interactive SQL terminal to the relational database (POSTGRES)
+### Application data storage
 
-```
-docker compose -f docker-compose.yml run --rm zendro_postgres psql -h zendro_postgres -U zendro -W zendro_development
-```
-
-### Get a command line interface to the Minio instance
-
-There is a [Minio CLI documented in detail](https://docs.min.io/docs/minio-client-complete-guide). You can use it for example to upload local files into a designated bucket on the minio server.
-
-You need the Docker image from minio. See above manual for installation details.
-
-#### Start and use the Minio CLI
-
-Assuming your local files are on your `Desktop`, launch the Minio container mounting you Desktop to opt.
-
-```
-docker run -v ~/Desktop:/opt --rm -it --entrypoint=/bin/sh minio/mc
-```
-
-Now register your Minio instance:
-```
-mc config host add my_minio http://my.sciencedb.org minioUser minioPw --api S3v4
-```
-The above `minioUser` and `minioPw` are set as environment variables in your docker-compose files. The URL depends on your server setup.
-
-List all content on your Minio server
-```
-mc ls my_minio
-```
-
-List all commands
-```
-mc -h
-```
-
-Create a bucket
-```
-mc mb my_minio/my_bucket
-```
-
-Copy files to bucket
-```
-mc cp opt/my_file1 my_minio/my_bucket
-mc cp opt/my_file2 my_minio/my_bucket
-```
-
-Have fun!
+By default, application data is stored in a local SQLite file
+(`graphql-server/data.db`) - see `config/data_models_storage_config.json`.
+There's no separate application database container in the default
+`docker-compose-dev.yml`/`docker-compose-prod.yml` setup to open a SQL
+terminal to; the only Postgres container that ships by default
+(`zendro-keycloak-postgres`) is Keycloak's own backing store, not your data.
+To use a different storage backend (Postgres, MySQL, MongoDB, etc.) for your
+own models, configure it in `data_models_storage_config.json` and add the
+corresponding service to the docker-compose files yourself.
 
 ## Stop the whole docker-compose
 

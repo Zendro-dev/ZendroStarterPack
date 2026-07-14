@@ -4,17 +4,23 @@ const waitOn = require("wait-on");
 const path = require("path");
 const fs = require("fs");
 
+
+
+GQL_ENV_PATH = "../.env"
 const GQL_ENV = require("dotenv").config({
-  path: path.resolve(__dirname, "../.env"),
+  path: path.resolve(__dirname, GQL_ENV),
 });
+SPA_PRD_ENV_PATH = "../../single-page-app/.env.production"
 const SPA_PRD_ENV = require("dotenv").config({
-  path: path.resolve(__dirname, "../../single-page-app/.env.production"),
+  path: path.resolve(__dirname, SPA_PRD_ENV),
 });
+GIQL_ENV_PATH = "../../graphiql-auth/.env"
 const GIQL_ENV = require("dotenv").config({
-  path: path.resolve(__dirname, "../../graphiql-auth/.env"),
+  path: path.resolve(__dirname, GIQL_ENV),
 });
+SPA_DEV_ENV_PATH = "../../single-page-app/.env.development"
 const SPA_DEV_ENV = require("dotenv").config({
-  path: path.resolve(__dirname, "../../single-page-app/.env.development"),
+  path: path.resolve(__dirname, SPA_DEV_ENV),
 });
 
 const {
@@ -76,18 +82,7 @@ module.exports = {
       if (GIQL_ENV.parsed) {
         envPath = path.resolve(
           __dirname,
-          "../../graphiql-auth/.env.production"
-        );
-        parsedEnv = GIQL_ENV.parsed;
-        parsedEnv.OAUTH2_CLIENT_ID = KEYCLOAK_GIQL_CLIENT;
-        parsedEnv.OAUTH2_CLIENT_SECRET = KEYCLOAK_GIQL_CLIENT_SECRET;
-        writeEnvFile(envPath, parsedEnv);
-      }
-
-      if (GIQL_ENV.parsed) {
-        envPath = path.resolve(
-          __dirname,
-          "../../graphiql-auth/.env.development"
+          GIQL_ENV_PATH
         );
         parsedEnv = GIQL_ENV.parsed;
         parsedEnv.OAUTH2_CLIENT_ID = KEYCLOAK_GIQL_CLIENT;
@@ -99,7 +94,7 @@ module.exports = {
       if (SPA_PRD_ENV.parsed) {
         envPath = path.resolve(
           __dirname,
-          "../../single-page-app/.env.production"
+          SPA_PRD_ENV_PATH
         );
         parsedEnv = SPA_PRD_ENV.parsed;
         parsedEnv.OAUTH2_CLIENT_ID = KEYCLOAK_SPA_CLIENT;
@@ -110,7 +105,7 @@ module.exports = {
       if (SPA_DEV_ENV.parsed) {
         envPath = path.resolve(
           __dirname,
-          "../../single-page-app/.env.development"
+          SPA_DEV_ENV_PATH
         );
         parsedEnv = SPA_DEV_ENV.parsed;
         parsedEnv.OAUTH2_CLIENT_ID = KEYCLOAK_SPA_CLIENT;

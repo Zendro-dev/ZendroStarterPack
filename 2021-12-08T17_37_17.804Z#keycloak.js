@@ -3,6 +3,7 @@ const { DOWN_MIGRATION } = require("../config/globals");
 const waitOn = require("wait-on");
 const path = require("path");
 const fs = require("fs");
+const crypto = require("crypto");
 
 
 
@@ -76,6 +77,13 @@ module.exports = {
       parsedEnv.OAUTH2_CLIENT_ID = KEYCLOAK_GQL_CLIENT;
       parsedEnv.OAUTH2_GRAPHIQL_CLIENT_ID = KEYCLOAK_GIQL_CLIENT;
       parsedEnv.OAUTH2_GRAPHIQL_CLIENT_SECRET = KEYCLOAK_GIQL_CLIENT_SECRET;
+      // Required once AUTH_ENABLED is "true" (the zendro CLI's env template
+      // default) - nothing else generates this one, unlike the Keycloak
+      // client secrets above, so a fresh `zendro set-up`/`new` would
+      // otherwise crash gqs on first boot. Only generated when not already
+      // set, so an explicit `zendro set-next-auth-secret gqs ...` (or a
+      // hand-edited .env) is never clobbered on a later `migration:up`.
+      parsedEnv.SESSION_SECRET = parsedEnv.SESSION_SECRET || crypto.randomBytes(32).toString("base64");
       writeEnvFile(envPath, parsedEnv);
 
       // single-page-app

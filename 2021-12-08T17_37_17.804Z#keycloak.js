@@ -6,19 +6,19 @@ const fs = require("fs");
 
 
 
-GQL_ENV_PATH = "../.env"
+const GQL_ENV_PATH = "../.env";
 const GQL_ENV = require("dotenv").config({
   path: path.resolve(__dirname, GQL_ENV),
 });
-SPA_PRD_ENV_PATH = "../../single-page-app/.env.production"
+const SPA_PRD_ENV_PATH = "../../single-page-app/.env.production";
 const SPA_PRD_ENV = require("dotenv").config({
   path: path.resolve(__dirname, SPA_PRD_ENV),
 });
-GIQL_ENV_PATH = "../../graphiql-auth/.env"
+const GIQL_ENV_PATH = "../../graphiql-auth/.env";
 const GIQL_ENV = require("dotenv").config({
   path: path.resolve(__dirname, GIQL_ENV),
 });
-SPA_DEV_ENV_PATH = "../../single-page-app/.env.development"
+const SPA_DEV_ENV_PATH = "../../single-page-app/.env.development";
 const SPA_DEV_ENV = require("dotenv").config({
   path: path.resolve(__dirname, SPA_DEV_ENV),
 });

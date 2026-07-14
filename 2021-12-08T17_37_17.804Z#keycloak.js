@@ -10,14 +10,11 @@ const GQL_ENV = require("dotenv").config({
 const SPA_PRD_ENV = require("dotenv").config({
   path: path.resolve(__dirname, "../../single-page-app/.env.production"),
 });
-const GIQL_PRD_ENV = require("dotenv").config({
-  path: path.resolve(__dirname, "../../graphiql-auth/.env.production"),
+const GIQL_ENV = require("dotenv").config({
+  path: path.resolve(__dirname, "../../graphiql-auth/.env"),
 });
 const SPA_DEV_ENV = require("dotenv").config({
   path: path.resolve(__dirname, "../../single-page-app/.env.development"),
-});
-const GIQL_DEV_ENV = require("dotenv").config({
-  path: path.resolve(__dirname, "../../graphiql-auth/.env.development"),
 });
 
 const {
@@ -76,23 +73,23 @@ module.exports = {
       writeEnvFile(envPath, parsedEnv);
 
       // graphiql-auth
-      if (GIQL_PRD_ENV.parsed) {
+      if (GIQL_ENV.parsed) {
         envPath = path.resolve(
           __dirname,
           "../../graphiql-auth/.env.production"
         );
-        parsedEnv = GIQL_PRD_ENV.parsed;
+        parsedEnv = GIQL_ENV.parsed;
         parsedEnv.OAUTH2_CLIENT_ID = KEYCLOAK_GIQL_CLIENT;
         parsedEnv.OAUTH2_CLIENT_SECRET = KEYCLOAK_GIQL_CLIENT_SECRET;
         writeEnvFile(envPath, parsedEnv);
       }
 
-      if (GIQL_DEV_ENV.parsed) {
+      if (GIQL_ENV.parsed) {
         envPath = path.resolve(
           __dirname,
           "../../graphiql-auth/.env.development"
         );
-        parsedEnv = GIQL_DEV_ENV.parsed;
+        parsedEnv = GIQL_ENV.parsed;
         parsedEnv.OAUTH2_CLIENT_ID = KEYCLOAK_GIQL_CLIENT;
         parsedEnv.OAUTH2_CLIENT_SECRET = KEYCLOAK_GIQL_CLIENT_SECRET;
         writeEnvFile(envPath, parsedEnv);

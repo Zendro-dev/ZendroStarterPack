@@ -71,6 +71,8 @@ module.exports = {
       let parsedEnv = GQL_ENV.parsed;
       parsedEnv.OAUTH2_PUBLIC_KEY = KEYCLOAK_PUBLIC_KEY;
       parsedEnv.OAUTH2_CLIENT_ID = KEYCLOAK_GQL_CLIENT;
+      parsedEnv.OAUTH2_CLIENT_ID = KEYCLOAK_GIQL_CLIENT;
+      parsedEnv.OAUTH2_CLIENT_SECRET = KEYCLOAK_GIQL_CLIENT_SECRET;
       writeEnvFile(envPath, parsedEnv);
 
       // graphiql-auth

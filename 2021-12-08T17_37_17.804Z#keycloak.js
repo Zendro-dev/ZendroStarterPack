@@ -14,10 +14,6 @@ const SPA_PRD_ENV_PATH = "../../single-page-app/.env.production";
 const SPA_PRD_ENV = require("dotenv").config({
   path: path.resolve(__dirname, SPA_PRD_ENV_PATH),
 });
-const GIQL_ENV_PATH = "../../graphiql-auth/.env";
-const GIQL_ENV = require("dotenv").config({
-  path: path.resolve(__dirname, GIQL_ENV_PATH),
-});
 const SPA_DEV_ENV_PATH = "../../single-page-app/.env.development";
 const SPA_DEV_ENV = require("dotenv").config({
   path: path.resolve(__dirname, SPA_DEV_ENV_PATH),
@@ -69,7 +65,11 @@ module.exports = {
           pw: "admin" at "${KEYCLOAK_BASEURL}". Change that user / password to your liking.
           `);
 
-      // graphql-server
+      // graphql-server - the only service with real Keycloak credentials.
+      // graphiql-auth needs none of its own: it reverse-proxies /auth/* to
+      // graphql-server's own /graphiql/auth endpoints (see zendro-graphiql's
+      // README, "Acting as an auth backend for other origins") using the
+      // OAUTH2_GRAPHIQL_* client below.
       let envPath = path.resolve(__dirname, "../.env");
       let parsedEnv = GQL_ENV.parsed;
       parsedEnv.OAUTH2_PUBLIC_KEY = KEYCLOAK_PUBLIC_KEY;
@@ -77,18 +77,6 @@ module.exports = {
       parsedEnv.OAUTH2_GRAPHIQL_CLIENT_ID = KEYCLOAK_GIQL_CLIENT;
       parsedEnv.OAUTH2_GRAPHIQL_CLIENT_SECRET = KEYCLOAK_GIQL_CLIENT_SECRET;
       writeEnvFile(envPath, parsedEnv);
-
-      // graphiql-auth
-      if (GIQL_ENV.parsed) {
-        envPath = path.resolve(
-          __dirname,
-          GIQL_ENV_PATH
-        );
-        parsedEnv = GIQL_ENV.parsed;
-        parsedEnv.OAUTH2_CLIENT_ID = KEYCLOAK_GIQL_CLIENT;
-        parsedEnv.OAUTH2_CLIENT_SECRET = KEYCLOAK_GIQL_CLIENT_SECRET;
-        writeEnvFile(envPath, parsedEnv);
-      }
 
       // single-page-app
       if (SPA_PRD_ENV.parsed) {

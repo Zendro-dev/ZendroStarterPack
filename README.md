@@ -122,6 +122,11 @@ REQUIRE_SIGN_IN="false"
 ```
 in the docker-compose file.
 For more details about the graphql-server environment variables see the [graphql-server `README`](https://github.com/ScienceDb/graphql-server/blob/master/README.md)
+
+##### GraphiQL login (Keycloak)
+
+If you're using the `zendro` CLI's `set-up`/`new` commands (rather than this StarterPack's own `yarn setup` flow directly), a migration (`2021-12-08T17_37_17.804Z#keycloak.js`) runs automatically on first `migrateDb.js up` and sets up a default Keycloak realm, client, and admin user for you - see the console output it prints for the generated credentials. It writes the resulting `OAUTH2_GRAPHIQL_CLIENT_ID`/`OAUTH2_GRAPHIQL_CLIENT_SECRET` into `graphql-server`'s own `.env`, and auto-generates a `SESSION_SECRET` there too if one isn't already set. `graphiql-auth` needs none of this itself - it holds no Keycloak credentials and only reverse-proxies to `graphql-server`, which is the sole service that talks to Keycloak. See `graphql-server`'s own README, "GraphiQL & Authentication", for the full set of `AUTH_*`/`OAUTH2_GRAPHIQL_*`/`SESSION_SECRET` environment variables this depends on.
+
 #### Single Page App
 The single page application has to be aware of the URLs to use for login and to send GraphQL queries to. This is controlled by the following environment variables.
 

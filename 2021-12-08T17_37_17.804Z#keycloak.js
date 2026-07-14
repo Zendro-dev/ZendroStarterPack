@@ -67,7 +67,7 @@ module.exports = {
 
       // graphql-server - the only service with real Keycloak credentials.
       // graphiql-auth needs none of its own: it reverse-proxies /auth/* to
-      // graphql-server's own /graphiql/auth endpoints (see zendro-graphiql's
+      // graphql-server's own top-level /auth endpoints (see zendro-graphiql's
       // README, "Acting as an auth backend for other origins") using the
       // OAUTH2_GRAPHIQL_* client below.
       let envPath = path.resolve(__dirname, "../.env");

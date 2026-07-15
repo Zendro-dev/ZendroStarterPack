@@ -58,18 +58,21 @@ services:
       - ./graphiql-auth/.env:/usr/graphiql-auth/.env
       - ./single-page-app/.env.development:/usr/single-page-app/.env.development
       - ./single-page-app/.env.production:/usr/single-page-app/.env.production
-      # npm's own download cache (package tarballs/metadata) - separate from
-      # node_modules, which stays on the host via the bind mount above.
-      # HOME=/tmp below means npm would otherwise look for its cache at
-      # /tmp/.npm, which is wiped every time this container is recreated -
-      # this volume gives it somewhere persistent instead, so a fresh
-      # `npm install` after a `down`/`up` doesn't re-download every package.
-      - npm_cache:/tmp/.npm
     # Run as the host user so files written to the bind-mounted volumes above
     # (e.g. node_modules) are not owned by root on the host.
     user: &host-user "${UID_GID}"
     environment: &host-user-env
       HOME: /tmp
+      # npm's own download cache (package tarballs/metadata) - separate from
+      # node_modules, which stays on the host via the bind mount above.
+      # Pointed inside that same bind mount (rather than a Docker-managed
+      # named volume) specifically so it inherits the mount's existing host
+      # ownership - a fresh named volume is created root-owned, which the
+      # non-root user above can't write into at all. With HOME=/tmp, npm
+      # would otherwise look for its cache at /tmp/.npm, wiped every time
+      # this container is recreated - this persists it instead, so a fresh
+      # `npm install` after a `down`/`up` doesn't re-download every package.
+      npm_config_cache: /usr/graphql-server/.npm-cache
     # Await POSTGRES role and DB creation, migrate schema, then start web
     # server:
     networks: &gql-server-networks
@@ -79,6 +82,7 @@ services:
       - /bin/sh
       - -c
       - |
+        set -e
         npm install
         npm run build:graphiql
         node migrateDb.js up
@@ -115,15 +119,18 @@ services:
     volumes: &spa-volumes
       - ./single-page-app:/usr/single-page-app
       - ./data_model_definitions:/usr/data_model_definitions
-      # yarn's own download cache - see the npm_cache comment above, same
-      # reasoning (HOME=/tmp otherwise makes this ephemeral).
-      - yarn_cache:/tmp/.cache/yarn
     user: *host-user
-    environment: *host-user-env
+    environment: &spa-env
+      HOME: /tmp
+      # yarn's own download cache - see the npm_config_cache comment above,
+      # same reasoning (a bind-mounted path so it's host-owned like
+      # node_modules, not a Docker-managed volume that'd start root-owned).
+      YARN_CACHE_FOLDER: /usr/single-page-app/.yarn-cache
     command:
       - /bin/sh
       - -c
       - |
+        set -e
         yarn install
         yarn build
 
@@ -140,7 +147,7 @@ services:
       - 8080:8080
     volumes: *spa-volumes
     user: *host-user
-    environment: *host-user-env
+    environment: *spa-env
     networks:
       zendro:
     # Install dependencies and start single-page-app-server in development
@@ -159,14 +166,17 @@ services:
       dockerfile: Dockerfile.graphiql
     volumes: &giql-volumes
       - ./graphiql-auth:/usr/graphiql-auth
-      # See the npm_cache comment on zendro-graphql-server-migrations above.
-      - npm_cache:/tmp/.npm
     user: *host-user
-    environment: *host-user-env
+    environment: &giql-env
+      HOME: /tmp
+      # See the npm_config_cache comment on zendro-graphql-server-migrations
+      # above.
+      npm_config_cache: /usr/graphiql-auth/.npm-cache
     command:
       - /bin/sh
       - -c
       - |
+        set -e
         npm install
         npm run build:graphiql
 
@@ -183,7 +193,7 @@ services:
       - 7070:7070
     volumes: *giql-volumes
     user: *host-user
-    environment: *host-user-env
+    environment: *giql-env
     # Install dependencies and start single-page-app-server in development
     # mode.
     networks:
@@ -193,14 +203,10 @@ services:
       - -c
       - |
         npm start
-        
+
 volumes:
   zendro_db_data:
   keycloak_pg_data:
-  # Package-manager download caches only (not node_modules, which stays on
-  # the host via the bind mounts above) - safe to be Docker-managed/opaque.
-  npm_cache:
-  yarn_cache:
 
 networks:
   zendro:

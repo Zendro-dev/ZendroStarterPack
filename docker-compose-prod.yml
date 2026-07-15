@@ -84,15 +84,12 @@ services:
       - |
         set -e
         npm install
-        # sqlite3's own prebuilt binary (what a plain install would use if
-        # its install script weren't blocked by graphql-server's own
-        # allowScripts) requires a newer glibc than this image's Debian
-        # base provides (confirmed: needs GLIBC_2.38, bookworm-slim only
-        # has 2.36) - has to be compiled from source against what's
-        # actually here instead. Don't "optimize" this away without
-        # re-verifying inside the actual container, not just on a host
-        # machine that may have a newer glibc than this image does.
-        npm rebuild sqlite3 --build-from-source
+        # @vscode/sqlite3 (graphql-server's sqlite driver, replacing the
+        # now-archived sqlite3) has no working prebuilt-binary fetch path -
+        # it always compiles from source via node-gyp, and its own install
+        # script is blocked by graphql-server's allowScripts, so it has to
+        # be rebuilt explicitly here.
+        npm rebuild @vscode/sqlite3
         npm run build:graphiql
         node migrateDb.js up
 

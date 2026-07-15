@@ -1,5 +1,22 @@
 services:
 
+  # Named volumes (fast, native filesystem) for the npm/yarn download
+  # caches below are created root-owned by Docker on first use, which the
+  # non-root *host-user containers can't write into - chown them once here
+  # before anything else starts.
+  zendro-cache-init:
+    container_name: zendro-cache-init
+    image: busybox
+    volumes:
+      - gql_npm_cache:/cache/gql-npm
+      - spa_yarn_cache:/cache/spa-yarn
+      - giql_npm_cache:/cache/giql-npm
+    command:
+      - sh
+      - -c
+      - |
+        chown -R "${UID_GID}" /cache/gql-npm /cache/spa-yarn /cache/giql-npm
+
   zendro-keycloak-postgres:
     container_name: zendro-keycloak-postgres
     image: postgres
@@ -47,7 +64,10 @@ services:
   zendro-graphql-server-migrations:
     container_name: zendro-graphql-server-migrations
     depends_on:
-      - zendro-keycloak
+      zendro-keycloak:
+        condition: service_started
+      zendro-cache-init:
+        condition: service_completed_successfully
     build: &gql-server-build
       context: ./contexts
       dockerfile: Dockerfile.graphql_server
@@ -58,20 +78,23 @@ services:
       - ./graphiql-auth/.env:/usr/graphiql-auth/.env
       - ./single-page-app/.env.development:/usr/single-page-app/.env.development
       - ./single-page-app/.env.production:/usr/single-page-app/.env.production
+      # npm's own download cache (package tarballs/metadata) - separate
+      # from node_modules above. A named volume, not a path inside the
+      # bind mount above: node_modules and this repo live on a Windows
+      # drive bind-mounted through WSL2 (9p/drvfs), which is slow for the
+      # high volume of small-file I/O a populated npm cache involves -
+      # confirmed this was causing real ESOCKETTIMEDOUT install failures
+      # under load. A named volume is native filesystem, no such penalty.
+      - gql_npm_cache:/usr/graphql-server/.npm-cache
     # Run as the host user so files written to the bind-mounted volumes above
     # (e.g. node_modules) are not owned by root on the host.
     user: &host-user "${UID_GID}"
     environment: &host-user-env
+      # With HOME unset, npm would default its cache to $HOME/.npm, which
+      # isn't guaranteed to be writable for an arbitrary host UID with no
+      # /etc/passwd entry - point it at the named volume mounted above
+      # instead.
       HOME: /tmp
-      # npm's own download cache (package tarballs/metadata) - separate from
-      # node_modules, which stays on the host via the bind mount above.
-      # Pointed inside that same bind mount (rather than a Docker-managed
-      # named volume) specifically so it inherits the mount's existing host
-      # ownership - a fresh named volume is created root-owned, which the
-      # non-root user above can't write into at all. With HOME=/tmp, npm
-      # would otherwise look for its cache at /tmp/.npm, wiped every time
-      # this container is recreated - this persists it instead, so a fresh
-      # `npm install` after a `down`/`up` doesn't re-download every package.
       npm_config_cache: /usr/graphql-server/.npm-cache
     # Await POSTGRES role and DB creation, migrate schema, then start web
     # server:
@@ -118,19 +141,23 @@ services:
   zendro-spa-install:
     container_name: zendro-spa-install
     # Workaround. See https://github.com/facebook/create-react-app/issues/8688
-    depends_on: *migrations
+    depends_on:
+      <<: *migrations
+      zendro-cache-init:
+        condition: service_completed_successfully
     build: &spa-build
       context: ./contexts
       dockerfile: Dockerfile.spa
     volumes: &spa-volumes
       - ./single-page-app:/usr/single-page-app
       - ./data_model_definitions:/usr/data_model_definitions
+      # yarn's own download cache - see the npm_config_cache comment on
+      # zendro-graphql-server-migrations above, same reasoning (a named
+      # volume, not a path inside the drvfs-mounted bind mount above).
+      - spa_yarn_cache:/usr/single-page-app/.yarn-cache
     user: *host-user
     environment: &spa-env
       HOME: /tmp
-      # yarn's own download cache - see the npm_config_cache comment above,
-      # same reasoning (a bind-mounted path so it's host-owned like
-      # node_modules, not a Docker-managed volume that'd start root-owned).
       YARN_CACHE_FOLDER: /usr/single-page-app/.yarn-cache
     command:
       - /bin/sh
@@ -166,17 +193,21 @@ services:
 
   zendro-graphiql-install:
     container_name: zendro-graphiql-install
-    depends_on: *migrations
+    depends_on:
+      <<: *migrations
+      zendro-cache-init:
+        condition: service_completed_successfully
     build: &giql-build
       context: ./contexts
       dockerfile: Dockerfile.graphiql
     volumes: &giql-volumes
       - ./graphiql-auth:/usr/graphiql-auth
+      # See the npm_config_cache comment on zendro-graphql-server-migrations
+      # above.
+      - giql_npm_cache:/usr/graphiql-auth/.npm-cache
     user: *host-user
     environment: &giql-env
       HOME: /tmp
-      # See the npm_config_cache comment on zendro-graphql-server-migrations
-      # above.
       npm_config_cache: /usr/graphiql-auth/.npm-cache
     command:
       - /bin/sh
@@ -213,6 +244,9 @@ services:
 volumes:
   zendro_db_data:
   keycloak_pg_data:
+  gql_npm_cache:
+  spa_yarn_cache:
+  giql_npm_cache:
 
 networks:
   zendro:

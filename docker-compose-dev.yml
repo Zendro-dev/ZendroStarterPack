@@ -1,6 +1,6 @@
 services:
 
-  # Named volumes (fast, native filesystem) for the npm/yarn download
+  # Named volumes (fast, native filesystem) for the npm download
   # caches below are created root-owned by Docker on first use, which the
   # non-root *host-user containers can't write into - chown them once here
   # before anything else starts.
@@ -9,13 +9,13 @@ services:
     image: busybox
     volumes:
       - gql_npm_cache:/cache/gql-npm
-      - spa_yarn_cache:/cache/spa-yarn
+      - spa_npm_cache:/cache/spa-npm
       - giql_npm_cache:/cache/giql-npm
     command:
       - sh
       - -c
       - |
-        chown -R "${UID_GID}" /cache/gql-npm /cache/spa-yarn /cache/giql-npm
+        chown -R "${UID_GID}" /cache/gql-npm /cache/spa-npm /cache/giql-npm
 
   zendro-keycloak-postgres:
     container_name: zendro-keycloak-postgres
@@ -143,20 +143,19 @@ services:
     volumes: &spa-volumes
       - ./single-page-app:/usr/single-page-app
       - ./data_model_definitions:/usr/data_model_definitions
-      # yarn's own download cache - see the npm_config_cache comment on
-      # zendro-graphql-server-migrations above, same reasoning (a named
-      # volume, not a path inside the drvfs-mounted bind mount above).
-      - spa_yarn_cache:/usr/single-page-app/.yarn-cache
+      # See the npm_config_cache comment on zendro-graphql-server-migrations
+      # above.
+      - spa_npm_cache:/usr/single-page-app/.npm-cache
     user: *host-user
     environment: &spa-env
       HOME: /tmp
-      YARN_CACHE_FOLDER: /usr/single-page-app/.yarn-cache
+      npm_config_cache: /usr/single-page-app/.npm-cache
     command:
       - /bin/sh
       - -c
       - |
         set -e
-        yarn install
+        npm install
         rm -rf .next
 
   zendro-spa:
@@ -181,7 +180,7 @@ services:
       - /bin/sh
       - -c
       - |
-        yarn dev
+        npm run dev
 
   zendro-graphiql-install:
     container_name: zendro-graphiql-install
@@ -237,7 +236,7 @@ volumes:
   zendro_db_data:
   keycloak_pg_data:
   gql_npm_cache:
-  spa_yarn_cache:
+  spa_npm_cache:
   giql_npm_cache:
 
 networks:

@@ -66,6 +66,10 @@ module.exports = {
           pw: "admin" at "${KEYCLOAK_BASEURL}". Change that user / password to your liking.
           `);
 
+      function randSecret() {
+        return crypto.randomBytes(32).toString("base64");
+      }
+
       // graphql-server - the only service with real Keycloak credentials.
       // graphiql-auth needs none of its own: it reverse-proxies /auth/* to
       // graphql-server's own top-level /auth endpoints (see zendro-graphiql's
@@ -83,7 +87,7 @@ module.exports = {
       // otherwise crash gqs on first boot. Only generated when not already
       // set, so an explicit `zendro set-next-auth-secret gqs ...` (or a
       // hand-edited .env) is never clobbered on a later `migration:up`.
-      parsedEnv.SESSION_SECRET = parsedEnv.SESSION_SECRET || crypto.randomBytes(32).toString("base64");
+      parsedEnv.SESSION_SECRET = parsedEnv.SESSION_SECRET || randSecret();
       writeEnvFile(envPath, parsedEnv);
 
       // single-page-app
@@ -95,6 +99,7 @@ module.exports = {
         parsedEnv = SPA_PRD_ENV.parsed;
         parsedEnv.OAUTH2_CLIENT_ID = KEYCLOAK_SPA_CLIENT;
         parsedEnv.OAUTH2_CLIENT_SECRET = KEYCLOAK_SPA_CLIENT_SECRET;
+        parsedEnv.NEXTAUTH_SECRET = parsedEnv.NEXTAUTH_SECRET || randSecret();
         writeEnvFile(envPath, parsedEnv);
       }
 
@@ -106,6 +111,7 @@ module.exports = {
         parsedEnv = SPA_DEV_ENV.parsed;
         parsedEnv.OAUTH2_CLIENT_ID = KEYCLOAK_SPA_CLIENT;
         parsedEnv.OAUTH2_CLIENT_SECRET = KEYCLOAK_SPA_CLIENT_SECRET;
+        parsedEnv.NEXTAUTH_SECRET = parsedEnv.NEXTAUTH_SECRET || randSecret();
         writeEnvFile(envPath, parsedEnv);
       }
 

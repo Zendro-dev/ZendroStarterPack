@@ -99,12 +99,6 @@ services:
       - |
         set -e
         npm install
-        # @vscode/sqlite3 (graphql-server's sqlite driver, replacing the
-        # now-archived sqlite3) has no working prebuilt-binary fetch path -
-        # it always compiles from source via node-gyp, and its own install
-        # script is blocked by graphql-server's allowScripts, so it has to
-        # be rebuilt explicitly here.
-        npm rebuild @vscode/sqlite3
         npm run build:graphiql
         node migrateDb.js up
 
@@ -154,9 +148,7 @@ services:
       - /bin/sh
       - -c
       - |
-        set -e
-        npm install
-        rm -rf .next
+        echo Done
 
   zendro-spa:
     container_name: zendro-spa

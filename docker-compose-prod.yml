@@ -58,6 +58,13 @@ services:
       - ./graphiql-auth/.env:/usr/graphiql-auth/.env
       - ./single-page-app/.env.development:/usr/single-page-app/.env.development
       - ./single-page-app/.env.production:/usr/single-page-app/.env.production
+      # npm's own download cache (package tarballs/metadata) - separate from
+      # node_modules, which stays on the host via the bind mount above.
+      # HOME=/tmp below means npm would otherwise look for its cache at
+      # /tmp/.npm, which is wiped every time this container is recreated -
+      # this volume gives it somewhere persistent instead, so a fresh
+      # `npm install` after a `down`/`up` doesn't re-download every package.
+      - npm_cache:/tmp/.npm
     # Run as the host user so files written to the bind-mounted volumes above
     # (e.g. node_modules) are not owned by root on the host.
     user: &host-user "${UID_GID}"
@@ -73,7 +80,6 @@ services:
       - -c
       - |
         npm install
-        npm rebuild sqlite3 --build-from-source
         npm run build:graphiql
         node migrateDb.js up
 
@@ -109,14 +115,17 @@ services:
     volumes: &spa-volumes
       - ./single-page-app:/usr/single-page-app
       - ./data_model_definitions:/usr/data_model_definitions
+      # yarn's own download cache - see the npm_cache comment above, same
+      # reasoning (HOME=/tmp otherwise makes this ephemeral).
+      - yarn_cache:/tmp/.cache/yarn
     user: *host-user
     environment: *host-user-env
     command:
       - /bin/sh
       - -c
       - |
-        npm install
-        npm run build:graphiql
+        yarn install
+        yarn build
 
   zendro-spa:
     container_name: zendro-spa
@@ -140,7 +149,7 @@ services:
       - /bin/sh
       - -c
       - |
-        npm start
+        yarn start
 
   zendro-graphiql-install:
     container_name: zendro-graphiql-install
@@ -150,6 +159,8 @@ services:
       dockerfile: Dockerfile.graphiql
     volumes: &giql-volumes
       - ./graphiql-auth:/usr/graphiql-auth
+      # See the npm_cache comment on zendro-graphql-server-migrations above.
+      - npm_cache:/tmp/.npm
     user: *host-user
     environment: *host-user-env
     command:
@@ -186,6 +197,10 @@ services:
 volumes:
   zendro_db_data:
   keycloak_pg_data:
+  # Package-manager download caches only (not node_modules, which stays on
+  # the host via the bind mounts above) - safe to be Docker-managed/opaque.
+  npm_cache:
+  yarn_cache:
 
 networks:
   zendro:
